@@ -440,10 +440,10 @@ var ChatService = /** @class */ (function () {
         var _this = this;
         var mockMsg = {
             messageId: Date.now().toString(),
-            userId: '210000198410281948',
-            userName: 'Hancock',
+            userId: '2',
+            userName: 'Santi',
             userAvatar: './assets/to-user.jpg',
-            toUserId: '140000198202211138',
+            toUserId: '1',
             time: Date.now(),
             message: msg.message,
             status: 'success'
@@ -464,18 +464,18 @@ var ChatService = /** @class */ (function () {
     };
     ChatService.prototype.getUserInfo = function () {
         var userInfo = {
-            id: '140000198202211138',
-            name: 'Luff',
+            id: '1',
+            name: 'John',
             avatar: './assets/user.jpg'
         };
         return new Promise(function (resolve) { return resolve(userInfo); });
     };
     ChatService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Events */]])
+        __metadata("design:paramtypes", [typeof (_a = typeof __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_3__angular_common_http__["a" /* HttpClient */]) === "function" && _a || Object, typeof (_b = typeof __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Events */] !== "undefined" && __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["b" /* Events */]) === "function" && _b || Object])
     ], ChatService);
     return ChatService;
+    var _a, _b;
 }());
 
 //# sourceMappingURL=chat-service.js.map

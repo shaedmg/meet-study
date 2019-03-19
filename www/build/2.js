@@ -15,9 +15,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
-/**
- * Created by hsuanlee on 2017/4/4.
- */
 
 
 
@@ -58,13 +55,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var HomePage = /** @class */ (function () {
     function HomePage() {
         this.toUser = {
-            toUserId: '210000198410281948',
-            toUserName: 'Hancock'
+            toUserId: '2',
+            toUserName: 'Santi'
         };
     }
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"C:\Users\jhontsPC\Desktop\meet\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Home</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n\n\n  <ion-list>\n\n\n\n    <ion-item navPush="Chat"\n\n              [navParams]="toUser">\n\n      <ion-avatar item-left>\n\n        <img src="./assets/to-user.jpg">\n\n      </ion-avatar>\n\n      <h2>Hancock</h2>\n\n      <p>If at first you don’t succeed, call it version 1.0</p>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\jhontsPC\Desktop\meet\src\pages\home\home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"C:\Users\jhontsPC\Desktop\meet\src\pages\home\home.html"*/'<ion-header>\n\n  <ion-navbar>\n\n    <ion-title>Inicio</ion-title>\n\n  </ion-navbar>\n\n</ion-header>\n\n\n\n<ion-content>\n\n\n\n  <ion-list>\n\n\n\n    <ion-item navPush="Chat"\n\n              [navParams]="toUser">\n\n      <ion-avatar item-left>\n\n        <img src="./assets/user.jpg">\n\n      </ion-avatar>\n\n      <h2>John</h2>\n\n      <p>El puto amo de la vida</p>\n\n    </ion-item>\n\n      \n\n    <ion-item navPush="Chat"\n\n              [navParams]="toUser">\n\n      <ion-avatar item-left>\n\n        <img src="./assets/to-user.jpg">\n\n      </ion-avatar>\n\n      <h2>Santi</h2>\n\n      <p>El gay</p>\n\n    </ion-item>\n\n  </ion-list>\n\n</ion-content>\n\n'/*ion-inline-end:"C:\Users\jhontsPC\Desktop\meet\src\pages\home\home.html"*/
         }),
         __metadata("design:paramtypes", [])
     ], HomePage);

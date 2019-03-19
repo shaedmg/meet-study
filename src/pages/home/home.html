@@ -1,6 +1,6 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Home</ion-title>
+    <ion-title>Inicio</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -11,10 +11,19 @@
     <ion-item navPush="Chat"
               [navParams]="toUser">
       <ion-avatar item-left>
+        <img src="./assets/user.jpg">
+      </ion-avatar>
+      <h2>John</h2>
+      <p>El puto amo de la vida</p>
+    </ion-item>
+      
+    <ion-item navPush="Chat"
+              [navParams]="toUser">
+      <ion-avatar item-left>
         <img src="./assets/to-user.jpg">
       </ion-avatar>
-      <h2>Hancock</h2>
-      <p>If at first you don’t succeed, call it version 1.0</p>
+      <h2>Santi</h2>
+      <p>El gay</p>
     </ion-item>
   </ion-list>
 </ion-content>

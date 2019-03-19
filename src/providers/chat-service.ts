@@ -31,10 +31,10 @@ export class ChatService {
   mockNewMsg(msg) {
     const mockMsg: ChatMessage = {
       messageId: Date.now().toString(),
-      userId: '210000198410281948',
-      userName: 'Hancock',
+      userId: '2',
+      userName: 'Santi',
       userAvatar: './assets/to-user.jpg',
-      toUserId: '140000198202211138',
+      toUserId: '1',
       time: Date.now(),
       message: msg.message,
       status: 'success'
@@ -58,8 +58,8 @@ export class ChatService {
 
   getUserInfo(): Promise<UserInfo> {
     const userInfo: UserInfo = {
-      id: '140000198202211138',
-      name: 'Luff',
+      id: '1',
+      name: 'John',
       avatar: './assets/user.jpg'
     };
     return new Promise(resolve => resolve(userInfo));
