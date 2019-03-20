@@ -37,18 +37,42 @@ npm install -g ionic
 Para instalar la app:
 en consola,
 ```sh
-cd meet
+cd meet-study
 npm install
 ```
 
-Para lanzar la app en navegador:
-en consola,
+
+Aveces en mac presenta problemas al realizar mpn install, algo de gyp, en la mayoria de casos se soluciona asi:
 ```sh
-ionic serve
+mac:
+xcode-select --install
 ```
 
-### Todos
-Estructura de ficheros en la app
+En Windows?  inicie PowerShell como Administrator y ejecute:
+
+```
+npm install --global windows-build-tools
+```
+
+o, si esta usando Yarn:
+
+```
+yarn global add windows-build-tools
+```
+
+![Gif](https://user-images.githubusercontent.com/1426799/45007904-bde9f280-afb4-11e8-8a35-c77dffaffa2a.gif)
+
+Despues de la instalación, npm automaticamente descarga e instala Visual
+C++ Build Tools. Si aún no está instalado, también instalará Python 2.7, configurando su máquina y npm adecuadamente.
+
+Estas herramientas son [necesarias para compilar módulos nativos] (https://github.com/nodejs/node-gyp).
+
+Para más información y para usuarios de Windows
+```sh
+https://github.com/nodejs/node-gyp/#on-macos
+```
+
+### Estructura de ficheros en la app
 
  ## File Structure
  ```
