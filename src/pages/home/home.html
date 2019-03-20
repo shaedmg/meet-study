@@ -1,24 +1,28 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Inicio</ion-title>
+    <button ion-button [menuToggle]="activeMenu">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>
+      Home
+    </ion-title>
   </ion-navbar>
+
 </ion-header>
 
 <ion-content>
 
   <ion-list>
 
-    <ion-item navPush="Chat"
-              [navParams]="toUser">
+    <ion-item navPush="Chat" [navParams]="toUser">
       <ion-avatar item-left>
         <img src="./assets/user.jpg">
       </ion-avatar>
       <h2>John</h2>
       <p>El puto amo de la vida</p>
     </ion-item>
-      
-    <ion-item navPush="Chat"
-              [navParams]="toUser">
+
+    <ion-item navPush="Chat" [navParams]="toUser">
       <ion-avatar item-left>
         <img src="./assets/to-user.jpg">
       </ion-avatar>

@@ -1,1 +1,51 @@
-<ion-nav [root]="rootPage"></ion-nav>
+<ion-menu [content]="content" id="menu1">
+
+    <ion-header>
+        <ion-toolbar color="secondary">
+            <ion-title>Mi perfil</ion-title>
+        </ion-toolbar>
+    </ion-header>
+
+    <ion-content>
+        <ion-list>
+            <ion-item>
+                <ion-avatar item-left>
+                    <img src="./assets/to-user.jpg">
+                </ion-avatar>
+                <ion-label>
+                    <h2 class="">Santi</h2>
+                    <ion-icon name="md-star"></ion-icon>
+                    <ion-icon name="md-star"></ion-icon>
+                    <ion-icon name="md-star"></ion-icon>
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-create"></ion-icon> Modificar perfil
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="ios-chatbubbles"> </ion-icon> Ver chats
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-list-box"></ion-icon> Ver mis anuncios
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-add"></ion-icon> Agregar anuncio
+                </ion-label>
+            </ion-item>
+            <ion-item>
+                <ion-label>
+                    <ion-icon name="md-exit"></ion-icon> Cerrar sesión
+                </ion-label>
+            </ion-item>
+        </ion-list>
+    </ion-content>
+
+</ion-menu>
+<ion-nav id="nav" [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>
