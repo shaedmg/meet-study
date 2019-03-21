@@ -8,14 +8,5 @@ import { IonicPage } from 'ionic-angular';
 })
 export class HomePage {
 
-  toUser : {toUserId: string, toUserName: string};
-
-  constructor() {
-    this.toUser = {
-      toUserId:'2',
-      toUserName:'Santi'
-    }
-  }
-
 
 }
