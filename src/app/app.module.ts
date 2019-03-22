@@ -9,6 +9,10 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { EmojiProvider } from '../providers/emoji';
 import { HttpClientModule } from "@angular/common/http";
 
+import { environment } from '../environment/environment';
+import { AngularFireModule } from 'angularfire2';
+import { AngularFirestoreModule } from 'angularfire2/firestore';
+import { AnuncioProvider } from '../providers/anuncio';
 
 @NgModule({
   declarations: [
@@ -17,6 +21,8 @@ import { HttpClientModule } from "@angular/common/http";
   imports: [
     BrowserModule,
     HttpClientModule,
+    AngularFireModule.initializeApp(environment.firebaseConfig),
+    AngularFirestoreModule,
     IonicModule.forRoot(MyApp,{
       tabsHideOnSubPages:true,
       tabsLayout:'icon-left',
@@ -31,7 +37,8 @@ import { HttpClientModule } from "@angular/common/http";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    EmojiProvider
+    EmojiProvider,
+    AnuncioProvider
   ]
 })
 export class AppModule {}

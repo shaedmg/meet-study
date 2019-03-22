@@ -10,6 +10,23 @@
 
 </ion-header>
 
-<ion-content>
-
+<ion-content padding>
+  <ion-list>
+    <ion-card button navPush="anuncio-details"
+    [navParams]="anuncio.id" *ngFor="let anuncio of anuncios">
+      <ion-card-content>
+        <ion-card-title>
+          Asignatura a estudiar:{{anuncio.primarySubject}}
+        </ion-card-title>
+        <p>Asignatura conocida: {{anuncio.secondarySubject}}</p>
+        <p>Nombre: {{anuncio.name}}</p>
+        <p>Hora: {{anuncio.time}}</p>
+      </ion-card-content>
+    </ion-card>
+  </ion-list>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button routerDirection="forward">
+<ion-icon name="add"></ion-icon>
+  </ion-fab-button>  
+</ion-fab>
 </ion-content>
