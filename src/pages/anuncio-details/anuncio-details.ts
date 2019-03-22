@@ -24,7 +24,7 @@ export class AnuncioDetailsPage {
   };
   anuncioId = "";
   constructor(public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
-    this.anuncioId = navParams.get('id')
+    this.anuncioId = this.navParams.get('id');
   }
 
   ngOnInit() {
