@@ -17,16 +17,16 @@ export class AnuncioProvider {
 
   constructor(public http: HttpClient, db:AngularFirestore) {
     this.anunciosCollection = db.collection<MeetingI>('anuncios');
-    this.todos = this.anunciosCollection.snapshotChanges().pipe(map(
-      actions => {
-        return actions.map( a=> {
+    this.todos = this.anunciosCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
-          return {id, ...data};
+          return { id, ...data };
         });
-      }
-    ));
+      }));
   }
+
 
   getAnuncios(){
     return this.todos;
