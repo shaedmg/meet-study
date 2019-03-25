@@ -2,13 +2,17 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
+//import { HomePage } from '../pages/home/home';
+import { ListChatPage } from '../pages/list-chat/list-chat';
+import { SignUpPage } from '../pages/signup/signup';
+import { HomePage } from '../pages/home/home';
 
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage:any = 'TabsPage';
+  rootPage:any = 'HomePage';
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
@@ -17,8 +21,15 @@ export class MyApp {
     });
   }
   openPage(page) {
-    // Reset the content nav to have just this page
-    // we wouldn't want the back button to show in this scenario
     this.nav.setRoot(page.component);
   }
+
+  launchPage(page: String){
+    if(page == 'ListChatPage') this.nav.setRoot(ListChatPage);
+    if(page == 'HomePage') this.nav.setRoot(HomePage);
+    if(page == 'Register') this.nav.setRoot(SignUpPage);
+  }
 }
+
+
+  

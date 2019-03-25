@@ -18,7 +18,12 @@ export class HomePage implements OnInit{
     this.anuncioService.getAnuncios().subscribe(res =>{
       this.anuncios = res;
     });
+  }
 
+  ionViewWillEnter(){
+    this.anuncioService.getAnuncios().subscribe(res =>{
+      this.anuncios = res;
+    });
   }
   abrirAnuncioDetails(ident) {
     this.navCtrl.push(AnuncioDetailsPage,{id: ident});

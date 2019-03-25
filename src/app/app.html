@@ -19,17 +19,22 @@
                     <ion-icon name="md-star"></ion-icon>
                 </ion-label>
             </ion-item>
-            <ion-item>
+            <ion-item (click)="launchPage('Register')">
                 <ion-label>
                     <ion-icon name="md-create"></ion-icon> Modificar perfil
                 </ion-label>
             </ion-item>
-            <ion-item>
+            <ion-item (click)="launchPage('ListChatPage')">
                 <ion-label>
                     <ion-icon name="ios-chatbubbles"> </ion-icon> Ver chats
                 </ion-label>
             </ion-item>
-            <ion-item>
+            <ion-item (click)="launchPage('HomePage')">
+                <ion-label>
+                    <ion-icon name="md-list-box"></ion-icon> Ver anuncios
+                </ion-label>
+            </ion-item>
+            <ion-item (click)="launchPage('HomePage')">
                 <ion-label>
                     <ion-icon name="md-list-box"></ion-icon> Ver mis anuncios
                 </ion-label>
