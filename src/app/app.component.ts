@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-//import { HomePage } from '../pages/home/home';
 import { ListChatPage } from '../pages/list-chat/list-chat';
 import { SignUpPage } from '../pages/signup/signup';
 import { HomePage } from '../pages/home/home';

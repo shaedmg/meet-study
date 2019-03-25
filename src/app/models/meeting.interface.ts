@@ -4,5 +4,6 @@ export interface MeetingI{
     secondarySubject: string;
     name: string;
     time: string;
+    userId?: string;
     
 }

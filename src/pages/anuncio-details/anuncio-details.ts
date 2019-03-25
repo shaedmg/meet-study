@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {MeetingI} from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio'
 /**
@@ -20,10 +20,12 @@ export class AnuncioDetailsPage {
     name: "",
     primarySubject: "",
     secondarySubject: "",
-    time: ""
+    time: "",
+
+
   };
   anuncioId = "";
-  constructor(public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
+  constructor(public alertController: AlertController, public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
     this.anuncioId = this.navParams.get('id');
   }
 
@@ -37,6 +39,22 @@ export class AnuncioDetailsPage {
     this.anuncioService.getAnuncio(this.anuncioId).subscribe(res => {
       this.anuncio = res;
     });
+  }
+  async presentAlert() {
+    const alert = await this.alertController.create({
+      title: 'Alert',
+      message: 'Juana te ha enviado una solicitud para estudiar.',
+      buttons: ['Aceptar solicitud','Rechazar solicitud']
+    });
+
+    await alert.present();
+  }
+  sendPetition(){
+    this.navCtrl.pop();
+    this.presentAlert();
+  }
+  goHome(){
+    this.navCtrl.pop();
   }
 
 }
