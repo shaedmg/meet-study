@@ -27,20 +27,28 @@ export class GestionAnuncioPage implements OnInit{
   constructor(public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
     this.anuncioId = this.navParams.get('id');
   }
+  
   ngOnInit() {
     if(this.anuncioId){
       this.loadTodo();
     }
   }
   async loadTodo(){
-    console.log("Entró");
     this.anuncioService.getAnuncio(this.anuncioId).subscribe(res => {
-      console.log("hola");
       this.anuncio = res;
     });
   }
   removeAnuncios(){
     this.anuncioService.removeAnuncio(this.anuncioId);
     this.navCtrl.pop();
+    
+    
+    
+  }
+  updateAnuncios(){
+    this.navCtrl.pop();
+    this.anuncioService.updateAnuncio(this.anuncio,this.anuncioId);
+    
+    
   }
 }

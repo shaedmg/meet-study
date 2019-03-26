@@ -29,10 +29,11 @@ export class AddAnuncioPage {
       if (user) {
         this.anuncio.userId = user.uid;
         this.usuariosProvider.getUsuario(this.anuncio.userId).subscribe(res => {
-          this.anuncio.name = res.Nombre;
+          this.anuncio.name = res.Nombre ;
+          this.anuncioServer.addAnuncio(this.anuncio);
         });
       }
     });
-    this.anuncioServer.addAnuncio(this.anuncio);
+
   }
 }

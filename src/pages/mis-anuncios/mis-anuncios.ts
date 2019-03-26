@@ -23,13 +23,10 @@ export class MisAnunciosPage implements OnInit{
   constructor(private anuncioService:AnuncioProvider, public navCtrl: NavController, public navParams: NavParams) {
   }
 
-  ionViewCanLeave(){
-    this.observer.unsubscribe();
-}
+
 ngOnInit(){
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log(user.uid);
       this.observer = this.anuncioService.getAnunciosByUser(user.uid).subscribe(res =>{
         this.anuncios = res;
       });
