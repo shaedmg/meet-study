@@ -23,7 +23,7 @@
             <ion-item>
                 <ion-icon name="mail" item-start></ion-icon>
                 <ion-label stacked>Correo electronico:</ion-label>
-                <ion-input formControlName="email" type="email" placeholder="Email"></ion-input>
+                <ion-input [(ngModel)]="user.email" formControlName="email" type="email" placeholder="Email"></ion-input>
             </ion-item>
 
             <ion-item>
@@ -32,35 +32,12 @@
                 <ion-datetime formControlName="dateBirth" displayFormat="DD-MM-YYYY" placeholder="DD-MM-YYYY"></ion-datetime>
             </ion-item>
 
-            <div formGroupName="passwordRetry">
-                <ion-item>
-                    <ion-icon name="eye-off" item-start></ion-icon>
-                    <ion-label stacked>Contraseña:</ion-label>
-                    <ion-input formControlName="password" type="password" placeholder="Contraseña"></ion-input>
-                </ion-item>
-                <ion-item>
-                    <ion-icon name="eye-off" item-start></ion-icon>
-                    <ion-label stacked>Confirmar contraseña:</ion-label>
-                    <ion-input formControlName="passwordConfirmation" type="password" placeholder="Confirmar contraseña"></ion-input>
-                </ion-item>
-            </div>
+            <ion-item>
+                <ion-icon name="eye-off" item-start></ion-icon>
+                <ion-label stacked>Contraseña:</ion-label>
+                <ion-input [(ngModel)]="user.password" formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+            </ion-item>
 
-            <ion-row radio-group formControlName="gender">
-                <ion-col>
-                    <ion-item>
-                        <ion-icon name="woman" item-start></ion-icon>
-                        <ion-label>Mujer</ion-label>
-                        <ion-radio value="2"></ion-radio>
-                    </ion-item>
-                </ion-col>
-                <ion-col>
-                    <ion-item>
-                        <ion-icon name="man" item-start></ion-icon>
-                        <ion-label>Hombre</ion-label>
-                        <ion-radio value="1"></ion-radio>
-                    </ion-item>
-                </ion-col>
-            </ion-row>
 
         </ion-list>
         <div padding>

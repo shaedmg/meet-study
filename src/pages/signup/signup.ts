@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import {
-  IonicPage, NavController, LoadingController,
+  IonicPage, NavController, 
   Loading,
   AlertController
 } from 'ionic-angular';
-import { AngularFireAuth } from 'angularfire2/auth';
+import { AuthProvider } from '../../providers/auth';
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AngularFirestore } from 'angularfire2/firestore';
 
@@ -14,67 +15,45 @@ import { AngularFirestore } from 'angularfire2/firestore';
   templateUrl: 'signup.html',
 })
 export class SignUpPage {
-
+  user = {email: "", password: ""};
   myForm: FormGroup;
   public loading: Loading;
   constructor(
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
-    public afAuth: AngularFireAuth,
+
     public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController,
+
     public afs: AngularFirestore,
+    public auth : AuthProvider,
+    
   ) {
     this.myForm = this.createMyForm();
   }
   
+
+  //Método óptimo para el registro del usuario
   signup() {
-    
-
-    console.log("Email:" + this.myForm.value.email);
-    console.log("Password:" + this.myForm.value.passwordRetry.password);
-
-    //Creación de usuario 
-    this.afAuth.auth.createUserWithEmailAndPassword(this.myForm.value.email, this.myForm.value.passwordRetry.password)
-      .then(
-        res => {
-          this.navCtrl.setRoot('HomePage');
-        }, error => {
-          this.loading.dismiss().then(() => {
-            let alert = this.alertCtrl.create({
-              message: error.message,
-              buttons: [
-                {
-                  text: "Ok",
-                  role: 'cancel'
-                }
-              ]
-            });
-            alert.present();
-          });
-        });
-
-    this.loading = this.loadingCtrl.create({
-      dismissOnPageChange: true,
-    });
-    this.loading.present();
-
-
-    
-    let genero: string;
-    if(this.myForm.value.gender.value == 1){
-        genero = "Masculino";
-    }else{
-        genero = "Femenino";
-    }
+    this.auth.registerUser(this.user.email,this.user.password)
+    .then((user) => {
+      // El usuario se ha creado correctamente
+    })
+    .catch(err=>{
+      let alert = this.alertCtrl.create({
+        title: 'Error',
+        subTitle: err.message,
+        buttons: ['Aceptar']
+      });
+      alert.present();
+    })
+  
     //Inserción de datos en BD
     return new Promise<any>((resolve, reject) => {
       this.afs.collection('/Usuarios').add({
         Nombre: this.myForm.value.name,
         Apellidos: this.myForm.value.lastName,
         email: this.myForm.value.email,
-        contraseña: this.myForm.value.passwordRetry.password,
-        gender: genero,
+        contraseña: this.myForm.value.password,
         fechaNacimiento: this.myForm.value.dateBirth,
 
       })
@@ -85,17 +64,15 @@ export class SignUpPage {
   }
   
 
+  //Creacion del form
   private createMyForm() {
     return this.formBuilder.group({
       name: ['', Validators.required],
       lastName: ['', Validators.required],
       email: ['', Validators.required],
       dateBirth: ['', Validators.required],
-      passwordRetry: this.formBuilder.group({
-        password: ['', Validators.required],
-        passwordConfirmation: ['', Validators.required]
-      }),
-      gender: ['', Validators.required],
+      password: ['', Validators.required],
+      checkbox: ['', Validators.required]
     });
   }
 }
