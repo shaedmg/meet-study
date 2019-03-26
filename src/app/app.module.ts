@@ -13,6 +13,9 @@ import { environment } from '../environment/environment';
 import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AnuncioProvider } from '../providers/anuncio';
+import { UsuariosProvider } from '../providers/usuarios';
+import {AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireAuthModule } from 'angularfire2/auth';
 
 @NgModule({
   declarations: [
@@ -28,6 +31,8 @@ import { AnuncioProvider } from '../providers/anuncio';
       tabsLayout:'icon-left',
       preloadModules: true
     }),
+    AngularFireDatabaseModule,                
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -38,7 +43,8 @@ import { AnuncioProvider } from '../providers/anuncio';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EmojiProvider,
-    AnuncioProvider
+    AnuncioProvider,
+    UsuariosProvider
   ]
 })
 export class AppModule {}

@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, NavController, Alert } from 'ionic-angular';
+
+
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @IonicPage()
@@ -20,8 +22,9 @@ export class SignUpPage implements OnInit{
   ngOnInit(){}
 
   saveData() {
-    console.log(this.myForm.value);
+    
   }
+ 
 
   private createMyForm() {
     return this.formBuilder.group({
