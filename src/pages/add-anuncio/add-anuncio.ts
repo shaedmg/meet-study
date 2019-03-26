@@ -1,13 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {MeetingI} from '../../app/models/meeting.interface';
-import {AnuncioProvider} from '../../providers/anuncio'
-/**
- * Generated class for the AddAnuncioPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import {AnuncioProvider} from '../../providers/anuncio';
+import * as firebase from 'firebase/app';
+import { UsuariosProvider } from '../../providers/usuarios';
+
 
 @IonicPage()
 @Component({
@@ -17,18 +14,25 @@ import {AnuncioProvider} from '../../providers/anuncio'
 export class AddAnuncioPage {
 
   anuncio: MeetingI = {
-    name: "Santi",
+    name: "",
     primarySubject: "",
     secondarySubject: "",
     time: "",
   };
-
-  constructor(public anuncioServer: AnuncioProvider,public navCtrl: NavController, public navParams: NavParams) {
+  
+  constructor(public usuariosProvider: UsuariosProvider,public anuncioServer: AnuncioProvider,public navCtrl: NavController, public navParams: NavParams) {
+   
   }
 
-  addAnuncio(){
-    this.anuncio.userId = "g52EVBGdqhtiC75Jc0B0";
+  addAnuncios(){
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.anuncio.userId = user.uid;
+        this.usuariosProvider.getUsuario(this.anuncio.userId).subscribe(res => {
+          this.anuncio.name = res.Nombre;
+        });
+      }
+    });
     this.anuncioServer.addAnuncio(this.anuncio);
   }
-
 }

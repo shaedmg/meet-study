@@ -4,6 +4,7 @@ import {MeetingI} from  '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio'
 import {GestionAnuncioPage} from '../gestion-anuncio/gestion-anuncio';
 import { Subscription  } from 'rxjs/Subscription';
+import * as firebase from 'firebase/app';
 /**
  * Generated class for the MisAnunciosPage page.
  *
@@ -26,8 +27,13 @@ export class MisAnunciosPage implements OnInit{
     this.observer.unsubscribe();
 }
 ngOnInit(){
-  this.observer = this.anuncioService.getAnunciosByUser().subscribe(res =>{
-    this.anuncios = res;
+  firebase.auth().onAuthStateChanged((user) => {
+    if (user) {
+      console.log(user.uid);
+      this.observer = this.anuncioService.getAnunciosByUser(user.uid).subscribe(res =>{
+        this.anuncios = res;
+      });
+    }
   });
 }
 

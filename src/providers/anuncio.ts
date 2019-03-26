@@ -34,14 +34,14 @@ export class AnuncioProvider {
   getAnuncio(id: string){
     return this.anunciosCollection.doc<MeetingI>(id).valueChanges();
   }
-  getAnunciosByUser(){
+  getAnunciosByUser(userId){
     this.todos = this.anunciosCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
           return { id, ...data };
-        }).filter(res => res.userId=="g52EVBGdqhtiC75Jc0B0");
+        }).filter(res => res.userId == userId);
       }));
     return this.todos;
   }
@@ -49,6 +49,7 @@ export class AnuncioProvider {
    return this.anunciosCollection.doc(id).update(anuncio);
   }
   addAnuncio(anuncio: MeetingI){
+    console.log(anuncio ,);
     return this.anunciosCollection.add(anuncio);
   }
   removeAnuncio(id: string){

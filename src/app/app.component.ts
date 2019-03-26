@@ -1,9 +1,11 @@
+
 import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { ListChatPage } from '../pages/list-chat/list-chat';
 import { SignUpPage } from '../pages/signup/signup';
+import {LoginPage} from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
 import {MisAnunciosPage} from '../pages/mis-anuncios/mis-anuncios';
 import { AddAnuncioPage } from '../pages/add-anuncio/add-anuncio';
@@ -13,7 +15,7 @@ import { AddAnuncioPage } from '../pages/add-anuncio/add-anuncio';
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
-  rootPage:any = 'HomePage';
+  rootPage:any = 'LoginPage';
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen) {
     platform.ready().then(() => {
