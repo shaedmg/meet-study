@@ -7,7 +7,6 @@ export interface UsuariosI{
     Apellidos: string;
     contraseña: string;
     email: string;
-    nombreUsuario: string;
     fechaNacimiento: DateTime;
     user_id?: number;
     

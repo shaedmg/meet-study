@@ -6,6 +6,7 @@ import {
 } from 'ionic-angular';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AngularFirestore } from 'angularfire2/firestore';
 
 @IonicPage()
 @Component({
@@ -21,17 +22,19 @@ export class SignUpPage {
     public formBuilder: FormBuilder,
     public afAuth: AngularFireAuth,
     public alertCtrl: AlertController,
-    public loadingCtrl: LoadingController
+    public loadingCtrl: LoadingController,
+    public afs: AngularFirestore,
   ) {
     this.myForm = this.createMyForm();
   }
-
+  
   signup() {
+    
 
     console.log("Email:" + this.myForm.value.email);
     console.log("Password:" + this.myForm.value.passwordRetry.password);
 
-
+    //Creación de usuario 
     this.afAuth.auth.createUserWithEmailAndPassword(this.myForm.value.email, this.myForm.value.passwordRetry.password)
       .then(
         res => {
@@ -56,8 +59,31 @@ export class SignUpPage {
     });
     this.loading.present();
 
-  }
 
+    
+    let genero: string;
+    if(this.myForm.value.gender.value == 1){
+        genero = "Masculino";
+    }else{
+        genero = "Femenino";
+    }
+    //Inserción de datos en BD
+    return new Promise<any>((resolve, reject) => {
+      this.afs.collection('/Usuarios').add({
+        Nombre: this.myForm.value.name,
+        Apellidos: this.myForm.value.lastName,
+        email: this.myForm.value.email,
+        contraseña: this.myForm.value.passwordRetry.password,
+        gender: genero,
+        fechaNacimiento: this.myForm.value.dateBirth,
+
+      })
+      .then((res) => {
+        resolve(res)
+      },err => reject(err))
+    })
+  }
+  
 
   private createMyForm() {
     return this.formBuilder.group({
@@ -73,3 +99,4 @@ export class SignUpPage {
     });
   }
 }
+

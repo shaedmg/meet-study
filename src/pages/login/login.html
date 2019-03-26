@@ -8,7 +8,7 @@
     <form [formGroup]="myForm" (ngSubmit)="loginUser()">
         <ion-list>
             <ion-item text-center>
-                <ion-img width="192" height="192" src="assets/logo192.png"></ion-img>
+                <ion-img width="192" height="170" src="../assets/imgs/logo.jpg"></ion-img>
             </ion-item>
             <ion-item>
                 <ion-icon name="person" item-left></ion-icon>
@@ -28,9 +28,7 @@
     <div text-center>
         <a ion-button block clear (click)="goToSignup()">
         Nueva cuenta
-      </a>
-        <a ion-button block clear (click)="goToResetPassword()">
-        Olvide password
-      </a>
+        
+        </a>
     </div>
 </ion-content>

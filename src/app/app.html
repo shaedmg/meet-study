@@ -13,36 +13,39 @@
                     <img src="./assets/to-user.jpg">
                 </ion-avatar>
                 <ion-label>
-                    <h2 class="">Santi</h2>
+                    <h2 class="">{{usuario.Nombre}}</h2>
                     <ion-icon name="md-star"></ion-icon>
                     <ion-icon name="md-star"></ion-icon>
                     <ion-icon name="md-star"></ion-icon>
-                </ion-label>
-            </ion-item>
-            
-            <ion-item  menuClose="menu1" (click)="launchPage('ListChatPage')">
-                <ion-label>
-                    <ion-icon name="ios-chatbubbles"> </ion-icon> Ver chats
                 </ion-label>
             </ion-item>
             <ion-item menuClose="menu1" (click)="launchPage('HomePage')">
                 <ion-label>
-                    <ion-icon name="md-list-box"></ion-icon> Ver anuncios
+                    <ion-icon name="md-home"></ion-icon> Inicio
                 </ion-label>
             </ion-item>
-            <ion-item menuClose="menu1" (click)="launchPage('MisAnunciosPage')">
-                <ion-label>
-                    <ion-icon name="md-list-box"></ion-icon> Ver mis anuncios
-                </ion-label>
-            </ion-item>
+
             <ion-item menuClose="menu1" (click)="launchPage('AddAnuncioPage')">
                 <ion-label>
-                    <ion-icon name="md-add"></ion-icon> Agregar anuncio
+                    <ion-icon name="md-add"></ion-icon> Nuevo anuncio
                 </ion-label>
             </ion-item>
+
+            <ion-item menuClose="menu1" (click)="launchPage('MisAnunciosPage')">
+                <ion-label>
+                    <ion-icon name="md-images"></ion-icon> Mis anuncios
+                </ion-label>
+            </ion-item>
+
+            <ion-item menuClose="menu1" (click)="launchPage('ListChatPage')">
+                <ion-label>
+                    <ion-icon name="ios-chatbubbles"> </ion-icon> Ver chats
+                </ion-label>
+            </ion-item>
+
             <ion-item menuClose="menu1" (click)="launchPage('Login')">
                 <ion-label>
-                    <ion-icon name="md-exit"></ion-icon> Cerrar sesión
+                    <ion-icon name="md-log-out"></ion-icon> Cerrar sesión
                 </ion-label>
             </ion-item>
         </ion-list>
