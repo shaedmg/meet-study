@@ -29,6 +29,7 @@ export class MisAnunciosPage implements OnInit{
 ngOnInit(){
   firebase.auth().onAuthStateChanged((user) => {
     if (user) {
+      console.log("uid: ");
       console.log(user.uid);
       this.observer = this.anuncioService.getAnunciosByUser(user.uid).subscribe(res =>{
         this.anuncios = res;
