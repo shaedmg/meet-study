@@ -1,6 +1,3 @@
-/.sourcemps/
-/hooks/
 /node_modules/
 /www/build/
-/src/environment/
-/package.json
+src/environment/

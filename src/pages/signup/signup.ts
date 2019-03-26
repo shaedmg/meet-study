@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, Alert } from 'ionic-angular';
-
+import { IonicPage, NavController, AlertController } from 'ionic-angular';
 
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -15,14 +14,19 @@ export class SignUpPage implements OnInit{
 
   constructor(
     public navCtrl: NavController,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    public alertCtrl: AlertController
   ) {
     this.myForm = this.createMyForm();
   }
   ngOnInit(){}
 
   saveData() {
-    
+    let alert = this.alertCtrl.create({
+      title: "Se ha creado la cuenta correctamente.",
+      buttons: ["Ok"]
+    });
+    alert.present();
   }
  
 
