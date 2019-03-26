@@ -30,15 +30,10 @@ export class MyApp {
   launchPage(page: String){
     if(page == 'ListChatPage') this.nav.setRoot(ListChatPage);
     if(page == 'HomePage') this.nav.setRoot(HomePage);
-<<<<<<< HEAD
-    if(page == 'Register') this.nav.setRoot(SignUpPage);
-    if(page == 'MisAnunciosPage') this.nav.setRoot(MisAnunciosPage);
-    if(page == 'AddAnuncioPage') this.nav.setRoot(AddAnuncioPage);
-=======
     if(page == 'Register') this.nav.setRoot(SignUpPage);    
-//    if(page == 'AddAnuncioPage') this.nav.setRoot(AddAnuncioPage);
+    if(page == 'AddAnuncioPage') this.nav.setRoot(AddAnuncioPage);
+    if(page == 'MisAnunciosPage') this.nav.setRoot(MisAnunciosPage);
     if(page == 'Login') this.nav.setRoot(LoginPage);
->>>>>>> ecd376dc575cfc8b950d29a7b8970bd3cb51baa4
   }
 }
 
