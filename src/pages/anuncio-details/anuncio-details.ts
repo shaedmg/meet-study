@@ -41,7 +41,7 @@ export class AnuncioDetailsPage {
   async presentAlert() {
     const alert = await this.alertController.create({
       title: 'Alert',
-      message: 'Juana te ha enviado una solicitud para estudiar.',
+      message: this.anuncio.name +' te ha enviado una solicitud para estudiar.',
       buttons: ['Aceptar solicitud','Rechazar solicitud']
     });
 
