@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {MeetingI} from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio'
@@ -21,15 +21,13 @@ export class AnuncioDetailsPage {
     primarySubject: "",
     secondarySubject: "",
     time: "",
-
-
   };
   anuncioId = "";
   constructor(public alertController: AlertController, public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
     this.anuncioId = this.navParams.get('id');
   }
 
-  ngOnInit() {
+  ionViewCanEnter() {
     if(this.anuncioId){
       this.loadTodo();
     }

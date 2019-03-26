@@ -7,7 +7,8 @@ import { ListChatPage } from '../pages/list-chat/list-chat';
 import { SignUpPage } from '../pages/signup/signup';
 import {LoginPage} from '../pages/login/login';
 import { HomePage } from '../pages/home/home';
-import { from } from 'rxjs';
+import {MisAnunciosPage} from '../pages/mis-anuncios/mis-anuncios';
+import { AddAnuncioPage } from '../pages/add-anuncio/add-anuncio';
 
 @Component({
   templateUrl: 'app.html'
@@ -25,13 +26,19 @@ export class MyApp {
   openPage(page) {
     this.nav.setRoot(page.component);
   }
-
+ 
   launchPage(page: String){
     if(page == 'ListChatPage') this.nav.setRoot(ListChatPage);
     if(page == 'HomePage') this.nav.setRoot(HomePage);
+<<<<<<< HEAD
+    if(page == 'Register') this.nav.setRoot(SignUpPage);
+    if(page == 'MisAnunciosPage') this.nav.setRoot(MisAnunciosPage);
+    if(page == 'AddAnuncioPage') this.nav.setRoot(AddAnuncioPage);
+=======
     if(page == 'Register') this.nav.setRoot(SignUpPage);    
 //    if(page == 'AddAnuncioPage') this.nav.setRoot(AddAnuncioPage);
     if(page == 'Login') this.nav.setRoot(LoginPage);
+>>>>>>> ecd376dc575cfc8b950d29a7b8970bd3cb51baa4
   }
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy} from '@angular/core';
+import { Component, OnInit} from '@angular/core';
 import { IonicPage } from 'ionic-angular';
 import {MeetingI} from  '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio'
