@@ -1,11 +1,3 @@
-/.sourcemps/
-/hooks/
 /node_modules/
 /www/build/
-/src/environment/
-/package.json
-.sourcemaps/main.js.map
-.sourcemaps/7.js.map
-.sourcemaps/5.js.map
-.sourcemaps/0.js.map
-package-lock.json
+src/environment/
