@@ -4,6 +4,7 @@ import {MeetingI} from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio';
 import * as firebase from 'firebase/app';
 import { UsuariosProvider } from '../../providers/usuarios';
+import { MisAnunciosPage } from '../mis-anuncios/mis-anuncios';
 
 
 @IonicPage()
@@ -20,20 +21,23 @@ export class AddAnuncioPage {
     time: "",
   };
   
-  constructor(public usuariosProvider: UsuariosProvider,public anuncioServer: AnuncioProvider,public navCtrl: NavController, public navParams: NavParams) {
-   
-  }
+  constructor(
+    public usuariosProvider: UsuariosProvider,
+    public anuncioServer: AnuncioProvider,
+    public navCtrl: NavController, 
+    public navParams: NavParams
+    ) {  }
 
   addAnuncios(){
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         this.anuncio.userId = user.uid;
-        this.usuariosProvider.getUsuario(this.anuncio.userId).subscribe(res => {
-          this.anuncio.name = res.Nombre ;
+        this.usuariosProvider.getlogedUser().subscribe(res => {
+          this.anuncio.name = res[0].name;
           this.anuncioServer.addAnuncio(this.anuncio);
         });
       }
     });
-
+    this.navCtrl.setRoot(MisAnunciosPage);
   }
 }

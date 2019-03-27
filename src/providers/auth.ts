@@ -1,47 +1,48 @@
-import { Injectable } from '@angular/core';
+import { UsuariosI } from '../app/models/usuarios.interface';
+import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
+import * as firebase from 'firebase';
+import { Injectable } from '@angular/core';
+import { FormBuilder } from '@angular/forms';
 
 
-
-/*
-  Generated class for the AuthProvider provider.
-
-  See https://angular.io/docs/ts/latest/guide/dependency-injection.html
-  for more info on providers and Angular DI.
-*/
 @Injectable()
 export class AuthProvider {
 
-  constructor(private afAuth: AngularFireAuth) {
-    console.log('Hello AuthProvider Provider');
+  constructor(
+    public afireauth: AngularFireAuth, 
+    public afs: AngularFirestore,
+    public formBuilder: FormBuilder
+    ) {
+
   }
 
+  async registerUser(user): Promise<any> {
+    try {
+      const credentials: firebase.auth.UserCredential = await this.afireauth.auth
+        .createUserWithEmailAndPassword(
+          user.email,
+          user.password
+        );
 
-  // Registro de usuario
-  registerUser(email: string, password: string) {
-    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
-      .then((res) => {
-        // El usuario se ha creado correctamente.
-      })
-      .catch(err => Promise.reject(err))
+      const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`userProfile/${credentials.user.uid}`);
+
+      await userProfileDocument.set({
+        id: credentials.user.uid,
+        email: user.email,
+        name: user.name,
+        lastName: user.lastName,
+        birthDate: user.birthDate
+      });
+    } catch (error) {
+    }
   }
 
-  // Login de usuario
-  loginUser(email: string, password: string) {
-    return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then(user => Promise.resolve(user))
-      .catch(err => Promise.reject(err))
+  async loginUser(Login): Promise<firebase.auth.UserCredential> {
+    return this.afireauth.auth.signInWithEmailAndPassword(Login.email, Login.password);
   }
 
-  // Devuelve la session
-  get Session() {
-    return this.afAuth.authState;
-  }
-
-  // Logout de usuario
   logout() {
-    this.afAuth.auth.signOut().then(() => {
-      // hemos salido
-    })
+    this.afireauth.auth.signOut().then(() => { })
   }
 }

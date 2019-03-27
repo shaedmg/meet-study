@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController,LoadingController, Loading, AlertController} from 'ionic-angular';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { IonicPage, NavController } from 'ionic-angular';
 import { AuthProvider } from '../../providers/auth';
+import { CredencialesI } from '../../app/models/usuarios.interface';
+import { HomePage } from '../home/home';
+import { FormBuilder, Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -9,46 +11,31 @@ import { AuthProvider } from '../../providers/auth';
   templateUrl: 'login.html',
 })
 export class LoginPage {
-
-  usuario= { email : '', password : ''};
-  myForm: FormGroup;
-
   constructor(
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
-    public auth : AuthProvider,
-    public alertCtrl : AlertController
-  ) {
-    this.myForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
-    });
-    
-  }
-
-  loginUser(){
-
-    //Manera óptima de iniciar sesión.
-    this.auth.loginUser(this.usuario.email,this.usuario.password ).then((usuario) => {
-    }
-  )
-   .catch(err=>{
-    let alert = this.alertCtrl.create({
-      title: 'Error',
-      subTitle: err.message,
-      buttons: ['Aceptar']
-    });
-    alert.present();
-  })
-
-
-  }
+    public auth: AuthProvider
+  ) {  }
   
+  loginForm =  this.formBuilder.group({
+    email: ['', Validators.required],
+    password: ['', Validators.required]
+  });
 
-  goToSignup(){
+  creds: CredencialesI = {
+    email: this.loginForm.value.email,
+    password:this.loginForm.value.password
+  };
+
+  async loginUser() {
+    //Manera óptima de iniciar sesión.
+    try {
+      await this.auth.loginUser(this.creds);
+    } catch (error) {  }
+    this.navCtrl.setRoot(HomePage);
+  }
+
+  goToSignup() {
     this.navCtrl.push('SignUpPage');
   }
-
- 
-
 }

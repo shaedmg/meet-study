@@ -1,14 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {MeetingI} from '../../app/models/meeting.interface';
+import { MeetingI } from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio';
 import { Subscription  } from 'rxjs/Subscription';
-/**
- * Generated class for the GestionAnuncioPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({

@@ -5,12 +5,6 @@ import {AnuncioProvider} from '../../providers/anuncio'
 import {GestionAnuncioPage} from '../gestion-anuncio/gestion-anuncio';
 import { Subscription  } from 'rxjs/Subscription';
 import * as firebase from 'firebase/app';
-/**
- * Generated class for the MisAnunciosPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
