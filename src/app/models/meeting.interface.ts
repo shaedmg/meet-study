@@ -5,5 +5,4 @@ export interface MeetingI{
     name: string;
     time: string;
     userId?: string;
-    
 }

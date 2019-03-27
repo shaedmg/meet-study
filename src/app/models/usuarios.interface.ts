@@ -2,7 +2,7 @@
 import { DateTime } from "ionic-angular";
 
 export interface UsuariosI{
-    id?:String;
+    id?:string;
     name: string;
     lastName: string;
     birthDate: DateTime;   
@@ -11,5 +11,5 @@ export interface UsuariosI{
 
 export interface CredencialesI{
     email: any;
-    password: String;
+    password: string;
 }

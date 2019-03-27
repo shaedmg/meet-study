@@ -1,16 +1,17 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { Observable, from } from 'rxjs';
+import { map, take } from 'rxjs/operators';
 import { MeetingI } from '../app/models/meeting.interface';
+import { UsuariosProvider } from './usuarios';
 
 @Injectable()
 export class AnuncioProvider {
   private anunciosCollection: AngularFirestoreCollection<MeetingI>;
   private todos: Observable<MeetingI[]>;
 
-  constructor(public http: HttpClient, db: AngularFirestore) {
+  constructor(public http: HttpClient, db: AngularFirestore, private userProvider: UsuariosProvider) {
     this.anunciosCollection = db.collection<MeetingI>('anuncios');
   }
 
@@ -44,8 +45,14 @@ export class AnuncioProvider {
     return this.anunciosCollection.doc(id).update(anuncio);
   }
   addAnuncio(anuncio: MeetingI) {
-    return this.anunciosCollection.add(anuncio);
+    this.userProvider.getActualUser().pipe(take(1)).toPromise()
+      .then(usuario => {
+        anuncio.userId = usuario.id;
+        anuncio.name = usuario.name;
+        return this.anunciosCollection.add(anuncio);
+      })
   }
+
   removeAnuncio(id: string) {
     return this.anunciosCollection.doc(id).delete();
   }

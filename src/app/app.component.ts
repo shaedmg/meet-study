@@ -52,8 +52,7 @@ export class MyApp {
   launchPage(page: String) {
 
     if (firebase.auth().currentUser != null) {
-      this.usuario;
-      console.log(this.userProvider.getUsuario(firebase.auth().currentUser.uid));
+      this.usuario = this.userProvider.getUsuario(firebase.auth().currentUser.uid);
 
     }
     if (page == 'ListChatPage') this.nav.setRoot(ListChatPage);

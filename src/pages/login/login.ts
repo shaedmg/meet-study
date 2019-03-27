@@ -31,8 +31,9 @@ export class LoginPage {
     //Manera óptima de iniciar sesión.
     try {
       await this.auth.loginUser(this.creds);
+      this.navCtrl.setRoot(HomePage);
     } catch (error) {  }
-    this.navCtrl.setRoot(HomePage);
+    
   }
 
   goToSignup() {
