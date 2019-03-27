@@ -12,7 +12,7 @@ import { AngularFirestore } from 'angularfire2/firestore';
 @IonicPage()
 @Component({
   selector: 'page-form',
-  templateUrl: 'signup.html',
+  templateUrl: 'signup.html'
 })
 export class SignUpPage {
   user = {email: "", password: ""};
@@ -21,12 +21,9 @@ export class SignUpPage {
   constructor(
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
-
     public alertCtrl: AlertController,
-
     public afs: AngularFirestore,
-    public auth : AuthProvider,
-    
+    public auth : AuthProvider    
   ) {
     this.myForm = this.createMyForm();
   }
@@ -54,8 +51,7 @@ export class SignUpPage {
         Apellidos: this.myForm.value.lastName,
         email: this.myForm.value.email,
         contraseña: this.myForm.value.password,
-        fechaNacimiento: this.myForm.value.dateBirth,
-
+        fechaNacimiento: this.myForm.value.dateBirth
       })
       .then((res) => {
         resolve(res)
@@ -71,8 +67,7 @@ export class SignUpPage {
       lastName: ['', Validators.required],
       email: ['', Validators.required],
       dateBirth: ['', Validators.required],
-      password: ['', Validators.required],
-      checkbox: ['', Validators.required]
+      password: ['', Validators.required]
     });
   }
 }

@@ -12,36 +12,36 @@ import { AngularFireAuth } from 'angularfire2/auth';
 @Injectable()
 export class AuthProvider {
 
-  constructor(private afAuth :  AngularFireAuth) {
+  constructor(private afAuth: AngularFireAuth) {
     console.log('Hello AuthProvider Provider');
   }
 
 
-      // Registro de usuario
-      registerUser(email:string, password:string){
-        return this.afAuth.auth.createUserWithEmailAndPassword( email, password)
-        .then((res)=>{
-         // El usuario se ha creado correctamente.
-        })
-        .catch(err=>Promise.reject(err))
-     }
+  // Registro de usuario
+  registerUser(email: string, password: string) {
+    return this.afAuth.auth.createUserWithEmailAndPassword(email, password)
+      .then((res) => {
+        // El usuario se ha creado correctamente.
+      })
+      .catch(err => Promise.reject(err))
+  }
 
-     // Login de usuario
-  loginUser(email:string, password:string){
+  // Login de usuario
+  loginUser(email: string, password: string) {
     return this.afAuth.auth.signInWithEmailAndPassword(email, password)
-      .then(user=>Promise.resolve(user))
-      .catch(err=>Promise.reject(err))
+      .then(user => Promise.resolve(user))
+      .catch(err => Promise.reject(err))
   }
 
   // Devuelve la session
-  get Session(){
+  get Session() {
     return this.afAuth.authState;
   }
 
   // Logout de usuario
-  logout(){
-    this.afAuth.auth.signOut().then(()=>{
+  logout() {
+    this.afAuth.auth.signOut().then(() => {
       // hemos salido
     })
-}
+  }
 }
