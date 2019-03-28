@@ -49,4 +49,6 @@ import { AuthProvider } from '../providers/auth';
     AuthProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+
+}

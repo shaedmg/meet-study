@@ -1,3 +1,5 @@
+import { PeticionI } from "./peticiones.interface";
+
 export interface MeetingI{
     id?: string;
     primarySubject: string;
@@ -5,4 +7,5 @@ export interface MeetingI{
     name: string;
     time: string;
     userId?: string;
+    peticiones: PeticionI[];
 }

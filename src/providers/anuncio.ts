@@ -1,10 +1,11 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AngularFirestore, AngularFirestoreCollection } from 'angularfire2/firestore';
-import { Observable, from } from 'rxjs';
+import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
 import { MeetingI } from '../app/models/meeting.interface';
 import { UsuariosProvider } from './usuarios';
+import { PeticionI } from '../app/models/peticiones.interface';
 
 @Injectable()
 export class AnuncioProvider {
@@ -50,6 +51,16 @@ export class AnuncioProvider {
         anuncio.userId = usuario.id;
         anuncio.name = usuario.name;
         return this.anunciosCollection.add(anuncio);
+      })
+  }
+  addPeticion(anuncio: MeetingI, peticion: PeticionI, anuncioId: string){
+    this.userProvider.getActualUser().pipe(take(1)).toPromise()
+      .then(usuario => {
+        peticion.name = usuario.name;
+        const fecha = new Date();
+        peticion.time = "" + fecha.getDay() + "/" + fecha.getMonth() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        anuncio.peticiones.push(peticion);
+        return this.anunciosCollection.doc<MeetingI>(anuncioId).update(anuncio);
       })
   }
 

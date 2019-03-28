@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {MeetingI} from '../../app/models/meeting.interface';
-import {AnuncioProvider} from '../../providers/anuncio'
+import {AnuncioProvider} from '../../providers/anuncio';
+import { PeticionI } from '../../app/models/peticiones.interface';
+import { UsuariosProvider } from '../../providers/usuarios';
 
 @IonicPage()
 @Component({
@@ -15,10 +17,11 @@ export class AnuncioDetailsPage {
     primarySubject: "",
     secondarySubject: "",
     time: "",
+    peticiones: []
   };
   anuncioId = "";
-  constructor(public alertController: AlertController, public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
-    this.anuncioId = this.navParams.get('id');
+  constructor(public alertController: AlertController, private usuarioProvider: UsuariosProvider,public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
+    this.anuncioId = this.navParams.get('id') ;
   }
 
   ionViewCanEnter() {
@@ -34,17 +37,23 @@ export class AnuncioDetailsPage {
   }
   async presentAlert() {
     const alert = await this.alertController.create({
-      title: 'Alert',
-      message: this.anuncio.name +' te ha enviado una solicitud para estudiar.',
-      buttons: ['Aceptar solicitud','Rechazar solicitud']
+      title: 'Peticion',
+      message: 'Se ha enviado correctamente su peticion.',
+      buttons: ['Ok']
     });
 
     await alert.present();
   }
   sendPetition(){
+      const peticion: PeticionI = { 
+      name: "",
+      time: ""
+    }
+    this.anuncioService.addPeticion(this.anuncio,peticion,this.anuncioId)
     this.navCtrl.pop();
     this.presentAlert();
   }
+  
   goHome(){
     this.navCtrl.pop();
   }

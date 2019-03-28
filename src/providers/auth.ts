@@ -2,13 +2,15 @@ import { UsuariosI } from '../app/models/usuarios.interface';
 import { AngularFirestoreDocument, AngularFirestore } from 'angularfire2/firestore';
 import { AngularFireAuth } from 'angularfire2/auth';
 import * as firebase from 'firebase';
-import { Injectable } from '@angular/core';
+import { Injectable, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Nav } from 'ionic-angular';
+import { LoginPage } from '../pages/login/login';
 
 
 @Injectable()
 export class AuthProvider {
-
+  @ViewChild(Nav) nav: Nav;
   constructor(
     public afireauth: AngularFireAuth, 
     public afs: AngularFirestore,
