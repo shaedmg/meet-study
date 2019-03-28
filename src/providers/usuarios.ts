@@ -12,22 +12,29 @@ import { AngularFireAuth } from 'angularfire2/auth'
 export class UsuariosProvider {
 
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
-  private todos: Observable<UsuariosI[]>;
-  private user;
+  private allUsers: Observable<UsuariosI[]>;
+  private userProfile;
 
   constructor(
     public http: HttpClient,
     db: AngularFirestore,
-    private auth: AngularFireAuth) {
+    private afAuth: AngularFireAuth) {
     this.userProfileCollection = db.collection<UsuariosI>('userProfile');
   }
 
-  getlogedUser(): Observable<UsuariosI> {
-    return this.getUsuario(firebase.auth().currentUser.uid);
+  getlogedUser() {
+    return new Promise<any>((resolve, reject) => {
+      this.afAuth.user.subscribe(currentUser => {
+        if(currentUser){
+          this.userProfile = currentUser;
+          resolve(this.userProfile);
+        }
+      })
+    });
   }
 
   getUsuarios() {
-    this.todos = this.userProfileCollection.snapshotChanges().pipe(
+    this.allUsers = this.userProfileCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -35,12 +42,12 @@ export class UsuariosProvider {
           return { id, ...data };
         });
       }));
-    return this.todos;
+    return this.allUsers;
   }
 
   getActualUserUID(): string {
-    if (this.auth.auth.currentUser) {
-      return this.auth.auth.currentUser.uid;
+    if (this.afAuth.auth.currentUser) {
+      return this.afAuth.auth.currentUser.uid;
     } else {
       return ""
     }
@@ -49,8 +56,9 @@ export class UsuariosProvider {
   getActualUser() {
     return this.userProfileCollection.doc<UsuariosI>(this.getActualUserUID()).valueChanges();
   }
+
   getUsuario(uid) {
-    this.user = this.userProfileCollection.snapshotChanges().pipe(
+    this.userProfile = this.userProfileCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -58,7 +66,7 @@ export class UsuariosProvider {
           return { id, ...data };
         }).filter(res => res.id == uid);
       }));
-    return this.user;
+    return this.userProfile;
   }
 
   updateUsuario(usuario: UsuariosI, id: string) {

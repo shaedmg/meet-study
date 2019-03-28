@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
-import { AuthProvider } from '../../providers/auth';
-import { CredencialesI } from '../../app/models/usuarios.interface';
+import { CredencialesI, UsuariosI } from '../../app/models/usuarios.interface';
 import { HomePage } from '../home/home';
 import { FormBuilder, Validators } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth';
+import { UsuariosProvider } from '../../providers/usuarios';
+import { take } from 'rxjs/operators';
 
 @IonicPage()
 @Component({
@@ -14,8 +16,15 @@ export class LoginPage {
   constructor(
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
-    public auth: AuthProvider
+    public auth: AuthProvider,
+    public userProvider:UsuariosProvider
   ) {  }
+  user: UsuariosI = {
+    name: "",
+    lastName: "",
+    email: "",
+    birthDate: null,
+  };
   
   loginForm =  this.formBuilder.group({
     email: ['', Validators.required],
@@ -31,7 +40,11 @@ export class LoginPage {
     //Manera óptima de iniciar sesión.
     try {
       await this.auth.loginUser(this.creds);
-      this.navCtrl.setRoot(HomePage);
+      this.userProvider.getActualUser().pipe(take(1)).toPromise()
+      .then(usuario => {
+        this.user = usuario;
+      });
+      this.navCtrl.setRoot(HomePage, {userProfile: this.user});
     } catch (error) {  }
     
   }
