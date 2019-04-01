@@ -2,13 +2,8 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { UsuariosI } from '../../app/models/usuarios.interface';
 import { FormBuilder, Validators } from '@angular/forms';
-
-/**
- * Generated class for the EditProfilePage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
+import { AuthProvider } from '../../providers/auth';
+import { UsuariosProvider } from '../../providers/usuarios';
 
 @IonicPage()
 @Component({
@@ -18,15 +13,12 @@ import { FormBuilder, Validators } from '@angular/forms';
 export class EditProfilePage {
 
   constructor(public navCtrl: NavController, 
+    public UP:UsuariosProvider,
     public navParams: NavParams,    
     public formBuilder: FormBuilder,
+    public authService: AuthProvider,
     ) {
     this.userProfile=navParams.get("userProfile");
-  }
-  showInfo(){
-    console.log(this.userProfile);
-    console.log(this.signUpForm);
-    console.log(this.userDetails);
   }
   userProfile: UsuariosI = {
     id: "",
@@ -40,17 +32,15 @@ export class EditProfilePage {
     lastName: ['', Validators.required],
     email: ['', Validators.required],
     birthDate: ['', Validators.required],
-    password: ['', Validators.required]
+    id: String
   });
-  userDetails = {
-    name: this.userProfile.name,
-    lastName: this.userProfile.lastName,
-    email: this.userProfile.email,
-    birthDate: this.userProfile.birthDate,
-    //password: this.userProfile.password
-  }
+  
   ionViewDidLoad() {
     console.log('ionViewDidLoad EditProfilePage');
+  }
+  updateUser(){
+    this.UP.updateUsuario(this.signUpForm.value);
+    this.navCtrl.setRoot("HomePage");
   }
 
 }

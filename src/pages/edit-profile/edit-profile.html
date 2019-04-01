@@ -18,7 +18,7 @@
 
 
 <ion-content padding>
-    <form [formGroup]="signUpForm" autocomplete="off">
+    <form [formGroup]="signUpForm" (ngSubmit)="updateUser()">
         <ion-list>
 
             <ion-item>
@@ -36,25 +36,21 @@
             <ion-item>
                 <ion-icon name="mail" item-start></ion-icon>
                 <ion-label stacked>Correo electronico:</ion-label>
-                <ion-input autocomplete="off" [(ngModel)]= "userProfile.email"  formControlName="email" type="email" placeholder="Email"></ion-input>
+                <ion-input [(ngModel)]= "userProfile.email"  formControlName="email" type="email" placeholder="Email"></ion-input>
             </ion-item>
 
             <ion-item>
                 <ion-icon name="calendar" item-start></ion-icon>
                 <ion-label stacked>Fecha de nacimiento:</ion-label>
+                <ion-input type="hidden" [(ngModel)]= "userProfile.id" formControlName="id"></ion-input>
                 <ion-datetime [(ngModel)]= "userProfile.birthDate" formControlName="birthDate" displayFormat="DD-MM-YYYY" placeholder="DD-MM-YYYY"></ion-datetime>
             </ion-item>
-
-            <ion-item>
-                <ion-icon name="eye-off" item-start></ion-icon>
-                <ion-label stacked>Contraseña:</ion-label>
-                <ion-input autocomplete="off" [(ngModel)]= "userDetails.password" formControlName="password" type="password" placeholder="Contraseña"></ion-input>
-            </ion-item>
+            
 
 
         </ion-list>
         <div padding>
-            <button ion-button (click)="showInfo()" >Regístrate</button>
+            <button ion-button block type="submit" [disabled]="!signUpForm.valid" >Actualizar</button>
         </div>
     </form>
 </ion-content>
