@@ -16,6 +16,7 @@ import { AnuncioProvider } from '../providers/anuncio';
 import { UsuariosProvider } from '../providers/usuarios';
 import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
+import { AuthProvider } from '../providers/auth';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,10 @@ import { AngularFireAuthModule } from 'angularfire2/auth';
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EmojiProvider,
     AnuncioProvider,
-    UsuariosProvider
+    UsuariosProvider,
+    AuthProvider
   ]
 })
-export class AppModule {}
+export class AppModule {
+
+}

@@ -1,13 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {MeetingI} from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio'
-/**
- * Generated class for the AnuncioDetailsPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
 
 @IonicPage()
 @Component({
@@ -41,7 +35,7 @@ export class AnuncioDetailsPage {
   async presentAlert() {
     const alert = await this.alertController.create({
       title: 'Alert',
-      message: 'Juana te ha enviado una solicitud para estudiar.',
+      message: this.anuncio.name +' te ha enviado una solicitud para estudiar.',
       buttons: ['Aceptar solicitud','Rechazar solicitud']
     });
 

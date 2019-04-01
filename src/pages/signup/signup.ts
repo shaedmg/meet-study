@@ -1,46 +1,46 @@
-import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, AlertController } from 'ionic-angular';
-
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AuthProvider } from '../../providers/auth';
+import { Component } from '@angular/core';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
+import { FormBuilder,  Validators } from '@angular/forms';
 
 @IonicPage()
 @Component({
-  selector: 'page-form',
+  selector: 'page-sign-up',
   templateUrl: 'signup.html',
 })
-export class SignUpPage implements OnInit{
-
-  myForm: FormGroup;
-
+export class SignUpPage {
   constructor(
     public navCtrl: NavController,
     public formBuilder: FormBuilder,
-    public alertCtrl: AlertController
-  ) {
-    this.myForm = this.createMyForm();
-  }
-  ngOnInit(){}
+    public authService: AuthProvider,
+    public navParams: NavParams,
+    public toastCtrl: ToastController,
+    public loadCtrl: LoadingController
+  ) { }
 
-  saveData() {
-    let alert = this.alertCtrl.create({
-      title: "Se ha creado la cuenta correctamente.",
-      buttons: ["Ok"]
-    });
-    alert.present();
-  }
- 
+  signUpForm = this.formBuilder.group({
+    name: ['', Validators.required],
+    lastName: ['', Validators.required],
+    email: ['', Validators.required],
+    birthDate: ['', Validators.required],
+    password: ['', Validators.required]
+  });
 
-  private createMyForm() {
-    return this.formBuilder.group({
-      name: ['', Validators.required],
-      lastName: ['', Validators.required],
-      email: ['', Validators.required],
-      dateBirth: ['', Validators.required],
-      passwordRetry: this.formBuilder.group({
-        password: ['', Validators.required],
-        passwordConfirmation: ['', Validators.required]
-      }),
-      gender: ['', Validators.required],
-    });
+  userDetails = {
+    name: this.signUpForm.value.name,
+    lastName: this.signUpForm.value.lastName,
+    email: this.signUpForm.value.email,
+    birthDate: this.signUpForm.value.dateBirth,
+    password: this.signUpForm.value.password
+  }
+  
+
+  ionViewDidLoad() { }
+
+  signup() {
+    try {
+      this.authService.registerUser(this.userDetails);
+      this.navCtrl.setRoot("HomePage");
+    } catch (error) {  }
   }
 }

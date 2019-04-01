@@ -2,13 +2,14 @@
 import { DateTime } from "ionic-angular";
 
 export interface UsuariosI{
-    
-    Nombre: string;
-    Apellidos: string;
-    contraseña: string;
-    email: string;
-    nombreUsuario: string;
-    fechaNacimiento: DateTime;
-    user_id?: number;
-    
+    id?:string;
+    name: string;
+    lastName: string;
+    birthDate: DateTime;   
+    email: any;
+}
+
+export interface CredencialesI{
+    email: any;
+    password: string;
 }

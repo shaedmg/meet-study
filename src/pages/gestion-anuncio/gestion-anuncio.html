@@ -15,9 +15,14 @@
 
 <ion-content padding>
     <p>Anuncio</p>
-    <p>Asignatura a estudiar: {{anuncio.primarySubject}}</p>
-    <p>Asignatura conocida: {{anuncio.secondarySubject}}</p>
-    <p>Nombre: {{anuncio.name}}</p>
-    <p>Hora: {{anuncio.time}}</p>
+    <ion-label *ngIf="anuncio">Asignatura a estudiar: </ion-label>
+    <ion-input *ngIf="anuncio" value="anuncio.primarySubject" [(ngModel)]="anuncio.primarySubject"></ion-input>
+    <ion-label *ngIf="anuncio">Asignatura conocida: </ion-label>
+    <ion-input *ngIf="anuncio" value="anuncio.secondarySubject" [(ngModel)]="anuncio.secondarySubject"></ion-input>
+    <ion-label *ngIf="anuncio">Nombre: </ion-label>
+    <ion-input *ngIf="anuncio" value="anuncio.name" [(ngModel)]="anuncio.name"></ion-input>
+    <ion-label *ngIf="anuncio">Hora: </ion-label>
+    <ion-input *ngIf="anuncio" value="anuncio.time" [(ngModel)]="anuncio.time"></ion-input>
     <button (click)="removeAnuncios()">Borrar anuncio</button>
+    <button (click)="updateAnuncios()">Modificar anuncio</button>
   </ion-content>
