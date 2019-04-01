@@ -49,6 +49,7 @@ export class UsuariosProvider {
     if (this.afAuth.auth.currentUser) {
       return this.afAuth.auth.currentUser.uid;
     } else {
+      console.log("casi");
       return ""
     }
   }

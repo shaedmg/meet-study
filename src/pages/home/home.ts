@@ -5,6 +5,7 @@ import {AnuncioProvider} from '../../providers/anuncio'
 import { NavController } from 'ionic-angular';
 import {AnuncioDetailsPage} from '../anuncio-details/anuncio-details';
 import { Subscription  } from 'rxjs/Subscription';
+import { MyApp } from '../../app/app.component';
 
 @IonicPage()
 @Component({
@@ -24,6 +25,7 @@ export class HomePage implements  OnInit{
       this.anuncios = res;
     });
   }
+  
 
   abrirAnuncioDetails(ident) {
     this.navCtrl.push(AnuncioDetailsPage,{id: ident});

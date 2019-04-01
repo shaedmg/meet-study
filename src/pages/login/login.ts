@@ -6,6 +6,7 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth';
 import { UsuariosProvider } from '../../providers/usuarios';
 import { take } from 'rxjs/operators';
+import { MyApp } from '../../app/app.component';
 
 @IonicPage()
 @Component({
