@@ -5,7 +5,6 @@ import {AnuncioProvider} from '../../providers/anuncio'
 import { NavController } from 'ionic-angular';
 import {AnuncioDetailsPage} from '../anuncio-details/anuncio-details';
 import { Subscription  } from 'rxjs/Subscription';
-import { MyApp } from '../../app/app.component';
 
 @IonicPage()
 @Component({

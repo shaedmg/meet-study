@@ -4,7 +4,6 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { UsuariosI } from '../app/models/usuarios.interface';
 import { map } from 'rxjs/operators';
-import firebase from 'firebase';
 import { AngularFireAuth } from 'angularfire2/auth'
 
 
