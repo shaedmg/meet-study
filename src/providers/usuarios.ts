@@ -4,8 +4,7 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { UsuariosI } from '../app/models/usuarios.interface';
 import { map } from 'rxjs/operators';
-import { AngularFireAuth } from 'angularfire2/auth'
-
+import { AngularFireAuth } from 'angularfire2/auth';
 
 @Injectable()
 export class UsuariosProvider {
@@ -19,17 +18,6 @@ export class UsuariosProvider {
     db: AngularFirestore,
     private afAuth: AngularFireAuth) {
     this.userProfileCollection = db.collection<UsuariosI>('userProfile');
-  }
-
-  getlogedUser() {
-    return new Promise<any>((resolve, reject) => {
-      this.afAuth.user.subscribe(currentUser => {
-        if(currentUser){
-          this.userProfile = currentUser;
-          resolve(this.userProfile);
-        }
-      })
-    });
   }
 
   getUsuarios() {
@@ -48,7 +36,6 @@ export class UsuariosProvider {
     if (this.afAuth.auth.currentUser) {
       return this.afAuth.auth.currentUser.uid;
     } else {
-      console.log("casi");
       return ""
     }
   }
@@ -57,19 +44,34 @@ export class UsuariosProvider {
     return this.userProfileCollection.doc<UsuariosI>(this.getActualUserUID()).valueChanges();
   }
 
-  getUsuario(uid) {
+  getUsuario() {
     this.userProfile = this.userProfileCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
           return { id, ...data };
-        }).filter(res => res.id == uid);
+        }).filter(res => res.id == this.getActualUserUID());
       }));
     return this.userProfile;
   }
+/*
+  getUserInfo(): any {
+    var userInfo = { id: "", name: "", avatar: "" };
+    //obtener la info del usuario logueado
+    var actualUser =firebase.auth().currentUser;
+    var userInfop = this.afs.doc(`userProfile/${actualUser.uid}`);
+    var result = userInfop.get();
+        userInfo.id = actualUser.uid;
+        userInfo.name = userInfop.collection.name;
+        userInfo.avatar = './assets/user.jpg';
 
-  updateUsuario(usuario: UsuariosI) {    
+    console.log("--------------------");
+    console.log(this.UP.getUserInfo());
+    console.log("--------------------");
+  }
+*/
+  updateUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.doc(usuario.id).update(usuario);
   }
   addUsuario(usuario: UsuariosI) {
@@ -78,5 +80,4 @@ export class UsuariosProvider {
   removeUsuario(id: string) {
     return this.userProfileCollection.doc(id).delete();
   }
-
 }
