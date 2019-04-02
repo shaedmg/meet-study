@@ -1,5 +1,5 @@
 import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, Nav } from 'ionic-angular';
+import { Platform, Nav, Events, NavController } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth';
@@ -8,6 +8,7 @@ import { UsuariosProvider } from '../providers/usuarios';
 import firebase from 'firebase';
 import { UsuariosI } from './models/usuarios.interface';
 import { take } from 'rxjs/operators';
+import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 
 @Component({
   templateUrl: 'app.html'
@@ -49,7 +50,12 @@ export class MyApp{
   launchPage(page: string) {
     if (firebase.auth().currentUser != null) {
       this.readUser();
-      this.nav.setRoot(page);
+      if(page=="EditProfilePage"){
+        this.nav.setRoot(page,{userProfile: this.userProfile});
+      }else{
+        this.nav.setRoot(page);
+      }
+      
     } else {
       this.nav.setRoot(LoginPage)
     }

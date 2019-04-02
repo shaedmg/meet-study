@@ -49,6 +49,7 @@ export class UsuariosProvider {
     if (this.afAuth.auth.currentUser) {
       return this.afAuth.auth.currentUser.uid;
     } else {
+      console.log("casi");
       return ""
     }
   }
@@ -69,8 +70,8 @@ export class UsuariosProvider {
     return this.userProfile;
   }
 
-  updateUsuario(usuario: UsuariosI, id: string) {
-    return this.userProfileCollection.doc(id).update(usuario);
+  updateUsuario(usuario: UsuariosI) {    
+    return this.userProfileCollection.doc(usuario.id).update(usuario);
   }
   addUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.add(usuario);

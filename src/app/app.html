@@ -1,4 +1,4 @@
-<ion-menu [content]="content" id="menu1">
+<ion-menu [content]="content" id="menu1" (ionOpen)="readUser()">
 
     <ion-header>
         <ion-toolbar color="secondary">
@@ -8,15 +8,19 @@
 
     <ion-content>
         <ion-list>
-            <ion-item>
-                <ion-avatar item-left>
-                    <img src="./assets/to-user.jpg">
-                </ion-avatar>
-                <ion-label>
-                    <h2 class="">{{userProfile.name}}</h2>
-                    <ion-icon name="md-star"></ion-icon>
-                    <ion-icon name="md-star"></ion-icon>
-                    <ion-icon name="md-star"></ion-icon>
+            <ion-item class="profile">
+                
+                <ion-label text-center>
+                        <div align="center"> 
+                        <ion-avatar class="ionavatar">
+                                <img class="avatar"  src="./assets/to-user.jpg">
+                            </ion-avatar>
+                            </div>
+                    <h2 class="username">{{userProfile.name}}, {{userProfile.lastName}}    <ion-icon name="md-create"  menuClose="menu1" (click)="launchPage('EditProfilePage')"></ion-icon></h2>
+                    
+                    <ion-icon name="md-star" class="star"></ion-icon>
+                    <ion-icon name="md-star" class="star"></ion-icon>
+                    <ion-icon name="md-star" class="star"></ion-icon>
                 </ion-label>
             </ion-item>
             <ion-item menuClose="menu1" (click)="launchPage('HomePage')">
