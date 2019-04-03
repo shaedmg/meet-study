@@ -3,8 +3,7 @@ import { Events } from 'ionic-angular';
 import { map } from 'rxjs/operators/map';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { UserInfo, ChatMessage } from "../app/models/chat.model";
-import { UsuariosProvider } from './usuarios';
+import { ChatMessage } from "../app/models/chat.model";
 import { AngularFirestore } from 'angularfire2/firestore';
 
 
@@ -13,23 +12,21 @@ export class ChatService {
 
   constructor(private http: HttpClient,
     private events: Events,
-    public afs: AngularFirestore,
-    private UP: UsuariosProvider) {
+    public afs: AngularFirestore) {
   }
   //mockNewMsg lo que hace es devolver un mensaje a los
   // 2 segundos que dice gilipollas
   mockNewMsg(msg) {
     const mockMsg: ChatMessage = {
       messageId: Date.now().toString(),
-      userId: '2',
-      userName: 'Santi',
+      userId: 'FdIzp9qtrDZBnffWrnj1bcoa82g2',
+      userName: 'fantasma',
       userAvatar: './assets/to-user.jpg',
-      toUserId: '1',
+      toUserId: 'KXcRqgqe3Rfzvio0qCdO7ARJToD3',
       time: Date.now(),
       message: "gilipollas",
       status: 'success'
     };
-
     setTimeout(() => {
       this.events.publish('chat:received', mockMsg, Date.now())
     }, Math.random() * 1800)
@@ -47,10 +44,4 @@ export class ChatService {
     return new Promise(resolve => setTimeout(() => resolve(msg), Math.random() * 1000))
       .then(() => this.mockNewMsg(msg));
   }
-
-  getUserInfo(): Promise<UserInfo> {
-    var user = this.UP.getUsuario();
-    return new Promise(resolve => resolve(user));
-  }
-
 }

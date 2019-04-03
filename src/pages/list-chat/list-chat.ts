@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { UsuariosProvider } from '../../providers/usuarios';
+import { Observable } from 'rxjs';
+import { Chat } from '../chat/chat';
 
 @IonicPage()
 @Component({
@@ -7,15 +10,23 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
   templateUrl: 'list-chat.html',
 })
 export class ListChatPage {
-
-  toUser : {toUserId: string, toUserName: string};
-
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.toUser = {
-      toUserId:'FdIzp9qtrDZBnffWrnj1bcoa82g2',
-      toUserName:'jhonts'
-    }
+  usersToChat: Observable<any>;
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private userProvider:UsuariosProvider) {
+    this.userProvider.getAllUsersToChat()
+      .then((usersToChat) => {
+        this.usersToChat = usersToChat;
+        
+      });
   }
 
+  openChat(id:string, name:string){
+    this.navCtrl.push(Chat, {"id":id,"name":name});
+    this.navCtrl.setRoot(Chat);
+  }
 
+  ionViewWillLeave() {  }
+
+  ionViewDidEnter() {  }
 }
