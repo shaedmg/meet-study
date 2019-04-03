@@ -22,8 +22,7 @@ export class ListChatPage {
   }
 
   openChat(id:string, name:string){
-    this.navCtrl.push(Chat, {"id":id,"name":name});
-    this.navCtrl.setRoot(Chat);
+    this.navCtrl.push(Chat, {"toUserId":id,"toUserName":name});
   }
 
   ionViewWillLeave() {  }

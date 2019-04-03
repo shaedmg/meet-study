@@ -3,3 +3,4 @@
 src/environment/
 .sourcemaps
 /typings/
+/plugins/

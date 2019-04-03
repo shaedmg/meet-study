@@ -40,7 +40,6 @@ export class Chat {
   }
 
   ionViewDidEnter() {
-    console.log(this.user.name)
     this.getMsg();
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);

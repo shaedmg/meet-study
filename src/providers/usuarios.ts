@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { UsuariosI } from '../app/models/usuarios.interface';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
-import firebase from 'firebase';
 import { UserInfo } from '../app/models/chat.model';
 
 @Injectable()
