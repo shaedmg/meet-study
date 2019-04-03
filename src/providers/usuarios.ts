@@ -11,7 +11,6 @@ import { UserInfo } from '../app/models/chat.model';
 export class UsuariosProvider {
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
-  private userProfile;
 
   constructor(
     public http: HttpClient,
@@ -30,18 +29,6 @@ export class UsuariosProvider {
 
   getActualUser() {
     return this.userProfileCollection.doc<UsuariosI>(this.getActualUserUID()).valueChanges();
-  }
-
-  getUsuario() {
-    this.userProfile = this.userProfileCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        }).filter(res => res.id == this.getActualUserUID());
-      }));
-    return this.userProfile;
   }
 
   getUserLoged():Promise<UsuariosI>{
