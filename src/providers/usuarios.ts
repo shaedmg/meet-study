@@ -10,8 +10,6 @@ import { UserInfo } from '../app/models/chat.model';
 
 @Injectable()
 export class UsuariosProvider {
-
-
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
   private userProfile;
@@ -21,18 +19,6 @@ export class UsuariosProvider {
     db: AngularFirestore,
     private afAuth: AngularFireAuth) {
     this.userProfileCollection = db.collection<UsuariosI>('userProfile');
-  }
-
-  getUsuarios() {
-    this.allUsers = this.userProfileCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      }));
-    return this.allUsers;
   }
 
   getActualUserUID(): string {
@@ -61,8 +47,8 @@ export class UsuariosProvider {
 
   getUserLoged():Promise<UsuariosI>{
     let useri;
-    let algo = this.getActualUser();
-    algo.subscribe((user) => {
+    let promise = this.getActualUser();
+    promise.subscribe((user) => {
       useri = user
     });
     return new Promise(resolve => resolve(useri));
@@ -70,13 +56,26 @@ export class UsuariosProvider {
 
   getUserLogedToChat(): Promise<UserInfo> {
     let useri = new UserInfo();
-    let algo = this.getActualUser();
-    algo.subscribe((user) => {
+    let promise = this.getActualUser();
+    promise.subscribe((user) => {
       useri.id = user.id;
       useri.name = user.name;
-      useri.avatar = "avatar";
+      useri.avatar = "./assets/user.jpg";
     });
+    
     return new Promise(resolve => resolve(useri));
+  }
+
+  getAllUsersToChat(): Promise<any> {
+    this.allUsers = this.userProfileCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      }));
+    return new Promise(resolve => resolve(this.allUsers));
   }
 
   updateUsuario(usuario: UsuariosI) {

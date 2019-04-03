@@ -23,12 +23,12 @@ export class Chat {
               private chatService: ChatService,
               private events: Events,
               private userProvider:UsuariosProvider) {
+    //perfil del otro
     this.toUser = {
       id: navParams.get('toUserId'),
       name: navParams.get('toUserName')
     };
-    // obtener perfil del actualUser
-    
+    //perfil loged user
     this.userProvider.getUserLogedToChat()
     .then((user)=>{
       this.user=user;
@@ -40,7 +40,7 @@ export class Chat {
   }
 
   ionViewDidEnter() {
-    console.log(this.user.id)
+    console.log(this.user.name)
     this.getMsg();
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);
