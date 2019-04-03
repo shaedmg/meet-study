@@ -30,7 +30,7 @@ export class AnuncioDetailsPage {
   async loadTodo(){
     this.anuncioService.getAnuncio(this.anuncioId).subscribe(res => {
       this.anuncio = res;
-    });
+    }).unsubscribe;
   }
   async presentAlert() {
     const alert = await this.alertController.create({
