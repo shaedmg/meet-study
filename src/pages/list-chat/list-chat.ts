@@ -12,8 +12,8 @@ export class ListChatPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.toUser = {
-      toUserId:'2',
-      toUserName:'Santi'
+      toUserId:'FdIzp9qtrDZBnffWrnj1bcoa82g2',
+      toUserName:'jhonts'
     }
   }
 

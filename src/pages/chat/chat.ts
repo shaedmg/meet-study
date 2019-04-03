@@ -3,6 +3,7 @@ import { IonicPage, NavParams } from 'ionic-angular';
 import { Events, Content } from 'ionic-angular';
 import { ChatService } from "../../providers/chat-service";
 import { ChatMessage, UserInfo } from "../../app/models/chat.model";
+import { UsuariosProvider } from '../../providers/usuarios';
 @IonicPage()
 @Component({
   selector: 'page-chat',
@@ -20,16 +21,17 @@ export class Chat {
 
   constructor(navParams: NavParams,
               private chatService: ChatService,
-              private events: Events,) {
-    // Obtener "perfi" del otro con el que se va a chatear
+              private events: Events,
+              private userProvider:UsuariosProvider) {
     this.toUser = {
       id: navParams.get('toUserId'),
       name: navParams.get('toUserName')
     };
     // obtener perfil del actualUser
-    this.chatService.getUserInfo()
-    .then((res) => {
-      this.user = res
+    
+    this.userProvider.getUserLogedToChat()
+    .then((user)=>{
+      this.user=user;
     });
   }
 
@@ -38,6 +40,7 @@ export class Chat {
   }
 
   ionViewDidEnter() {
+    console.log(this.user.id)
     this.getMsg();
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);
