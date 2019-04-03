@@ -3,45 +3,54 @@ import { Events } from 'ionic-angular';
 import { map } from 'rxjs/operators/map';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
-import { ChatMessage } from "../app/models/chat.model";
-import { AngularFirestore } from 'angularfire2/firestore';
+import { ChatMessage, UserInfo } from "../app/models/chat.model";
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { UsuariosProvider } from './usuarios';
 
 
 @Injectable()
 export class ChatService {
 
+  user: UserInfo;
+  private ChatMessageCollection: AngularFirestoreCollection<ChatMessage>;
+
   constructor(private http: HttpClient,
     private events: Events,
-    public afs: AngularFirestore) {
-  }
-  //mockNewMsg lo que hace es devolver un mensaje a los
-  // 2 segundos que dice gilipollas
-  mockNewMsg(msg) {
-    const mockMsg: ChatMessage = {
-      messageId: Date.now().toString(),
-      userId: 'FdIzp9qtrDZBnffWrnj1bcoa82g2',
-      userName: 'fantasma',
-      userAvatar: './assets/to-user.jpg',
-      toUserId: 'KXcRqgqe3Rfzvio0qCdO7ARJToD3',
-      time: Date.now(),
-      message: "gilipollas",
-      status: 'success'
-    };
-    setTimeout(() => {
-      this.events.publish('chat:received', mockMsg, Date.now())
-    }, Math.random() * 1800)
+    public afs: AngularFirestore,
+    private userProvider:UsuariosProvider) {
+      //creco la conexión con los mensajes
+      this.ChatMessageCollection = afs.collection<ChatMessage>('ChatMessage');
+      //perfil loged user
+      this.userProvider.getUserLogedToChat()
+      .then((user)=>{
+        this.user=user;
+      });
   }
 
-  getMsgList(): Observable<ChatMessage[]> {
+  getMsgList(userId): Observable<ChatMessage[]> {
     //obtener lista de mensajes del chat con otro usuario x
     const msgListUrl = './assets/mock/msg-list.json';
-    return this.http.get<any>(msgListUrl)
+    
+
+      return this.ChatMessageCollection.snapshotChanges().pipe(
+          map(actions => {
+            return actions.map(a => {
+              const data = a.payload.doc.data();
+              const id = a.payload.doc.id;
+              return { id, ...data };
+            }).filter(res => 
+              (res.userId == userId || res.toUserId == userId) &&
+              (res.userId == this.user.id || res.toUserId == this.user.id)
+              );
+          }));
+          return this.http.get<any>(msgListUrl)
       .pipe(map(response => response.array));
   }
 
-  sendMsg(msg: ChatMessage) {
-    //guardar en la base de datos y (el metodo de firebase)avisar al otro que tiene mensaje
-    return new Promise(resolve => setTimeout(() => resolve(msg), Math.random() * 1000))
-      .then(() => this.mockNewMsg(msg));
+  async sendMsg(msg: ChatMessage) {
+    try {
+      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatMessage/${msg.messageId}`);
+      await ChatMessageDocument.set(msg);
+    } catch (error) {}
   }
 }

@@ -69,7 +69,7 @@ export class Chat {
    */
   getMsg() {
     return this.chatService
-    .getMsgList()
+    .getMsgList(this.toUser.id)
     .subscribe(res => {
       this.msgList = res;
       this.scrollToBottom();
