@@ -20,9 +20,9 @@ export class Chat {
   showEmojiPicker = false;
 
   constructor(navParams: NavParams,
-              private chatService: ChatService,
-              private events: Events,
-              private userProvider:UsuariosProvider) {
+    private chatService: ChatService,
+    private events: Events,
+    private userProvider: UsuariosProvider) {
     //perfil del otro
     this.toUser = {
       id: navParams.get('toUserId'),
@@ -30,9 +30,9 @@ export class Chat {
     };
     //perfil loged user
     this.userProvider.getUserLogedToChat()
-    .then((user)=>{
-      this.user=user;
-    });
+      .then((user) => {
+        this.user = user;
+      });
   }
 
   ionViewWillLeave() {
@@ -69,11 +69,11 @@ export class Chat {
    */
   getMsg() {
     return this.chatService
-    .getMsgList(this.toUser.id)
-    .subscribe(res => {
-      this.msgList = res;
-      this.scrollToBottom();
-    });
+      .getMsgList(this.toUser.id)
+      .subscribe(res => {
+        this.msgList = res;
+        this.scrollToBottom();
+      }).unsubscribe;
   }
 
   /**
@@ -101,12 +101,12 @@ export class Chat {
     }
 
     this.chatService.sendMsg(newMsg)
-    .then(() => {
-      let index = this.getMsgIndexById(id);
-      if (index !== -1) {
-        this.msgList[index].status = 'success';
-      }
-    })
+      .then(() => {
+        let index = this.getMsgIndexById(id);
+        if (index !== -1) {
+          this.msgList[index].status = 'success';
+        }
+      })
   }
 
   /**
@@ -129,11 +129,7 @@ export class Chat {
   }
 
   scrollToBottom() {
-    setTimeout(() => {
-      if (this.content.scrollToBottom) {
-        this.content.scrollToBottom();
-      }
-    }, 400)
+    if(this.content._scroll) this.content.scrollToBottom(0);
   }
 
   private focus() {
@@ -143,7 +139,7 @@ export class Chat {
   }
 
   private setTextareaScroll() {
-    const textarea =this.messageInput.nativeElement;
+    const textarea = this.messageInput.nativeElement;
     textarea.scrollTop = textarea.scrollHeight;
   }
 }
