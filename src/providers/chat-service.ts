@@ -3,31 +3,21 @@ import { Events } from 'ionic-angular';
 import { map } from 'rxjs/operators/map';
 import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
+import { UserInfo, ChatMessage } from "../app/models/chat.model";
+import { UsuariosProvider } from './usuarios';
+import { AngularFirestore } from 'angularfire2/firestore';
 
-export class ChatMessage {
-  messageId: string;
-  userId: string;
-  userName: string;
-  userAvatar: string;
-  toUserId: string;
-  time: number | string;
-  message: string;
-  status: string;
-}
-
-export class UserInfo {
-  id: string;
-  name?: string;
-  avatar?: string;
-}
 
 @Injectable()
 export class ChatService {
 
   constructor(private http: HttpClient,
-              private events: Events) {
+    private events: Events,
+    public afs: AngularFirestore,
+    private UP: UsuariosProvider) {
   }
-
+  //mockNewMsg lo que hace es devolver un mensaje a los
+  // 2 segundos que dice gilipollas
   mockNewMsg(msg) {
     const mockMsg: ChatMessage = {
       messageId: Date.now().toString(),
@@ -36,7 +26,7 @@ export class ChatService {
       userAvatar: './assets/to-user.jpg',
       toUserId: '1',
       time: Date.now(),
-      message: msg.message,
+      message: "gilipollas",
       status: 'success'
     };
 
@@ -46,23 +36,21 @@ export class ChatService {
   }
 
   getMsgList(): Observable<ChatMessage[]> {
+    //obtener lista de mensajes del chat con otro usuario x
     const msgListUrl = './assets/mock/msg-list.json';
     return this.http.get<any>(msgListUrl)
-    .pipe(map(response => response.array));
+      .pipe(map(response => response.array));
   }
 
   sendMsg(msg: ChatMessage) {
+    //guardar en la base de datos y (el metodo de firebase)avisar al otro que tiene mensaje
     return new Promise(resolve => setTimeout(() => resolve(msg), Math.random() * 1000))
-    .then(() => this.mockNewMsg(msg));
+      .then(() => this.mockNewMsg(msg));
   }
 
   getUserInfo(): Promise<UserInfo> {
-    const userInfo: UserInfo = {
-      id: '1',
-      name: 'John',
-      avatar: './assets/user.jpg'
-    };
-    return new Promise(resolve => resolve(userInfo));
+    var user = this.UP.getUsuario();
+    return new Promise(resolve => resolve(user));
   }
 
 }

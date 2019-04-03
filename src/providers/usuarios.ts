@@ -4,12 +4,13 @@ import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/fires
 import { Observable } from 'rxjs';
 import { UsuariosI } from '../app/models/usuarios.interface';
 import { map } from 'rxjs/operators';
+import { AngularFireAuth } from 'angularfire2/auth';
 import firebase from 'firebase';
-import { AngularFireAuth } from 'angularfire2/auth'
-
+import { UserInfo } from '../app/models/chat.model';
 
 @Injectable()
 export class UsuariosProvider {
+
 
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
@@ -20,17 +21,6 @@ export class UsuariosProvider {
     db: AngularFirestore,
     private afAuth: AngularFireAuth) {
     this.userProfileCollection = db.collection<UsuariosI>('userProfile');
-  }
-
-  getlogedUser() {
-    return new Promise<any>((resolve, reject) => {
-      this.afAuth.user.subscribe(currentUser => {
-        if(currentUser){
-          this.userProfile = currentUser;
-          resolve(this.userProfile);
-        }
-      })
-    });
   }
 
   getUsuarios() {
@@ -49,7 +39,6 @@ export class UsuariosProvider {
     if (this.afAuth.auth.currentUser) {
       return this.afAuth.auth.currentUser.uid;
     } else {
-      console.log("casi");
       return ""
     }
   }
@@ -58,19 +47,39 @@ export class UsuariosProvider {
     return this.userProfileCollection.doc<UsuariosI>(this.getActualUserUID()).valueChanges();
   }
 
-  getUsuario(uid) {
+  getUsuario() {
     this.userProfile = this.userProfileCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
           const id = a.payload.doc.id;
           return { id, ...data };
-        }).filter(res => res.id == uid);
+        }).filter(res => res.id == this.getActualUserUID());
       }));
     return this.userProfile;
   }
 
-  updateUsuario(usuario: UsuariosI) {    
+  getUserLoged():Promise<UsuariosI>{
+    let useri;
+    let algo = this.getActualUser();
+    algo.subscribe((user) => {
+      useri = user
+    });
+    return new Promise(resolve => resolve(useri));
+  }
+
+  getUserLogedToChat(): Promise<UserInfo> {
+    let useri = new UserInfo();
+    let algo = this.getActualUser();
+    algo.subscribe((user) => {
+      useri.id = user.id;
+      useri.name = user.name;
+      useri.avatar = "avatar";
+    });
+    return new Promise(resolve => resolve(useri));
+  }
+
+  updateUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.doc(usuario.id).update(usuario);
   }
   addUsuario(usuario: UsuariosI) {
@@ -79,5 +88,4 @@ export class UsuariosProvider {
   removeUsuario(id: string) {
     return this.userProfileCollection.doc(id).delete();
   }
-
 }

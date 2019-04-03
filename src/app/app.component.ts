@@ -1,5 +1,5 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
-import { Platform, Nav, Events, NavController } from 'ionic-angular';
+import { Component, ViewChild } from '@angular/core';
+import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { AuthProvider } from '../providers/auth';
@@ -8,7 +8,6 @@ import { UsuariosProvider } from '../providers/usuarios';
 import firebase from 'firebase';
 import { UsuariosI } from './models/usuarios.interface';
 import { take } from 'rxjs/operators';
-import { EditProfilePage } from '../pages/edit-profile/edit-profile';
 
 @Component({
   templateUrl: 'app.html'

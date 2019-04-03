@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { Events, Content } from 'ionic-angular';
-import { ChatService, ChatMessage, UserInfo } from "../../providers/chat-service";
-
+import { ChatService } from "../../providers/chat-service";
+import { ChatMessage, UserInfo } from "../../app/models/chat.model";
+import { UsuariosProvider } from '../../providers/usuarios';
 @IonicPage()
 @Component({
   selector: 'page-chat',
@@ -20,29 +21,27 @@ export class Chat {
 
   constructor(navParams: NavParams,
               private chatService: ChatService,
-              private events: Events,) {
-    // Get the navParams toUserId parameter
+              private events: Events,
+              private userProvider:UsuariosProvider) {
     this.toUser = {
       id: navParams.get('toUserId'),
       name: navParams.get('toUserName')
     };
-    // Get mock user information
-    this.chatService.getUserInfo()
-    .then((res) => {
-      this.user = res
+    // obtener perfil del actualUser
+    
+    this.userProvider.getUserLogedToChat()
+    .then((user)=>{
+      this.user=user;
     });
   }
 
   ionViewWillLeave() {
-    // unsubscribe
     this.events.unsubscribe('chat:received');
   }
 
   ionViewDidEnter() {
-    //get message list
+    console.log(this.user.id)
     this.getMsg();
-
-    // Subscribe to received  new message events
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);
     })
@@ -70,7 +69,6 @@ export class Chat {
    * @returns {Promise<ChatMessage[]>}
    */
   getMsg() {
-    // Get mock message list
     return this.chatService
     .getMsgList()
     .subscribe(res => {
@@ -84,8 +82,6 @@ export class Chat {
    */
   sendMsg() {
     if (!this.editorMsg.trim()) return;
-
-    // Mock message
     const id = Date.now().toString();
     let newMsg: ChatMessage = {
       messageId: Date.now().toString(),
@@ -121,7 +117,6 @@ export class Chat {
   pushNewMsg(msg: ChatMessage) {
     const userId = this.user.id,
       toUserId = this.toUser.id;
-    // Verify user relationships
     if (msg.userId === userId && msg.toUserId === toUserId) {
       this.msgList.push(msg);
     } else if (msg.toUserId === userId && msg.userId === toUserId) {
