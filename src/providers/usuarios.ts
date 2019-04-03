@@ -5,9 +5,12 @@ import { Observable } from 'rxjs';
 import { UsuariosI } from '../app/models/usuarios.interface';
 import { map } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
+import firebase from 'firebase';
+import { UserInfo } from '../app/models/chat.model';
 
 @Injectable()
 export class UsuariosProvider {
+
 
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
@@ -55,22 +58,27 @@ export class UsuariosProvider {
       }));
     return this.userProfile;
   }
-/*
-  getUserInfo(): any {
-    var userInfo = { id: "", name: "", avatar: "" };
-    //obtener la info del usuario logueado
-    var actualUser =firebase.auth().currentUser;
-    var userInfop = this.afs.doc(`userProfile/${actualUser.uid}`);
-    var result = userInfop.get();
-        userInfo.id = actualUser.uid;
-        userInfo.name = userInfop.collection.name;
-        userInfo.avatar = './assets/user.jpg';
 
-    console.log("--------------------");
-    console.log(this.UP.getUserInfo());
-    console.log("--------------------");
+  getUserLoged():Promise<UsuariosI>{
+    let useri;
+    let algo = this.getActualUser();
+    algo.subscribe((user) => {
+      useri = user
+    });
+    return new Promise(resolve => resolve(useri));
   }
-*/
+
+  getUserLogedToChat(): Promise<UserInfo> {
+    let useri = new UserInfo();
+    let algo = this.getActualUser();
+    algo.subscribe((user) => {
+      useri.id = user.id;
+      useri.name = user.name;
+      useri.avatar = "avatar";
+    });
+    return new Promise(resolve => resolve(useri));
+  }
+
   updateUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.doc(usuario.id).update(usuario);
   }
