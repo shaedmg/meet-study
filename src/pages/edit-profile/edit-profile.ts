@@ -30,7 +30,6 @@ export class EditProfilePage {
   signUpForm = this.formBuilder.group({
     name: ['', Validators.required],
     lastName: ['', Validators.required],
-    email: ['', Validators.required],
     birthDate: ['', Validators.required],
     id: String
   });
