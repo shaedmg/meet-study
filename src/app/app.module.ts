@@ -8,6 +8,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { EmojiProvider } from '../providers/emoji';
 import { HttpClientModule } from "@angular/common/http";
+import { HttpModule } from '@angular/http';
 
 import { environment } from '../environment/environment';
 import { AngularFireModule } from 'angularfire2';
@@ -17,6 +18,7 @@ import { UsuariosProvider } from '../providers/usuarios';
 import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth';
+import { ChatService } from '../providers/chat-service';
 
 @NgModule({
   declarations: [
@@ -25,6 +27,7 @@ import { AuthProvider } from '../providers/auth';
   imports: [
     BrowserModule,
     HttpClientModule,
+    HttpModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
     IonicModule.forRoot(MyApp,{
@@ -32,7 +35,7 @@ import { AuthProvider } from '../providers/auth';
       tabsLayout:'icon-left',
       preloadModules: true
     }),
-    AngularFireDatabaseModule,                
+    AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
@@ -46,6 +49,7 @@ import { AuthProvider } from '../providers/auth';
     EmojiProvider,
     AnuncioProvider,
     UsuariosProvider,
+    ChatService,
     AuthProvider
   ]
 })

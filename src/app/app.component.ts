@@ -40,7 +40,7 @@ export class MyApp{
     this.nav.setRoot(LoginPage)
   }
   readUser(){
-    this.userProvider.getActualUser().pipe(take(1)).toPromise()
+    this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
         this.userProfile = usuario;
       });

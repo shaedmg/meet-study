@@ -19,7 +19,7 @@ export class UsuariosProvider {
     this.userProfileCollection = db.collection<UsuariosI>('userProfile');
   }
 
-  getActualUserUID(): string {
+  getCurrentUserUID(): string {
     if (this.afAuth.auth.currentUser) {
       return this.afAuth.auth.currentUser.uid;
     } else {
@@ -27,28 +27,28 @@ export class UsuariosProvider {
     }
   }
 
-  getActualUser() {
-    return this.userProfileCollection.doc<UsuariosI>(this.getActualUserUID()).valueChanges();
+  getCurrentUser() {
+    return this.userProfileCollection.doc<UsuariosI>(this.getCurrentUserUID()).valueChanges();
   }
 
-  getUserLoged():Promise<UsuariosI>{
+  getCurrentUserPromise(): Promise<UsuariosI> {
     let useri;
-    let promise = this.getActualUser();
+    let promise = this.getCurrentUser();
     promise.subscribe((user) => {
       useri = user
     });
     return new Promise(resolve => resolve(useri));
   }
 
-  getUserLogedToChat(): Promise<UserInfo> {
+  getCurrentUserPromiseToChat(): Promise<UserInfo> {
     let useri = new UserInfo();
-    let promise = this.getActualUser();
+    let promise = this.getCurrentUser();
     promise.subscribe((user) => {
       useri.id = user.id;
       useri.name = user.name;
       useri.avatar = "./assets/user.jpg";
     });
-    
+
     return new Promise(resolve => resolve(useri));
   }
 
@@ -67,9 +67,11 @@ export class UsuariosProvider {
   updateUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.doc(usuario.id).update(usuario);
   }
+
   addUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.add(usuario);
   }
+  
   removeUsuario(id: string) {
     return this.userProfileCollection.doc(id).delete();
   }
