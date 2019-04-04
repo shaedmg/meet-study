@@ -18,6 +18,7 @@ export class Chat {
   toUser: UserInfo;
   editorMsg = '';
   showEmojiPicker = false;
+  conversationId: string;
 
   constructor(navParams: NavParams,
     private chatService: ChatService,
@@ -33,6 +34,7 @@ export class Chat {
       .then((user) => {
         this.user = user;
       });
+    this.conversationId = navParams.get("conversationId");
   }
 
   ionViewWillLeave() {
@@ -90,7 +92,8 @@ export class Chat {
       toUserId: this.toUser.id,
       time: Date.now(),
       message: this.editorMsg,
-      status: 'pending'
+      status: 'pending',
+      conversationId: this.conversationId
     };
 
     this.pushNewMsg(newMsg);

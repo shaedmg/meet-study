@@ -29,27 +29,27 @@ export class ListChatPage {
       });
   }
 
-  openChat(id: string, name: string) {
-    this.navCtrl.push(Chat, { "toUserId": id, "toUserName": name });
+  openChat(id: string, name: string, conversationId:string) {
+    this.navCtrl.push(Chat, { "toUserId": id, "toUserName": name, "conversationId":conversationId});
   }
 
   /**
    * @name getMsg
    * @returns {Promise<ChatConversations[]>}
    */
- /* getChatConversations(){
+  getChatConversations(){
     return this.ChatService
       .getChatConversationsListForCurrentUser(this.user.id)
-      .subscribe(res => {
-        this.ChatConversationList = res;
+      .subscribe(ChatConversationList => {
+        this.ChatConversationList = ChatConversationList;
       }).unsubscribe();
   }
-*/
+
   ionViewWillLeave() { }
 
   ionViewDidEnter() {
     console.log("entra en la jodida mierda esta")
-    //this.getChatConversations();
+    this.getChatConversations();
     console.log(this.ChatConversationList)
   }
 }

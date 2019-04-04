@@ -17,7 +17,7 @@ export class ChatService {
     public afs: AngularFirestore,
     private userProvider: UsuariosProvider) {
     //creo la conexión con los mensajes
-    this.ChatMessageCollection = afs.collection<ChatMessage>('ChatMessage');
+    this.ChatMessageCollection = afs.collection<ChatMessage>('ChatConversations//ChatMessage');
     this.ChatConversationsCollection = afs.collection<ChatConversations>('ChatConversations');
     //perfil loged user
     this.userProvider.getCurrentUserPromiseToChat()
@@ -56,7 +56,7 @@ export class ChatService {
 
   async sendMsg(msg: ChatMessage) {
     try {
-      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatMessage/${msg.messageId}`);
+      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatConversation/${msg.conversationId}/ChatMessage/${msg.messageId}`);
       await ChatMessageDocument.set(msg);
     } catch (error) { }
   }
