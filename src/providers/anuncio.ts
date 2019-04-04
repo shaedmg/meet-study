@@ -17,7 +17,7 @@ export class AnuncioProvider {
   }
 
 
-  getAnuncios() {
+  getAnuncios(): Observable<MeetingI[]> {
     this.todos = this.anunciosCollection.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
@@ -28,9 +28,11 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
+
   getAnuncio(id: string) {
     return this.anunciosCollection.doc<MeetingI>(id).valueChanges();
   }
+
   getAnunciosByUser(userId) {
     this.todos = this.anunciosCollection.snapshotChanges().pipe(
       map(actions => {
@@ -42,11 +44,13 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
+
   updateAnuncio(anuncio: MeetingI, id: string) {
     return this.anunciosCollection.doc(id).update(anuncio);
   }
+
   addAnuncio(anuncio: MeetingI) {
-    this.userProvider.getActualUser().pipe(take(1)).toPromise()
+    this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
         anuncio.userId = usuario.id;
         anuncio.name = usuario.name;
@@ -54,11 +58,12 @@ export class AnuncioProvider {
       })
   }
   addPeticion(anuncio: MeetingI, peticion: PeticionI, anuncioId: string){
-    this.userProvider.getActualUser().pipe(take(1)).toPromise()
+    this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
+        console.log(anuncioId);
         peticion.name = usuario.name;
-        const fecha = new Date();
-        peticion.time = "" + fecha.getDay() + "/" + fecha.getMonth() + " " + fecha.getHours() + ":" + fecha.getMinutes() + ":" + fecha.getSeconds();
+        peticion.time = "" + Date.now();
+        peticion.userId = usuario.id;
         anuncio.peticiones.push(peticion);
         return this.anunciosCollection.doc<MeetingI>(anuncioId).update(anuncio);
       })

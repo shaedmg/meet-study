@@ -5,6 +5,7 @@ import { MeetingI } from '../../app/models/meeting.interface';
 import { AnuncioProvider } from '../../providers/anuncio'
 import { GestionAnuncioPage } from '../gestion-anuncio/gestion-anuncio';
 import { Subscription } from 'rxjs/Subscription';
+import { AnuncioDetailsPage } from '../anuncio-details/anuncio-details';
 import * as firebase from 'firebase/app';
 
 @IonicPage()
@@ -35,6 +36,9 @@ export class MisAnunciosPage implements OnInit {
     });
   }
 
+  openAdvertisementDetails(anuncio){
+    this.navCtrl.push(AnuncioDetailsPage,anuncio)
+  }
   nuevoAnuncio(){
     this.navCtrl.push(AddAnuncioPage);
   }

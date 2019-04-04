@@ -5,10 +5,6 @@ import * as firebase from 'firebase';
 import { Injectable, ViewChild } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { Nav } from 'ionic-angular';
-<<<<<<< HEAD
-import { LoginPage } from '../pages/login/login';
-=======
->>>>>>> 6bbb96102cc4a31c1130e9dae7b07cf887c659ac
 
 
 @Injectable()

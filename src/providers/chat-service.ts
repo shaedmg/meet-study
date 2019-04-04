@@ -4,28 +4,53 @@ import { Observable } from "rxjs/Observable";
 import { ChatMessage, UserInfo } from "../app/models/chat.model";
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UsuariosProvider } from './usuarios';
-
+import { AngularFireDatabase } from 'angularfire2/database';
+export class ChatConversations {
+   chatMessages: AngularFirestoreDocument<ChatMessage>;
+}
 
 @Injectable()
 export class ChatService {
 
   user: UserInfo;
-  private ChatMessageCollection: AngularFirestoreCollection<ChatMessage>;
+  private ChatMessageDocument: AngularFirestoreDocument<ChatMessage>;
+  private ChatConversationsCollection: AngularFirestoreCollection<ChatConversations>;
 
   constructor(
+    public afdb: AngularFireDatabase,
     public afs: AngularFirestore,
     private userProvider: UsuariosProvider) {
-    //creco la conexión con los mensajes
-    this.ChatMessageCollection = afs.collection<ChatMessage>('ChatMessage');
+    //creo la conexión con los mensajes
+    this.ChatMessageDocument = afs.doc<ChatMessage>('ChatMessage');
+    this.ChatConversationsCollection = afs.collection<ChatConversations>('ChatConversations');
     //perfil loged user
-    this.userProvider.getUserLogedToChat()
+    this.userProvider.getCurrentUserPromiseToChat()
       .then((user) => {
         this.user = user;
       });
   }
+  async addChat(petitionUserId){
+    try {
+      let newMsg: ChatMessage = {
+        messageId: Date.now().toString(),
+        userId: this.user.id,
+        userName: this.user.name,
+        userAvatar: this.user.avatar,
+        toUserId: petitionUserId,
+        time: Date.now(),
+        message: "Hola me gustaría estudiar contigo",
+        status: 'pending'
+      }; 
+      const chat: ChatConversations = {chatMessages: this.ChatMessageDocument}
+      console.log("hola")
+      this.afdb.database.ref("ChatConversations/hola").set({});
+      //await this.ChatConversationsCollection.doc("hola").update(newMsg);
+   //   await this.ChatMessageDocument.update(newMsg);
+    } catch (error) { console.log(error) }
+  }
 
   getMsgList(userId): Observable<ChatMessage[]> {
-    return this.ChatMessageCollection.snapshotChanges().pipe(
+    return this.ChatMessageDocument.snapshotChanges().pipe(
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -35,6 +60,18 @@ export class ChatService {
           (res.userId == userId || res.toUserId == userId) &&
           (res.userId == this.user.id || res.toUserId == this.user.id)
         );
+      }));
+  }
+
+  getChatConversationsListForCurrentUser(userId):Observable<ChatConversations[]>{
+    console.log(userId)
+    return this.ChatConversationsCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
       }));
   }
 

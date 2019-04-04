@@ -11,10 +11,6 @@ import { UserInfo } from '../app/models/chat.model';
 export class UsuariosProvider {
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
-<<<<<<< HEAD
-  private userProfile;
-=======
->>>>>>> 6bbb96102cc4a31c1130e9dae7b07cf887c659ac
 
   constructor(
     public http: HttpClient,
@@ -23,33 +19,7 @@ export class UsuariosProvider {
     this.userProfileCollection = db.collection<UsuariosI>('userProfile');
   }
 
-<<<<<<< HEAD
-  getlogedUser() {
-    return new Promise<any>((resolve, reject) => {
-      this.afAuth.user.subscribe(currentUser => {
-        if(currentUser){
-          this.userProfile = currentUser;
-          resolve(this.userProfile);
-        }
-      })
-    });
-  }
-
-  getUsuarios() {
-    this.allUsers = this.userProfileCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      }));
-    return this.allUsers;
-  }
-
-=======
->>>>>>> 6bbb96102cc4a31c1130e9dae7b07cf887c659ac
-  getActualUserUID(): string {
+  getCurrentUserUID(): string {
     if (this.afAuth.auth.currentUser) {
       return this.afAuth.auth.currentUser.uid;
     } else {
@@ -57,38 +27,33 @@ export class UsuariosProvider {
     }
   }
 
-  getActualUser() {
-    return this.userProfileCollection.doc<UsuariosI>(this.getActualUserUID()).valueChanges();
+  getCurrentUser() {
+    return this.userProfileCollection.doc<UsuariosI>(this.getCurrentUserUID()).valueChanges();
   }
 
-<<<<<<< HEAD
-  getUsuario(uid) {
-    this.userProfile = this.userProfileCollection.snapshotChanges().pipe(
-=======
-  getUserLoged():Promise<UsuariosI>{
+  getCurrentUserPromise(): Promise<UsuariosI> {
     let useri;
-    let promise = this.getActualUser();
+    let promise = this.getCurrentUser();
     promise.subscribe((user) => {
       useri = user
     });
     return new Promise(resolve => resolve(useri));
   }
 
-  getUserLogedToChat(): Promise<UserInfo> {
+  getCurrentUserPromiseToChat(): Promise<UserInfo> {
     let useri = new UserInfo();
-    let promise = this.getActualUser();
+    let promise = this.getCurrentUser();
     promise.subscribe((user) => {
       useri.id = user.id;
       useri.name = user.name;
       useri.avatar = "./assets/user.jpg";
     });
-    
+
     return new Promise(resolve => resolve(useri));
   }
 
   getAllUsersToChat(): Promise<any> {
     this.allUsers = this.userProfileCollection.snapshotChanges().pipe(
->>>>>>> 6bbb96102cc4a31c1130e9dae7b07cf887c659ac
       map(actions => {
         return actions.map(a => {
           const data = a.payload.doc.data();
@@ -96,19 +61,17 @@ export class UsuariosProvider {
           return { id, ...data };
         });
       }));
-<<<<<<< HEAD
-    return this.userProfile;
-=======
     return new Promise(resolve => resolve(this.allUsers));
->>>>>>> 6bbb96102cc4a31c1130e9dae7b07cf887c659ac
   }
 
   updateUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.doc(usuario.id).update(usuario);
   }
+
   addUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.add(usuario);
   }
+  
   removeUsuario(id: string) {
     return this.userProfileCollection.doc(id).delete();
   }

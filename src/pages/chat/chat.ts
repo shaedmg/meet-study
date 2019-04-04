@@ -29,7 +29,7 @@ export class Chat {
       name: navParams.get('toUserName')
     };
     //perfil loged user
-    this.userProvider.getUserLogedToChat()
+    this.userProvider.getCurrentUserPromiseToChat()
       .then((user) => {
         this.user = user;
       });
@@ -73,7 +73,7 @@ export class Chat {
       .subscribe(res => {
         this.msgList = res;
         this.scrollToBottom();
-      }).unsubscribe;
+      }).unsubscribe();
   }
 
   /**

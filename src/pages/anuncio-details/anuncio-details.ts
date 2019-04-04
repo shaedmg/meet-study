@@ -4,6 +4,7 @@ import {MeetingI} from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio';
 import { PeticionI } from '../../app/models/peticiones.interface';
 import { UsuariosProvider } from '../../providers/usuarios';
+import { ChatService } from '../../providers/chat-service';
 
 @IonicPage()
 @Component({
@@ -20,7 +21,7 @@ export class AnuncioDetailsPage {
     peticiones: []
   };
   anuncioId = "";
-  constructor(public alertController: AlertController, private usuarioProvider: UsuariosProvider,public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
+  constructor(private chatService: ChatService,public alertController: AlertController, private usuarioProvider: UsuariosProvider,public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
     this.anuncioId = this.navParams.get('id') ;
   }
 
@@ -47,7 +48,8 @@ export class AnuncioDetailsPage {
   sendPetition(){
       const peticion: PeticionI = { 
       name: "",
-      time: ""
+      time: "",
+      userId: ""
     }
     this.anuncioService.addPeticion(this.anuncio,peticion,this.anuncioId)
     this.navCtrl.pop();
@@ -57,7 +59,9 @@ export class AnuncioDetailsPage {
   goHome(){
     this.navCtrl.pop();
   }
-
+  acceptPetition(peticion){
+    this.chatService.addChat(peticion.userId);
+  }
 }
 
 
