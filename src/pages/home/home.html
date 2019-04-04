@@ -1,26 +1,34 @@
 <ion-header>
-  <ion-navbar>
-    <button ion-button [menuToggle]="activeMenu">
+    <ion-navbar>
+        <button ion-button [menuToggle]="activeMenu">
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>
-      Home
-    </ion-title>
-  </ion-navbar>
+        <ion-title>
+            Inicio
+        </ion-title>
+    </ion-navbar>
 
 </ion-header>
 
 <ion-content padding>
-  <ion-list>
-    <ion-card button (click)="abrirAnuncioDetails(anuncio.id)" *ngFor="let anuncio of anuncios">
-      <ion-card-content>
-        <ion-card-title>
-          Asignatura a estudiar: {{anuncio.primarySubject}}
-        </ion-card-title>
-        <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
-        <p>Nombre: {{anuncio.name}}</p>
-        <p>Hora: {{anuncio.time}}</p>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+    <ion-list>
+        <ion-card *ngFor="let anuncio of anuncios">
+            <ion-card-content>
+                <ion-card-title>
+                    Asignatura a estudiar: {{anuncio.primarySubject}}
+                </ion-card-title>
+                <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
+                <p>Nombre: {{anuncio.name}}</p>
+                <p>Hora: {{anuncio.time}}</p>
+                <button ion-button icon-only clear (click)="presentAlert(1)">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                    <p>Enviar Solicitud</p>
+                </button>
+                <button ion-button icon-only clear (click)=presentAlert(2)>
+                        <ion-icon name="close-circle"></ion-icon>
+                        <p>No me interesa</p>
+                </button>
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
 </ion-content>

@@ -8,27 +8,14 @@
     </ion-title>
   </ion-navbar>
 </ion-header>
-
 <ion-content>
-
-  <ion-list>
-
-    <ion-item navPush="Chat"
-              [navParams]="toUser">
+  <ion-list >
+    <ion-item *ngFor="let user of usersToChat | async" (click)="openChat(user.id,user.name)">
       <ion-avatar item-left>
         <img src="./assets/user.jpg">
       </ion-avatar>
-      <h2>John</h2>
-      <p>El puto amo de la vida</p>
-    </ion-item>
-      
-    <ion-item navPush="Chat"
-              [navParams]="toUser">
-      <ion-avatar item-left>
-        <img src="./assets/to-user.jpg">
-      </ion-avatar>
-      <h2>Santi</h2>
-      <p>Al que se la come hacer clone</p>
+      <h2>{{user.name}}</h2>
+      <p>{{user.email}}</p>
     </ion-item>
   </ion-list>
 </ion-content>

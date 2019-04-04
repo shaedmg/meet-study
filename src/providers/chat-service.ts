@@ -1,68 +1,47 @@
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
 import { map } from 'rxjs/operators/map';
-import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs/Observable";
+import { ChatMessage, UserInfo } from "../app/models/chat.model";
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { UsuariosProvider } from './usuarios';
 
-export class ChatMessage {
-  messageId: string;
-  userId: string;
-  userName: string;
-  userAvatar: string;
-  toUserId: string;
-  time: number | string;
-  message: string;
-  status: string;
-}
-
-export class UserInfo {
-  id: string;
-  name?: string;
-  avatar?: string;
-}
 
 @Injectable()
 export class ChatService {
 
-  constructor(private http: HttpClient,
-              private events: Events) {
+  user: UserInfo;
+  private ChatMessageCollection: AngularFirestoreCollection<ChatMessage>;
+
+  constructor(
+    public afs: AngularFirestore,
+    private userProvider: UsuariosProvider) {
+    //creco la conexión con los mensajes
+    this.ChatMessageCollection = afs.collection<ChatMessage>('ChatMessage');
+    //perfil loged user
+    this.userProvider.getUserLogedToChat()
+      .then((user) => {
+        this.user = user;
+      });
   }
 
-  mockNewMsg(msg) {
-    const mockMsg: ChatMessage = {
-      messageId: Date.now().toString(),
-      userId: '2',
-      userName: 'Santi',
-      userAvatar: './assets/to-user.jpg',
-      toUserId: '1',
-      time: Date.now(),
-      message: msg.message,
-      status: 'success'
-    };
-
-    setTimeout(() => {
-      this.events.publish('chat:received', mockMsg, Date.now())
-    }, Math.random() * 1800)
+  getMsgList(userId): Observable<ChatMessage[]> {
+    return this.ChatMessageCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        }).filter(res =>
+          (res.userId == userId || res.toUserId == userId) &&
+          (res.userId == this.user.id || res.toUserId == this.user.id)
+        );
+      }));
   }
 
-  getMsgList(): Observable<ChatMessage[]> {
-    const msgListUrl = './assets/mock/msg-list.json';
-    return this.http.get<any>(msgListUrl)
-    .pipe(map(response => response.array));
+  async sendMsg(msg: ChatMessage) {
+    try {
+      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatMessage/${msg.messageId}`);
+      await ChatMessageDocument.set(msg);
+    } catch (error) { }
   }
-
-  sendMsg(msg: ChatMessage) {
-    return new Promise(resolve => setTimeout(() => resolve(msg), Math.random() * 1000))
-    .then(() => this.mockNewMsg(msg));
-  }
-
-  getUserInfo(): Promise<UserInfo> {
-    const userInfo: UserInfo = {
-      id: '1',
-      name: 'John',
-      avatar: './assets/user.jpg'
-    };
-    return new Promise(resolve => resolve(userInfo));
-  }
-
 }

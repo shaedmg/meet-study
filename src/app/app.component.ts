@@ -1,4 +1,4 @@
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { Platform, Nav } from 'ionic-angular';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
@@ -49,7 +49,12 @@ export class MyApp{
   launchPage(page: string) {
     if (firebase.auth().currentUser != null) {
       this.readUser();
-      this.nav.setRoot(page);
+      if(page=="EditProfilePage"){
+        this.nav.setRoot(page,{userProfile: this.userProfile});
+      }else{
+        this.nav.setRoot(page);
+      }
+      
     } else {
       this.nav.setRoot(LoginPage)
     }

@@ -8,6 +8,7 @@ import { MisAnunciosPage } from './mis-anuncios';
   ],
   imports: [
     IonicPageModule.forChild(MisAnunciosPage),
+    
   ],
 })
 export class MisAnunciosPageModule {}

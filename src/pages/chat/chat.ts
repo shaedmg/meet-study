@@ -1,8 +1,9 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonicPage, NavParams } from 'ionic-angular';
 import { Events, Content } from 'ionic-angular';
-import { ChatService, ChatMessage, UserInfo } from "../../providers/chat-service";
-
+import { ChatService } from "../../providers/chat-service";
+import { ChatMessage, UserInfo } from "../../app/models/chat.model";
+import { UsuariosProvider } from '../../providers/usuarios';
 @IonicPage()
 @Component({
   selector: 'page-chat',
@@ -19,30 +20,27 @@ export class Chat {
   showEmojiPicker = false;
 
   constructor(navParams: NavParams,
-              private chatService: ChatService,
-              private events: Events,) {
-    // Get the navParams toUserId parameter
+    private chatService: ChatService,
+    private events: Events,
+    private userProvider: UsuariosProvider) {
+    //perfil del otro
     this.toUser = {
       id: navParams.get('toUserId'),
       name: navParams.get('toUserName')
     };
-    // Get mock user information
-    this.chatService.getUserInfo()
-    .then((res) => {
-      this.user = res
-    });
+    //perfil loged user
+    this.userProvider.getUserLogedToChat()
+      .then((user) => {
+        this.user = user;
+      });
   }
 
   ionViewWillLeave() {
-    // unsubscribe
     this.events.unsubscribe('chat:received');
   }
 
   ionViewDidEnter() {
-    //get message list
     this.getMsg();
-
-    // Subscribe to received  new message events
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);
     })
@@ -70,13 +68,12 @@ export class Chat {
    * @returns {Promise<ChatMessage[]>}
    */
   getMsg() {
-    // Get mock message list
     return this.chatService
-    .getMsgList()
-    .subscribe(res => {
-      this.msgList = res;
-      this.scrollToBottom();
-    });
+      .getMsgList(this.toUser.id)
+      .subscribe(res => {
+        this.msgList = res;
+        this.scrollToBottom();
+      }).unsubscribe;
   }
 
   /**
@@ -84,8 +81,6 @@ export class Chat {
    */
   sendMsg() {
     if (!this.editorMsg.trim()) return;
-
-    // Mock message
     const id = Date.now().toString();
     let newMsg: ChatMessage = {
       messageId: Date.now().toString(),
@@ -106,12 +101,12 @@ export class Chat {
     }
 
     this.chatService.sendMsg(newMsg)
-    .then(() => {
-      let index = this.getMsgIndexById(id);
-      if (index !== -1) {
-        this.msgList[index].status = 'success';
-      }
-    })
+      .then(() => {
+        let index = this.getMsgIndexById(id);
+        if (index !== -1) {
+          this.msgList[index].status = 'success';
+        }
+      })
   }
 
   /**
@@ -121,7 +116,6 @@ export class Chat {
   pushNewMsg(msg: ChatMessage) {
     const userId = this.user.id,
       toUserId = this.toUser.id;
-    // Verify user relationships
     if (msg.userId === userId && msg.toUserId === toUserId) {
       this.msgList.push(msg);
     } else if (msg.toUserId === userId && msg.userId === toUserId) {
@@ -135,11 +129,7 @@ export class Chat {
   }
 
   scrollToBottom() {
-    setTimeout(() => {
-      if (this.content.scrollToBottom) {
-        this.content.scrollToBottom();
-      }
-    }, 400)
+    if(this.content._scroll) this.content.scrollToBottom(0);
   }
 
   private focus() {
@@ -149,7 +139,7 @@ export class Chat {
   }
 
   private setTextareaScroll() {
-    const textarea =this.messageInput.nativeElement;
+    const textarea = this.messageInput.nativeElement;
     textarea.scrollTop = textarea.scrollHeight;
   }
 }

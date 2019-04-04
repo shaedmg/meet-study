@@ -35,17 +35,9 @@ export class GestionAnuncioPage implements OnInit{
       this.anuncio = res;
     });
   }
-  removeAnuncios(){
-    this.anuncioService.removeAnuncio(this.anuncioId);
-    this.navCtrl.pop();
-    
-    
-    
-  }
+
   updateAnuncios(){
     this.navCtrl.pop();
-    this.anuncioService.updateAnuncio(this.anuncio,this.anuncioId);
-    
-    
+    this.anuncioService.updateAnuncio(this.anuncio,this.anuncioId);   
   }
 }

@@ -6,27 +6,40 @@
 -->
 <ion-header>
 
-  <ion-navbar>
-      <button ion-button [menuToggle]="activeMenu">
+    <ion-navbar>
+        <button ion-button [menuToggle]="activeMenu">
           <ion-icon name="menu"></ion-icon>
         </button>
-    <ion-title>Mis anuncios</ion-title>
-  </ion-navbar>
+        <ion-title>Mis anuncios</ion-title>
+    </ion-navbar>
 
 </ion-header>
 
-
+<!--button (click)="abrirAnuncioDetails(anuncio.id)"-->
 <ion-content padding>
-  <ion-list>
-    <ion-card button (click)="abrirAnuncioDetails(anuncio.id)" *ngFor="let anuncio of anuncios">
-      <ion-card-content>
-        <ion-card-title>
-          Asignatura a estudiar: {{anuncio.primarySubject}}
-        </ion-card-title>
-        <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
-        <p>Nombre: {{anuncio.name}}</p>
-        <p>Hora: {{anuncio.time}}</p>
-      </ion-card-content>
-    </ion-card>
-  </ion-list>
+    <button ion-button icon-only clear (click)="nuevoAnuncio()">
+        <ion-icon name="add" item-left></ion-icon>
+        <p>Añadir anuncio</p>
+    </button>
+    <ion-list>
+        <ion-card *ngFor="let anuncio of anuncios">
+            <ion-card-content>
+                <ion-card-title>
+                    Asignatura a estudiar: {{anuncio.primarySubject}}
+                </ion-card-title>
+                <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
+                <p>Nombre: {{anuncio.name}}</p>
+                <p>Hora: {{anuncio.time}}</p>
+
+                <button ion-button icon-only clear (click)="modificarAnuncio(anuncio.id)">
+                    <ion-icon name="md-create" item-left></ion-icon>
+                </button>
+
+                <button ion-button icon-only clear (click)="removeAnuncios(anuncio.id)">
+                  <ion-icon name="close" item-rigth></ion-icon>
+                </button>
+
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
 </ion-content>
