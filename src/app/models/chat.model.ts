@@ -16,7 +16,3 @@ export class UserInfo {
     avatar?: string;
 }
 
-export class ChatConversations{
-    userId: string;
-    toUserId: string;
-}

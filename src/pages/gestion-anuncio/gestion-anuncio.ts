@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio';
 import { Subscription  } from 'rxjs/Subscription';
+import { PeticionI } from '../../app/models/peticiones.interface';
 
 @IonicPage()
 @Component({
@@ -10,11 +11,13 @@ import { Subscription  } from 'rxjs/Subscription';
   templateUrl: 'gestion-anuncio.html',
 })
 export class GestionAnuncioPage implements OnInit{
+  
   anuncio: MeetingI = {
     name: "",
     primarySubject: "",
     secondarySubject: "",
     time: "",
+    peticiones: []
   };
   anuncioId = "";
   observer: Subscription ;

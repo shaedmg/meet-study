@@ -1,7 +1,10 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import {MeetingI} from '../../app/models/meeting.interface';
-import {AnuncioProvider} from '../../providers/anuncio'
+import {AnuncioProvider} from '../../providers/anuncio';
+import { PeticionI } from '../../app/models/peticiones.interface';
+import { UsuariosProvider } from '../../providers/usuarios';
+import { ChatService } from '../../providers/chat-service';
 
 @IonicPage()
 @Component({
@@ -15,10 +18,11 @@ export class AnuncioDetailsPage {
     primarySubject: "",
     secondarySubject: "",
     time: "",
+    peticiones: []
   };
   anuncioId = "";
-  constructor(public alertController: AlertController, public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
-    this.anuncioId = this.navParams.get('id');
+  constructor(private chatService: ChatService,public alertController: AlertController, private usuarioProvider: UsuariosProvider,public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
+    this.anuncioId = this.navParams.get('id') ;
   }
 
   ionViewCanEnter() {
@@ -30,25 +34,34 @@ export class AnuncioDetailsPage {
   async loadTodo(){
     this.anuncioService.getAnuncio(this.anuncioId).subscribe(res => {
       this.anuncio = res;
-    }).unsubscribe;
+    });
   }
   async presentAlert() {
     const alert = await this.alertController.create({
-      title: 'Alert',
-      message: this.anuncio.name +' te ha enviado una solicitud para estudiar.',
-      buttons: ['Aceptar solicitud','Rechazar solicitud']
+      title: 'Peticion',
+      message: 'Se ha enviado correctamente su peticion.',
+      buttons: ['Ok']
     });
 
     await alert.present();
   }
   sendPetition(){
+      const peticion: PeticionI = { 
+      name: "",
+      time: "",
+      userId: ""
+    }
+    this.anuncioService.addPeticion(this.anuncio,peticion,this.anuncioId)
     this.navCtrl.pop();
     this.presentAlert();
   }
+  
   goHome(){
     this.navCtrl.pop();
   }
-
+  acceptPetition(peticion){
+    this.chatService.addChat(peticion.userId);
+  }
 }
 
 

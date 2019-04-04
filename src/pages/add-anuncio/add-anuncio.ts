@@ -18,6 +18,7 @@ export class AddAnuncioPage {
     primarySubject: "",
     secondarySubject: "",
     time: "",
+    peticiones: []
   };
 
   constructor(

@@ -3,7 +3,8 @@ import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { Chat } from '../chat/chat';
 import { ChatService } from '../../providers/chat-service';
 import { UsuariosProvider } from '../../providers/usuarios';
-import { UserInfo, ChatConversations } from '../../app/models/chat.model';
+import { UserInfo } from '../../app/models/chat.model';
+import {  ChatConversations } from '../../providers/chat-service';
 import { Observable } from 'rxjs';
 @IonicPage()
 @Component({
@@ -14,7 +15,7 @@ export class ListChatPage {
 
   @ViewChild(Content) content: Content;
 
-  ChatConversationList:ChatConversations[]=[{userId:"nomensaje",toUserId:"nomensaje"}];
+  ChatConversationList:ChatConversations[];
   user: UserInfo;
 
   constructor(

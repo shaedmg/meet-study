@@ -15,14 +15,14 @@
 
 </ion-header>
 
-<!--button (click)="abrirAnuncioDetails(anuncio.id)"-->
+
 <ion-content padding>
     <button ion-button icon-only clear (click)="nuevoAnuncio()">
         <ion-icon name="add" item-left></ion-icon>
         <p>Añadir anuncio</p>
     </button>
     <ion-list>
-        <ion-card *ngFor="let anuncio of anuncios">
+        <ion-card (click)="openAdvertisementDetails(anuncio)"  *ngFor="let anuncio of anuncios">
             <ion-card-content>
                 <ion-card-title>
                     Asignatura a estudiar: {{anuncio.primarySubject}}
