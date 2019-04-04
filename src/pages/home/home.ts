@@ -2,8 +2,6 @@ import { Component, OnInit} from '@angular/core';
 import { IonicPage, AlertController } from 'ionic-angular';
 import {MeetingI} from  '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio'
-import { NavController } from 'ionic-angular';
-import {AnuncioDetailsPage} from '../anuncio-details/anuncio-details';
 import { Subscription  } from 'rxjs/Subscription';
 
 @IonicPage()
@@ -14,7 +12,7 @@ import { Subscription  } from 'rxjs/Subscription';
 export class HomePage implements  OnInit{
   anuncios: MeetingI[];
    observer: Subscription ;
-  constructor(public alertController: AlertController,private anuncioService:AnuncioProvider, private navCtrl: NavController){}
+  constructor(public alertController: AlertController,private anuncioService:AnuncioProvider){}
 
   ionViewCanLeave(){
       this.observer.unsubscribe();
@@ -25,16 +23,21 @@ export class HomePage implements  OnInit{
     });
   }
 
-  async presentAlert() {
-    const alert = await this.alertController.create({
-      title: 'Alert',
-      message:"Su solicitud ha sido enviada.",
-      buttons: ['Aceptar']
-    });
-    await alert.present();
-  }
-
-  abrirAnuncioDetails(ident) {
-    this.navCtrl.push(AnuncioDetailsPage,{id: ident});
+  async presentAlert(number) {
+    if(number==1){
+      const alert = await this.alertController.create({
+        title: 'Alert',
+        message:"Su solicitud ha sido enviada.",
+        buttons: ['Aceptar']
+      });
+      await alert.present();
+    }else if(number==2){
+      const alert = await this.alertController.create({
+        title: 'Alert',
+        message:"El anuncio deberia desaparecer del inicio pero no de la bd",
+        buttons: ['Aceptar']
+      });
+      await alert.present();
+    }
   }
 }
