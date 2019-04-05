@@ -40,17 +40,15 @@ export class ListChatPage {
    */
   getChatConversations(){
     return this.ChatService
-      .getChatConversationsListForCurrentUser(this.user.id)
+      .getChatConversationsListForCurrentUser()
       .subscribe(ChatConversationList => {
         this.ChatConversationList = ChatConversationList;
-      }).unsubscribe();
+      });
   }
 
   ionViewWillLeave() { }
 
   ionViewDidEnter() {
-    console.log("entra en la jodida mierda esta")
     this.getChatConversations();
-    console.log(this.ChatConversationList)
   }
 }

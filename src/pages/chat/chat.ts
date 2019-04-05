@@ -70,12 +70,12 @@ export class Chat {
    * @returns {Promise<ChatMessage[]>}
    */
   getMsg() {
-    return this.chatService
+   /* return this.chatService
       .getMsgList(this.toUser.id)
       .subscribe(res => {
         this.msgList = res;
         this.scrollToBottom();
-      }).unsubscribe();
+      }).unsubscribe();*/
   }
 
   /**
