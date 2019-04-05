@@ -7,7 +7,7 @@ export class ChatMessage {
     time: number | string;
     message: string;
     status: string;
-    conversationId:string;
+    chatId:string;
 }
 
 export class UserInfo {

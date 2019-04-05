@@ -60,7 +60,6 @@ export class AnuncioProvider {
   addPeticion(anuncio: MeetingI, peticion: PeticionI, anuncioId: string){
     this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
-        console.log(anuncioId);
         peticion.name = usuario.name;
         peticion.time = "" + Date.now();
         peticion.userId = usuario.id;

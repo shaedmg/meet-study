@@ -4,3 +4,4 @@ src/environment/
 .sourcemaps
 /typings/
 /plugins/
+.vscode

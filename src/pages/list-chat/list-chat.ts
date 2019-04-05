@@ -30,8 +30,8 @@ export class ListChatPage {
       });
   }
 
-  openChat(id: string, name: string, conversationId:string) {
-    this.navCtrl.push(Chat, { "toUserId": id, "toUserName": name, "conversationId":conversationId});
+  openChat(chatId,userId,toUserName) {
+    this.navCtrl.push(Chat, {"chatId":chatId,"toUserId":userId,"toUserName":toUserName});
   }
 
   /**
