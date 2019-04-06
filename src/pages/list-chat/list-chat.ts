@@ -1,11 +1,9 @@
-import { Component, Injectable, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
 import { Chat } from '../chat/chat';
 import { ChatService } from '../../providers/chat-service';
 import { UsuariosProvider } from '../../providers/usuarios';
-import { UserInfo } from '../../app/models/chat.model';
-import {  ChatConversations } from '../../providers/chat-service';
-import { Observable } from 'rxjs';
+import { UserInfo, ChatConversations } from '../../app/models/chat.model';
 @IonicPage()
 @Component({
   selector: 'page-list-chat',
@@ -15,7 +13,7 @@ export class ListChatPage {
 
   @ViewChild(Content) content: Content;
 
-  ChatConversationList:ChatConversations[];
+  ChatConversationList: ChatConversations[][];
   user: UserInfo;
 
   constructor(
@@ -30,19 +28,26 @@ export class ListChatPage {
       });
   }
 
-  openChat(chatId,userId,toUserName) {
-    this.navCtrl.push(Chat, {"chatId":chatId,"toUserId":userId,"toUserName":toUserName});
+  openChat(chat) {
+    if (this.user.id != chat.userId) {
+      chat.toUserName = chat.userName;
+      chat.toUserId = chat.userId;
+    }
+    console.log(chat)
+    this.navCtrl.push(Chat, { "chatId": chat.chatId, "toUserId": chat.userId, "toUserName": chat.toUserName });
   }
 
   /**
    * @name getMsg
    * @returns {Promise<ChatConversations[]>}
    */
-  getChatConversations(){
+  getChatConversations() {
     return this.ChatService
       .getChatConversationsListForCurrentUser()
       .subscribe(ChatConversationList => {
-        this.ChatConversationList = ChatConversationList;
+        console.log(ChatConversationList)
+        this.ChatConversationList = ChatConversationList
+        return this.ChatConversationList;
       });
   }
 

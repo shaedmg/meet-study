@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
-import {MeetingI} from '../../app/models/meeting.interface';
-import {AnuncioProvider} from '../../providers/anuncio';
+import { MeetingI } from '../../app/models/meeting.interface';
+import { AnuncioProvider } from '../../providers/anuncio';
 import { PeticionI } from '../../app/models/peticiones.interface';
-import { UsuariosProvider } from '../../providers/usuarios';
 import { ChatService } from '../../providers/chat-service';
 
 @IonicPage()
@@ -21,17 +20,21 @@ export class AnuncioDetailsPage {
     peticiones: []
   };
   anuncioId = "";
-  constructor(private chatService: ChatService,public alertController: AlertController, private usuarioProvider: UsuariosProvider,public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
-    this.anuncioId = this.navParams.get('id') ;
+  constructor(private chatService: ChatService,
+    public alertController: AlertController,
+    public navCtrl: NavController,
+    private anuncioService: AnuncioProvider,
+    public navParams: NavParams) {
+    this.anuncioId = this.navParams.get('id');
   }
 
   ionViewCanEnter() {
-    if(this.anuncioId){
+    if (this.anuncioId) {
       this.loadTodo();
     }
   }
 
-  async loadTodo(){
+  async loadTodo() {
     this.anuncioService.getAnuncio(this.anuncioId).subscribe(res => {
       this.anuncio = res;
     });
@@ -45,22 +48,22 @@ export class AnuncioDetailsPage {
 
     await alert.present();
   }
-  sendPetition(){
-      const peticion: PeticionI = { 
+  sendPetition() {
+    const peticion: PeticionI = {
       name: "",
       time: "",
       userId: ""
     }
-    this.anuncioService.addPeticion(this.anuncio,peticion,this.anuncioId)
+    this.anuncioService.addPeticion(this.anuncio, peticion, this.anuncioId)
     this.navCtrl.pop();
     this.presentAlert();
   }
-  
-  goHome(){
+
+  goHome() {
     this.navCtrl.pop();
   }
-  acceptPetition(peticion){
-    this.chatService.addChat(peticion.userId);
+  acceptPetition(peticion) {
+    this.chatService.addChat(peticion);
   }
 }
 

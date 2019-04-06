@@ -1,33 +1,28 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators/map';
-import { ChatMessage, UserInfo } from "../app/models/chat.model";
-import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
+import { ChatMessage, UserInfo, ChatConversations } from "../app/models/chat.model";
+import { AngularFirestore, AngularFirestoreDocument } from 'angularfire2/firestore';
 import { UsuariosProvider } from './usuarios';
 import { AngularFireDatabase } from 'angularfire2/database';
 import { Observable } from 'rxjs';
-export class ChatConversations {
-  chatMessage: ChatMessage[];
-}
+import 'rxjs/add/operator/switchMap';
 
 @Injectable()
 export class ChatService {
 
   user: UserInfo;
   ChatConversationsId: string;
-  private ChatMessageCollections: AngularFirestoreCollection<ChatConversations>;
 
   constructor(
     public afdb: AngularFireDatabase,
     public afs: AngularFirestore,
     private userProvider: UsuariosProvider) {
-    this.ChatMessageCollections = this.afs.collection<ChatConversations>(`ChatConversations`);
-    //perfil loged user
     this.userProvider.getCurrentUserPromiseToChat()
       .then((user) => {
         this.user = user;
       });
   }
-  async addChat(petitionUserId) {
+
+  async addChat(petition) {
     try {
       let newMsg: ChatMessage = {
         messageId: Date.now().toString(),
@@ -35,17 +30,29 @@ export class ChatService {
         userId: this.user.id,
         userName: this.user.name,
         userAvatar: this.user.avatar,
-        toUserId: petitionUserId,
+        toUserId: petition.userId,
         time: Date.now(),
         message: "Hola me gustaría estudiar contigo",
-        status: 'pending',
+        status: 'susses',
       };
-      const ChatConversationsCollectionDocument: AngularFirestoreDocument = this.afs.doc(`ChatConversations/${newMsg.chatId}`);
-      await ChatConversationsCollectionDocument.set({ "userId": newMsg.userId, "toUserId": newMsg.toUserId, "toUserName": newMsg.userName, "chatId": newMsg.chatId });
-      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatConversations/${newMsg.chatId}/ChatMessage/${newMsg.messageId}`);
+
+      const ChatConversationsCollectionDocument: AngularFirestoreDocument =
+        this.afs.doc(`ChatConversations/${newMsg.chatId}`);
+      await ChatConversationsCollectionDocument
+        .set({
+          "userId": newMsg.userId,
+          "userName": newMsg.userName,
+          "toUserId": newMsg.toUserId,
+          "toUserName": petition.name,
+          "chatId": newMsg.chatId
+        });
+
+      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> =
+        this.afs.doc(`ChatConversations/${newMsg.chatId}/ChatMessage/${newMsg.messageId}`);
       await ChatMessageDocument.set(newMsg);
+
       return newMsg.chatId;
-    } catch (error) { console.error(error) }
+    } catch (error) { }
 
   }
 
@@ -53,21 +60,16 @@ export class ChatService {
     return this.afs.collection('ChatConversations').doc(chatId).collection('ChatMessage').valueChanges();
   }
 
-  getChatConversationsListForCurrentUser(): Observable<any> {
-    return this.ChatMessageCollections.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        });
-      }));
+  getChatConversationsListForCurrentUser(): Observable<ChatConversations[][]> {
+    return this.afs
+      .collection<ChatConversations[]>(`ChatConversations`).valueChanges();
+   
   }
 
   async sendMsg(msg: ChatMessage) {
     try {
       const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatConversations/${msg.chatId}/ChatMessage/${msg.messageId}`);
       await ChatMessageDocument.set(msg);
-    } catch (error) { console.log(error)}
+    } catch (error) { }
   }
 }
