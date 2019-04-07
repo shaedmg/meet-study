@@ -22,5 +22,5 @@ export class ChatConversations{
     toUserName: string;
     toUserId: string;
     chatId:string;
-    ChatMessage:ChatMessage;
+    ChatMessage:ChatMessage[];
 }

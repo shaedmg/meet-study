@@ -12,7 +12,9 @@ export class AnuncioProvider {
   private anunciosCollection: AngularFirestoreCollection<MeetingI>;
   private todos: Observable<MeetingI[]>;
 
-  constructor(public http: HttpClient, db: AngularFirestore, private userProvider: UsuariosProvider) {
+  constructor(public http: HttpClient, 
+    db: AngularFirestore, 
+    private userProvider: UsuariosProvider) {
     this.anunciosCollection = db.collection<MeetingI>('anuncios');
   }
 
