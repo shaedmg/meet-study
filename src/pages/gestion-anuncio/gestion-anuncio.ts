@@ -10,11 +10,13 @@ import { Subscription  } from 'rxjs/Subscription';
   templateUrl: 'gestion-anuncio.html',
 })
 export class GestionAnuncioPage implements OnInit{
+  
   anuncio: MeetingI = {
     name: "",
     primarySubject: "",
     secondarySubject: "",
     time: "",
+    peticiones: []
   };
   anuncioId = "";
   observer: Subscription ;
@@ -32,17 +34,9 @@ export class GestionAnuncioPage implements OnInit{
       this.anuncio = res;
     });
   }
-  removeAnuncios(){
-    this.anuncioService.removeAnuncio(this.anuncioId);
-    this.navCtrl.pop();
-    
-    
-    
-  }
+
   updateAnuncios(){
     this.navCtrl.pop();
-    this.anuncioService.updateAnuncio(this.anuncio,this.anuncioId);
-    
-    
+    this.anuncioService.updateAnuncio(this.anuncio,this.anuncioId);   
   }
 }

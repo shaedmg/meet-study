@@ -14,7 +14,7 @@ export class EditProfilePage {
 
   constructor(public navCtrl: NavController, 
     public UP:UsuariosProvider,
-    public navParams: NavParams,    
+    public navParams: NavParams,
     public formBuilder: FormBuilder,
     public authService: AuthProvider,
     ) {
@@ -30,14 +30,11 @@ export class EditProfilePage {
   signUpForm = this.formBuilder.group({
     name: ['', Validators.required],
     lastName: ['', Validators.required],
-    email: ['', Validators.required],
     birthDate: ['', Validators.required],
     id: String
   });
   
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad EditProfilePage');
-  }
+  ionViewDidLoad() { }
   updateUser(){
     this.UP.updateUsuario(this.signUpForm.value);
     this.navCtrl.setRoot("HomePage");

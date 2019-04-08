@@ -10,13 +10,13 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <ion-item navPush="Chat"
-              [navParams]="toUser">
+    <ion-item *ngFor="let chat of ChatConversationList" 
+              (click)="openChat(chat)">
       <ion-avatar item-left>
         <img src="./assets/user.jpg">
       </ion-avatar>
-      <h2>jhonts</h2>
-      <p>El puto amo de la vida</p>
+      <h2 *ngIf="chat.toUserId === user.id">{{chat.userName}}</h2>
+      <h2 *ngIf="chat.userId === user.id">{{chat.toUserName}}</h2>
     </ion-item>
   </ion-list>
 </ion-content>

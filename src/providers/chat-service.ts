@@ -1,56 +1,71 @@
 import { Injectable } from '@angular/core';
-import { Events } from 'ionic-angular';
-import { map } from 'rxjs/operators/map';
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs/Observable";
-import { UserInfo, ChatMessage } from "../app/models/chat.model";
+import { ChatMessage, UserInfo, ChatConversations } from "../app/models/chat.model";
+import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UsuariosProvider } from './usuarios';
-import { AngularFirestore } from 'angularfire2/firestore';
-
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/switchMap';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChatService {
 
-  constructor(private http: HttpClient,
-    private events: Events,
+  user: UserInfo;
+  ChatConversationsId: string;
+  chatConversations: AngularFirestoreCollection<ChatConversations[]>;
+
+  constructor(
+    public afdb: AngularFireDatabase,
     public afs: AngularFirestore,
-    private UP: UsuariosProvider) {
-  }
-  //mockNewMsg lo que hace es devolver un mensaje a los
-  // 2 segundos que dice gilipollas
-  mockNewMsg(msg) {
-    const mockMsg: ChatMessage = {
-      messageId: Date.now().toString(),
-      userId: '2',
-      userName: 'Santi',
-      userAvatar: './assets/to-user.jpg',
-      toUserId: '1',
-      time: Date.now(),
-      message: "gilipollas",
-      status: 'success'
-    };
-
-    setTimeout(() => {
-      this.events.publish('chat:received', mockMsg, Date.now())
-    }, Math.random() * 1800)
+    private userProvider: UsuariosProvider) {
+    this.chatConversations = afs
+      .collection<ChatConversations[]>('ChatConversations');
+    this.userProvider.getCurrentUserPromiseToChat()
+      .then((user) => {
+        this.user = user;
+      });
   }
 
-  getMsgList(): Observable<ChatMessage[]> {
-    //obtener lista de mensajes del chat con otro usuario x
-    const msgListUrl = './assets/mock/msg-list.json';
-    return this.http.get<any>(msgListUrl)
-      .pipe(map(response => response.array));
+  getChatConversationsListForCurrentUser(): Observable<ChatConversations[][]>{
+    return this.chatConversations
+      .snapshotChanges().pipe(
+        map(actions => {
+          return actions.map(a => {
+            return a.payload.doc.data();
+          }).filter(data =>
+              (data.userId == this.user.id ||
+              data.toUserId == this.user.id)
+            );
+        })
+      );
   }
 
-  sendMsg(msg: ChatMessage) {
-    //guardar en la base de datos y (el metodo de firebase)avisar al otro que tiene mensaje
-    return new Promise(resolve => setTimeout(() => resolve(msg), Math.random() * 1000))
-      .then(() => this.mockNewMsg(msg));
+  async addChat(petition) {
+    try {
+      let chatId = this.afdb.createPushId();
+      const ChatConversationsCollectionDocument: AngularFirestoreDocument =
+        this.afs.doc(`ChatConversations/${chatId}`);
+      await ChatConversationsCollectionDocument
+        .set({
+          "userId": this.user.id,
+          "userName": this.user.name,
+          "toUserId": petition.userId,
+          "toUserName": petition.name,
+          "chatId": chatId
+        });
+      return chatId;
+    } catch (error) { }
+
   }
 
-  getUserInfo(): Promise<UserInfo> {
-    var user = this.UP.getUsuario();
-    return new Promise(resolve => resolve(user));
+  getMsgList(chatId): Observable<any> {
+    return this.afs.collection('ChatConversations').doc(chatId).collection('ChatMessage').valueChanges();
   }
 
+  async sendMsg(msg: ChatMessage) {
+    try {
+      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatConversations/${msg.chatId}/ChatMessage/${msg.messageId}`);
+      await ChatMessageDocument.set(msg);
+    } catch (error) { }
+  }
 }
