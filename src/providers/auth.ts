@@ -25,6 +25,8 @@ export class AuthProvider {
           user.email,
           user.password
         );
+        //catch el error de createUserWithEmailAndPassword para validar
+        
 
       const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`userProfile/${credentials.user.uid}`);
 
