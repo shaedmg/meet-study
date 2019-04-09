@@ -12,21 +12,21 @@ export class ChatService {
 
   user: UserInfo;
   ChatConversationsId: string;
-  chatConversations: AngularFirestoreCollection<ChatConversations[]>;
+  chatConversations: AngularFirestoreCollection<ChatConversations>;
 
   constructor(
     public afdb: AngularFireDatabase,
     public afs: AngularFirestore,
     private userProvider: UsuariosProvider) {
     this.chatConversations = afs
-      .collection<ChatConversations[]>('ChatConversations');
+      .collection<ChatConversations>('ChatConversations');
     this.userProvider.getCurrentUserPromiseToChat()
       .then((user) => {
         this.user = user;
       });
   }
 
-  getChatConversationsListForCurrentUser(): Observable<ChatConversations[][]>{
+  getChatConversationsListForCurrentUser(): Observable<ChatConversations[]>{
     return this.chatConversations
       .snapshotChanges().pipe(
         map(actions => {

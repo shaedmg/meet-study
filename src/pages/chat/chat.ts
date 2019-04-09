@@ -4,6 +4,7 @@ import { Events, Content } from 'ionic-angular';
 import { ChatService } from "../../providers/chat-service";
 import { ChatMessage, UserInfo } from "../../app/models/chat.model";
 import { UsuariosProvider } from '../../providers/usuarios';
+import { AngularFireDatabase } from 'angularfire2/database';
 @IonicPage()
 @Component({
   selector: 'page-chat',
@@ -23,6 +24,7 @@ export class Chat {
   constructor(navParams: NavParams,
     private chatService: ChatService,
     private events: Events,
+    public afdb: AngularFireDatabase,
     private userProvider: UsuariosProvider) {
     //perfil del otro
     this.toUser = {
@@ -83,9 +85,9 @@ export class Chat {
    */
   sendMsg() {
     if (!this.editorMsg.trim()) return;
-    const id = Date.now().toString();
+    const id = this.afdb.createPushId();
     let newMsg: ChatMessage = {
-      messageId: Date.now().toString(),
+      messageId: this.afdb.createPushId(),
       chatId: this.chatId,
       userId: this.user.id,
       userName: this.user.name,
