@@ -8,34 +8,66 @@
     <form [formGroup]="signUpForm" (ngSubmit)="signup()">
         <ion-list>
 
+
             <ion-item>
                 <ion-icon name="person" item-start></ion-icon>
                 <ion-label stacked>Nombre:</ion-label>
-                <ion-input [(ngModel)]= "userDetails.name" formControlName="name" type="text" placeholder="Nombre"></ion-input>
+                <ion-input [(ngModel)]="userDetails.name" formControlName="name" type="text" placeholder="Nombre">
+                </ion-input>
             </ion-item>
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.name">
+                    <div class="error-message"
+                        *ngIf="signUpForm.get('name').hasError(validation.type) && (signUpForm.get('name').dirty || signUpForm.get('name').touched)">
+                        {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
 
             <ion-item>
                 <ion-icon name="person" item-start></ion-icon>
                 <ion-label stacked>Apellidos:</ion-label>
-                <ion-input [(ngModel)]= "userDetails.lastName" formControlName="lastName" type="text" placeholder="Apellidos"></ion-input>
+                <ion-input [(ngModel)]="userDetails.lastName" formControlName="lastName" type="text"
+                    placeholder="Apellidos"></ion-input>
             </ion-item>
+
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.lastName">
+                    <div class="error-message"
+                        *ngIf="signUpForm.get('lastName').hasError(validation.type) && (signUpForm.get('lastName').dirty || signUpForm.get('lastName').touched)">
+                        {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
 
             <ion-item>
                 <ion-icon name="mail" item-start></ion-icon>
                 <ion-label stacked>Correo electronico:</ion-label>
-                <ion-input [(ngModel)]= "userDetails.email"  formControlName="email" type="email" placeholder="Email"></ion-input>
+                <ion-input [(ngModel)]="userDetails.email" formControlName="email" type="email" placeholder="Email">
+                </ion-input>
             </ion-item>
+
+            <div class="validation-errors">
+                <ng-container *ngFor="let validation of validation_messages.email">
+                    <div class="error-message"
+                        *ngIf="signUpForm.get('email').hasError(validation.type) && (signUpForm.get('email').dirty || signUpForm.get('email').touched)">
+                        {{ validation.message }}
+                    </div>
+                </ng-container>
+            </div>
 
             <ion-item>
                 <ion-icon name="calendar" item-start></ion-icon>
                 <ion-label stacked>Fecha de nacimiento:</ion-label>
-                <ion-datetime [(ngModel)]= "userDetails.birthDate" formControlName="birthDate" displayFormat="DD-MM-YYYY" placeholder="DD-MM-YYYY"></ion-datetime>
+                <ion-datetime [(ngModel)]="userDetails.birthDate" formControlName="birthDate" displayFormat="DD-MM-YYYY"
+                    placeholder="DD-MM-YYYY"></ion-datetime>
             </ion-item>
 
             <ion-item>
                 <ion-icon name="eye-off" item-start></ion-icon>
                 <ion-label stacked>Contraseña:</ion-label>
-                <ion-input  [(ngModel)]= "userDetails.password" formControlName="password" type="password" placeholder="Contraseña"></ion-input>
+                <ion-input [(ngModel)]="userDetails.password" formControlName="password" type="password"
+                    placeholder="Contraseña"></ion-input>
             </ion-item>
 
 
