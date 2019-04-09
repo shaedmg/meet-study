@@ -9,13 +9,14 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-  <ion-list >
-    <ion-item *ngFor="let user of usersToChat | async" (click)="openChat(user.id,user.name)">
+  <ion-list>
+    <ion-item *ngFor="let chat of ChatConversationList" 
+              (click)="openChat(chat)">
       <ion-avatar item-left>
         <img src="./assets/user.jpg">
       </ion-avatar>
-      <h2>{{user.name}}</h2>
-      <p>{{user.email}}</p>
+      <h2 *ngIf="chat.toUserId === user.id">{{chat.userName}}</h2>
+      <h2 *ngIf="chat.userId === user.id">{{chat.toUserName}}</h2>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -1,46 +1,70 @@
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs/operators/map';
-import { Observable } from "rxjs/Observable";
-import { ChatMessage, UserInfo } from "../app/models/chat.model";
+import { ChatMessage, UserInfo, ChatConversations } from "../app/models/chat.model";
 import { AngularFirestore, AngularFirestoreDocument, AngularFirestoreCollection } from 'angularfire2/firestore';
 import { UsuariosProvider } from './usuarios';
-
+import { AngularFireDatabase } from 'angularfire2/database';
+import { Observable } from 'rxjs';
+import 'rxjs/add/operator/switchMap';
+import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChatService {
 
   user: UserInfo;
-  private ChatMessageCollection: AngularFirestoreCollection<ChatMessage>;
+  ChatConversationsId: string;
+  chatConversations: AngularFirestoreCollection<ChatConversations>;
 
   constructor(
+    public afdb: AngularFireDatabase,
     public afs: AngularFirestore,
     private userProvider: UsuariosProvider) {
-    //creco la conexión con los mensajes
-    this.ChatMessageCollection = afs.collection<ChatMessage>('ChatMessage');
-    //perfil loged user
-    this.userProvider.getUserLogedToChat()
+    this.chatConversations = afs
+      .collection<ChatConversations>('ChatConversations');
+    this.userProvider.getCurrentUserPromiseToChat()
       .then((user) => {
         this.user = user;
       });
   }
 
-  getMsgList(userId): Observable<ChatMessage[]> {
-    return this.ChatMessageCollection.snapshotChanges().pipe(
-      map(actions => {
-        return actions.map(a => {
-          const data = a.payload.doc.data();
-          const id = a.payload.doc.id;
-          return { id, ...data };
-        }).filter(res =>
-          (res.userId == userId || res.toUserId == userId) &&
-          (res.userId == this.user.id || res.toUserId == this.user.id)
-        );
-      }));
+  getChatConversationsListForCurrentUser(): Observable<ChatConversations[]>{
+    return this.chatConversations
+      .snapshotChanges().pipe(
+        map(actions => {
+          return actions.map(a => {
+            return a.payload.doc.data();
+          }).filter(data =>
+              (data.userId == this.user.id ||
+              data.toUserId == this.user.id)
+            );
+        })
+      );
+  }
+
+  async addChat(petition) {
+    try {
+      let chatId = this.afdb.createPushId();
+      const ChatConversationsCollectionDocument: AngularFirestoreDocument =
+        this.afs.doc(`ChatConversations/${chatId}`);
+      await ChatConversationsCollectionDocument
+        .set({
+          "userId": this.user.id,
+          "userName": this.user.name,
+          "toUserId": petition.userId,
+          "toUserName": petition.name,
+          "chatId": chatId
+        });
+      return chatId;
+    } catch (error) { }
+
+  }
+
+  getMsgList(chatId): Observable<any> {
+    return this.afs.collection('ChatConversations').doc(chatId).collection('ChatMessage').valueChanges();
   }
 
   async sendMsg(msg: ChatMessage) {
     try {
-      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatMessage/${msg.messageId}`);
+      const ChatMessageDocument: AngularFirestoreDocument<ChatMessage> = this.afs.doc(`ChatConversations/${msg.chatId}/ChatMessage/${msg.messageId}`);
       await ChatMessageDocument.set(msg);
     } catch (error) { }
   }

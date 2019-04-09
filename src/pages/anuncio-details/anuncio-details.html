@@ -11,4 +11,18 @@
     <p>Hora: {{anuncio.time}}</p>
     <button (click)="sendPetition()">Enviar solicitud</button>
     <button (click)="goHome()">No me interesa</button>
+
+    <ion-list>
+        <ion-card *ngFor="let peticion of anuncio.peticiones">
+            <ion-card-content>
+                <p>{{peticion.name}} te ha enviado una peticion a las {{peticion.time}}</p>
+                <button ion-button icon-only clear (click)="acceptPetition(peticion)">
+                    <ion-icon name="checkmark-circle-outline"></ion-icon>
+                </button>
+                <button ion-button icon-only clear (click)="removePetition(petition)">
+                        <ion-icon name="close-circle"></ion-icon>
+                </button>
+            </ion-card-content>
+        </ion-card>
+    </ion-list>
 </ion-content>

@@ -40,7 +40,7 @@ export class LoginPage {
     //Manera óptima de iniciar sesión.
     try {
       await this.auth.loginUser(this.creds);
-      this.userProvider.getActualUser().pipe(take(1)).toPromise()
+      this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
         this.user = usuario;
       });

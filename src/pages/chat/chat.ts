@@ -4,6 +4,7 @@ import { Events, Content } from 'ionic-angular';
 import { ChatService } from "../../providers/chat-service";
 import { ChatMessage, UserInfo } from "../../app/models/chat.model";
 import { UsuariosProvider } from '../../providers/usuarios';
+import { AngularFireDatabase } from 'angularfire2/database';
 @IonicPage()
 @Component({
   selector: 'page-chat',
@@ -18,10 +19,12 @@ export class Chat {
   toUser: UserInfo;
   editorMsg = '';
   showEmojiPicker = false;
+  chatId;
 
   constructor(navParams: NavParams,
     private chatService: ChatService,
     private events: Events,
+    public afdb: AngularFireDatabase,
     private userProvider: UsuariosProvider) {
     //perfil del otro
     this.toUser = {
@@ -29,10 +32,11 @@ export class Chat {
       name: navParams.get('toUserName')
     };
     //perfil loged user
-    this.userProvider.getUserLogedToChat()
+    this.userProvider.getCurrentUserPromiseToChat()
       .then((user) => {
         this.user = user;
       });
+    this.chatId = navParams.get("chatId");
   }
 
   ionViewWillLeave() {
@@ -69,11 +73,11 @@ export class Chat {
    */
   getMsg() {
     return this.chatService
-      .getMsgList(this.toUser.id)
+      .getMsgList(this.chatId)
       .subscribe(res => {
         this.msgList = res;
         this.scrollToBottom();
-      }).unsubscribe;
+      });
   }
 
   /**
@@ -81,9 +85,10 @@ export class Chat {
    */
   sendMsg() {
     if (!this.editorMsg.trim()) return;
-    const id = Date.now().toString();
+    const id = this.afdb.createPushId();
     let newMsg: ChatMessage = {
-      messageId: Date.now().toString(),
+      messageId: this.afdb.createPushId(),
+      chatId: this.chatId,
       userId: this.user.id,
       userName: this.user.name,
       userAvatar: this.user.avatar,

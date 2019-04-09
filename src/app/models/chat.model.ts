@@ -7,10 +7,20 @@ export class ChatMessage {
     time: number | string;
     message: string;
     status: string;
+    chatId:string;
 }
 
 export class UserInfo {
     id: string;
     name?: string;
     avatar?: string;
+}
+
+export class ChatConversations{
+    userId: string;
+    userName:string;
+    toUserName: string;
+    toUserId: string;
+    chatId:string;
+    ChatMessage:ChatMessage[];
 }
