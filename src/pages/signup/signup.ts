@@ -1,8 +1,8 @@
-import { AuthProvider } from '../../providers/auth';
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
-import { FormBuilder, Validators, FormControl } from '@angular/forms';
-import { UsuarioValidator } from '../../providers/usuario.validator';
+import {AuthProvider} from '../../providers/auth';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {FormBuilder, Validators, FormControl, FormGroup} from '@angular/forms';
+import {PasswordValidator} from "../../providers/password.validator";
 
 @IonicPage()
 @Component({
@@ -15,39 +15,62 @@ export class SignUpPage {
     public formBuilder: FormBuilder,
     public authService: AuthProvider,
     public navParams: NavParams,
-    public toastCtrl: ToastController,
-    public loadCtrl: LoadingController
-  ) { }
+    public toastCtrl: ToastController
+  ) {
+  }
 
   signUpForm = this.formBuilder.group({
     name: new FormControl('', Validators.required),
     lastName: new FormControl('', Validators.required),
     email: new FormControl('', Validators.compose([
-      UsuarioValidator.validUsername,
       Validators.required,
-      Validators.email,
+      Validators.email
     ])),
     birthDate: ['', Validators.required],
-    password: ['', Validators.required]
+    password: new FormControl('', Validators.compose([
+      Validators.minLength(6),
+      Validators.required,
+      Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$') //this is for the letters (both uppercase and lowercase) and numbers validation
+    ])),
+    /*passwordGroup: this.formBuilder.group({
+      password: new FormControl('', Validators.compose([
+        Validators.minLength(6),
+        Validators.required,
+        Validators.pattern('^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9]+$') //this is for the letters (both uppercase and lowercase) and numbers validation
+      ])),
+      confirm_password: new FormControl('', Validators.required)
+    }, (passwordGroup: FormGroup) => {
+      return PasswordValidator.areEqual(passwordGroup);
+    })*/
   });
 
   validation_messages = {
     'name': [
-      { type: 'required', message: 'Username is required.' },
+      {type: 'required', message: 'El nombre es un campo obligatorio'},
     ],
     'lastName': [
-      { type: 'required', message: 'Username is required.' },
-      { type: 'minlength', message: 'Username must be at least 5 characters long.' },
-      { type: 'maxlength', message: 'Username cannot be more than 10 characters long.' },
-      { type: 'validUsername', message: 'Your username has already been taken.' }
+      {type: 'required', message: 'Los apellidos son obligatorios'},
     ],
     'email': [
-      { type: 'required', message: 'Email is required.' },      
-      { type: 'email', message: 'El email debe ser válido.' }
+      {type: 'required', message: 'El email es un campo obligatorio'},
+      {type: 'email', message: 'El email debe ser válido.'}
     ],
+    'birthDate': [
+      {type: 'required', message: 'La fecha de nacimiento es un campo obligatorio'},
+    ],
+    'password': [
+      {type: 'required', message: 'La contraseña es un campo obligatorio'},
+      {type: 'pattern', message: 'La contraseña debe tener mayúscula, minúscula y números'},
+      {type: 'minlength', message: 'La contraseña debe tener al menos 6 caracteres'},
+      {type: 'maxlength', message: 'La contraseña debe tener al menos 25 caracteres'}
+    ],
+    /*'confirmPassword': [
+      {type: 'required', message: 'Tienes que confirmar tu contraseña'},
+      {type: 'areEqual', message: 'Las contraseñas no coinciden'}
+    ]*/
 
-    //more messages
   }
+
   userDetails = {
     name: this.signUpForm.value.name,
     lastName: this.signUpForm.value.lastName,
@@ -57,13 +80,39 @@ export class SignUpPage {
   }
 
 
-  ionViewDidLoad() { }
+  async presentToast() {
+    const toast = await this.toastCtrl.create({
+      message: 'El email que intenta utilizar ya está en uso.',
+      duration: 2000
+    });
+    toast.present();
+  }
 
-  signup() {
+  ionViewDidLoad() {
+  }
+
+  async signup() {
     try {
-      this.authService.registerUser(this.userDetails);
-      this.navCtrl.setRoot("HomePage");
-    } catch (error) { 
+      var responseCode=null;
+      await this.authService.registerUser(this.userDetails).then(function (value) {
+        if(value!=null){
+          responseCode = value.code;
+          return;
+        }
+        responseCode="success";
+      });
+
+      if(responseCode=="auth/email-already-in-use"){
+        this.presentToast();
+      }else{
+        this.navCtrl.setRoot("HomePage");
+      }
+
+
+
+
+
+    } catch (error) {
     }
   }
 }

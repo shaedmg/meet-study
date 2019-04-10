@@ -18,14 +18,18 @@ export class AuthProvider {
 
   }
 
+  
   async registerUser(user): Promise<any> {
     try {
+
+
+
       const credentials: firebase.auth.UserCredential = await this.afireauth.auth
         .createUserWithEmailAndPassword(
           user.email,
           user.password
         );
-        //catch el error de createUserWithEmailAndPassword para validar
+
         
 
       const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`userProfile/${credentials.user.uid}`);
@@ -38,6 +42,8 @@ export class AuthProvider {
         birthDate: user.birthDate
       });
     } catch (error) {
+      return error;
+
     }
   }
 
