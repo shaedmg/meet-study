@@ -24,7 +24,7 @@ export class SignUpPage {
     lastName: new FormControl('', Validators.required),
     email: new FormControl('', Validators.compose([
       Validators.required,
-      Validators.email
+      Validators.email,
     ])),
     birthDate: ['', Validators.required],
     password: new FormControl('', Validators.compose([
@@ -69,15 +69,15 @@ export class SignUpPage {
       {type: 'areEqual', message: 'Las contraseñas no coinciden'}
     ]*/
 
-  }
+  };
 
   userDetails = {
     name: this.signUpForm.value.name,
     lastName: this.signUpForm.value.lastName,
     email: this.signUpForm.value.email,
-    birthDate: this.signUpForm.value.dateBirth,
+    birthDate: this.signUpForm.value.birthDate,
     password: this.signUpForm.value.password
-  }
+  };
 
 
   async presentToast() {
@@ -93,7 +93,8 @@ export class SignUpPage {
 
   async signup() {
     try {
-      var responseCode=null;
+      var responseCode;
+      console.log(this.userDetails);
       await this.authService.registerUser(this.userDetails).then(function (value) {
         if(value!=null){
           responseCode = value.code;
@@ -101,6 +102,7 @@ export class SignUpPage {
         }
         responseCode="success";
       });
+      console.log(responseCode);
 
       if(responseCode=="auth/email-already-in-use"){
         this.presentToast();
