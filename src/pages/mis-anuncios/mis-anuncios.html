@@ -22,24 +22,24 @@
         <p>Añadir anuncio</p>
     </button>
     <ion-list>
-        <ion-card (click)="openAdvertisementDetails(anuncio)"  *ngFor="let anuncio of anuncios">
-            <ion-card-content>
+        <ion-card *ngFor="let anuncio of anuncios">
+            <ion-card-content (click)="openAdvertisementDetails(anuncio)">
                 <ion-card-title>
                     Asignatura a estudiar: {{anuncio.primarySubject}}
                 </ion-card-title>
                 <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
                 <p>Nombre: {{anuncio.name}}</p>
                 <p>Hora: {{anuncio.time}}</p>
-
+            </ion-card-content>
                 <button ion-button icon-only clear (click)="modificarAnuncio(anuncio.id)">
                     <ion-icon name="md-create" item-left></ion-icon>
                 </button>
-
+        
                 <button ion-button icon-only clear (click)="removeAnuncios(anuncio.id)">
                   <ion-icon name="close" item-rigth></ion-icon>
                 </button>
-
-            </ion-card-content>
         </ion-card>
+        
+        
     </ion-list>
 </ion-content>
