@@ -41,21 +41,4 @@ export class HomePage implements  OnInit{
     this.anuncioService.addPeticion(anuncio,peticion,anuncio.id)
     this.presentAlert();
   }
- /* async presentAlert(number) {
-    if(number==1){
-      const alert = await this.alertController.create({
-        title: 'Alert',
-        message:"Su solicitud ha sido enviada.",
-        buttons: ['Aceptar']
-      });
-      await alert.present();
-    }else if(number==2){
-      const alert = await this.alertController.create({
-        title: 'Alert',
-        message:"El anuncio deberia desaparecer del inicio pero no de la bd",
-        buttons: ['Aceptar']
-      });
-      await alert.present();
-    }
-  }*/
 }

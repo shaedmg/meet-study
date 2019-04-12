@@ -64,6 +64,10 @@ export class AnuncioDetailsPage {
   }
   acceptPetition(peticion) {
     this.chatService.addChat(peticion);
+    this.anuncioService.removePetition(peticion,this.anuncio);
+  }
+  rejectPetition(peticion){
+    this.anuncioService.removePetition(peticion,this.anuncio);
   }
 }
 

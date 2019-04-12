@@ -9,8 +9,6 @@
     <p>Asignatura conocida: {{anuncio.secondarySubject}}</p>
     <p>Nombre: {{anuncio.name}}</p>
     <p>Hora: {{anuncio.time}}</p>
-    <button (click)="sendPetition()">Enviar solicitud</button>
-    <button (click)="goHome()">No me interesa</button>
 
     <ion-list>
         <ion-card *ngFor="let peticion of anuncio.peticiones">
@@ -19,7 +17,7 @@
                 <button ion-button icon-only clear (click)="acceptPetition(peticion)">
                     <ion-icon name="checkmark-circle-outline"></ion-icon>
                 </button>
-                <button ion-button icon-only clear (click)="removePetition(petition)">
+                <button ion-button icon-only clear (click)="rejectPetition(peticion)">
                         <ion-icon name="close-circle"></ion-icon>
                 </button>
             </ion-card-content>

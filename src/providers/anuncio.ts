@@ -69,6 +69,10 @@ export class AnuncioProvider {
         return this.anunciosCollection.doc<MeetingI>(anuncioId).update(anuncio);
       })
   }
+  removePetition(peticion: PeticionI, anuncio: MeetingI){
+    anuncio.peticiones = anuncio.peticiones.filter(a => a !== peticion);
+    this.anunciosCollection.doc<MeetingI>(anuncio.id).update(anuncio)
+  }
 
   removeAnuncio(id: string) {
     return this.anunciosCollection.doc(id).delete();
