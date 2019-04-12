@@ -26,6 +26,7 @@
             <ion-card-content (click)="openAdvertisementDetails(anuncio)">
                 <ion-card-title>
                     Asignatura a estudiar: {{anuncio.primarySubject}}
+                    <ion-icon class="red-circle" name="circle">{{anuncio.peticiones.length}}</ion-icon>
                 </ion-card-title>
                 <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
                 <p>Nombre: {{anuncio.name}}</p>
