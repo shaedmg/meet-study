@@ -13,7 +13,7 @@
     <ion-list>
         <ion-card *ngFor="let peticion of anuncio.peticiones">
             <ion-card-content>
-                <p>{{peticion.name}} te ha enviado una peticion a las {{peticion.time}}</p>
+                <p>{{peticion.name}} te ha enviado una peticion el {{convertToHumanDate(peticion.time)}}</p>
                 <button ion-button icon-only clear (click)="acceptPetition(peticion)">
                     <ion-icon name="checkmark-circle-outline"></ion-icon>
                 </button>

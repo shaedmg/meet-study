@@ -45,9 +45,7 @@ export class MisAnunciosPage implements OnInit {
   removeAnuncios(ident){
     this.anuncioService.removeAnuncio(ident);
   }
-
   modificarAnuncio(ident){
     this.navCtrl.push(GestionAnuncioPage,{id: ident});
   }
-
 }

@@ -69,6 +69,17 @@ export class AnuncioDetailsPage {
   rejectPetition(peticion){
     this.anuncioService.removePetition(peticion,this.anuncio);
   }
+  convertToHumanDate(epochDate){
+    var date = new Date( parseFloat(epochDate));
+    var d = date.getDate() + "/" +
+    (date.getMonth() + 1) + "/" +
+    date.getFullYear() + " " +
+    "a las " +
+    date.getHours() + ":" +
+    date.getMinutes() + ":" +
+    date.getSeconds();
+    return d;
+  }
 }
 
 
