@@ -47,7 +47,7 @@ export class Chat {
     this.getMsg();
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);
-    })
+    });
   }
 
   onFocus() {
@@ -134,7 +134,9 @@ export class Chat {
   }
 
   scrollToBottom() {
-    if(this.content._scroll) this.content.scrollToBottom(0);
+    var messagesContent = this.content as Content;
+
+messagesContent.scrollTo(0, messagesContent.getContentDimensions().contentHeight, messagesContent.getContentDimensions().contentWidth);
   }
 
   private focus() {
