@@ -9,7 +9,6 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChatService {
-
   user: UserInfo;
   ChatConversationsId: string;
   chatConversations: AngularFirestoreCollection<ChatConversations>;
@@ -51,7 +50,8 @@ export class ChatService {
           "userName": this.user.name,
           "toUserId": petition.userId,
           "toUserName": petition.name,
-          "chatId": chatId
+          "chatId": chatId,
+          "valoration": 0
         });
       return chatId;
     } catch (error) { }
@@ -60,6 +60,10 @@ export class ChatService {
 
   getMsgList(chatId): Observable<any> {
     return this.afs.collection('ChatConversations').doc(chatId).collection('ChatMessage').valueChanges();
+  }
+
+  async setChatValoration(valoration, chatId) {
+      return this.afs.collection('ChatConversations').doc(chatId).update({"valoration":valoration});
   }
 
   async sendMsg(msg: ChatMessage) {

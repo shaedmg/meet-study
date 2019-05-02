@@ -46,7 +46,11 @@ export class ListChatPage {
       chat.toUserName = chat.userName;
       chat.toUserId = chat.userId;
     }
-    this.navCtrl.push(Chat, { "chatId": chat.chatId, "toUserId": chat.userId, "toUserName": chat.toUserName });
+    this.navCtrl.push(Chat, { 
+      "chatId": chat.chatId, 
+      "toUserId": chat.userId, 
+      "toUserName": chat.toUserName,
+      "valoration": chat.valoration });
   }
 
   ionViewDidEnter() {

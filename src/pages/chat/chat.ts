@@ -20,6 +20,7 @@ export class Chat {
   editorMsg = '';
   showEmojiPicker = false;
   chatId;
+  valoration=0;
 
   constructor(navParams: NavParams,
     private chatService: ChatService,
@@ -37,6 +38,7 @@ export class Chat {
         this.user = user;
       });
     this.chatId = navParams.get("chatId");
+    this.valoration = navParams.get("valoration");
   }
 
   ionViewWillLeave() {
@@ -135,8 +137,7 @@ export class Chat {
 
   scrollToBottom() {
     var messagesContent = this.content as Content;
-
-messagesContent.scrollTo(0, messagesContent.getContentDimensions().contentHeight, messagesContent.getContentDimensions().contentWidth);
+    messagesContent.scrollTo(0, messagesContent.getContentDimensions().contentHeight, messagesContent.getContentDimensions().contentWidth);
   }
 
   private focus() {
@@ -149,4 +150,25 @@ messagesContent.scrollTo(0, messagesContent.getContentDimensions().contentHeight
     const textarea = this.messageInput.nativeElement;
     textarea.scrollTop = textarea.scrollHeight;
   }
+
+    /**
+   * @name sendValoration
+   */
+  sendValoration() {
+    if (this.valoration.valueOf() == 0) return;
+    if (this.user.id == this.toUser.id) return;
+    console.log("aqui pasa y deja mierda");
+    this.chatService.setChatValoration(this.valoration,this.chatId);
+    this.pushNewValoration(this.valoration);
+  }
+
+   /**
+   * @name pushNewValoration
+   * @param valoration
+   */
+  pushNewValoration(valoration: number){
+    if (this.valoration.valueOf() == 0) return;
+    this.valoration = valoration;
+  }
+
 }

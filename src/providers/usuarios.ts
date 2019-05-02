@@ -9,6 +9,7 @@ import { UserInfo } from '../app/models/chat.model';
 
 @Injectable()
 export class UsuariosProvider {
+
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
 
