@@ -18,7 +18,10 @@ export class AnuncioProvider {
     this.anunciosCollection = db.collection<MeetingI>('anuncios');
   }
 
-
+  getInitialAnuncios(){
+    const ajam = this.anunciosCollection.get();
+    console.log(ajam);
+  }
   getAnuncios(): Observable<MeetingI[]> {
     this.todos = this.anunciosCollection.snapshotChanges().pipe(
       map(actions => {
@@ -30,7 +33,18 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
-
+  getAnunciosSin(): MeetingI[]{
+    let ajam: MeetingI[];
+    let count = 0;
+    this.anunciosCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          ajam[count++] = a.payload.doc.data();
+          const id = a.payload.doc.id;
+        });
+      }));
+    return ajam;
+  }
   getAnuncio(id: string) {
     return this.anunciosCollection.doc<MeetingI>(id).valueChanges();
   }

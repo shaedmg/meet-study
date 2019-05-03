@@ -11,6 +11,22 @@
 </ion-header>
 
 <ion-content padding>
+    <ion-item>
+        <ion-label>Seleccione asignatura</ion-label>
+            <ionic-selectable
+            item-content
+            [(ngModel)]="subject"
+            [items]="subjects"
+            itemValueField="nombre"
+            itemTextField="nombre"
+            [canSearch]="true"
+            (onSearch)="filterAdvertisement($event)"
+            (onChange)="subjectChanged($event)"
+            (onClose)="onClose($event)"
+            [canClear]="true"
+            (onClear)="onClear()">
+            </ionic-selectable>
+        </ion-item>
     <ion-list>
         <ion-card *ngFor="let anuncio of anuncios">
             <ion-card-content>
@@ -18,8 +34,8 @@
                     Asignatura a estudiar: {{anuncio.primarySubject}}
                 </ion-card-title>
                 <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
-                <p>Nombre: {{anuncio.name}}</p>
-                <p>Hora: {{anuncio.time}}</p>
+                <p> Nombre: {{anuncio.name}}</p>
+                <p> Hora: {{anuncio.time}}</p>
                 <button ion-button icon-only clear (click)="sendPetition(anuncio)">
                     <ion-icon name="checkmark-circle-outline"></ion-icon>
                     <p>Enviar Solicitud</p>

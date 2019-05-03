@@ -19,10 +19,14 @@ import {AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth';
 import { ChatService } from '../providers/chat-service';
+import { IonicSelectableModule } from 'ionic-selectable';
+import { HomePage } from '../pages/home/home';
+import { SubjectsProvider } from '../providers/subjects';
 
 @NgModule({
   declarations: [
     MyApp,
+    HomePage
   ],
   imports: [
     BrowserModule,
@@ -34,19 +38,21 @@ import { ChatService } from '../providers/chat-service';
       tabsHideOnSubPages:true,
       tabsLayout:'icon-left',
       preloadModules: true
-    }),
+    }),IonicSelectableModule ,
     AngularFireDatabaseModule,
     AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    HomePage,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     EmojiProvider,
+    SubjectsProvider,
     AnuncioProvider,
     UsuariosProvider,
     ChatService,
