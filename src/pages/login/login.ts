@@ -44,7 +44,7 @@ export class LoginPage {
       .then(usuario => {
         this.user = usuario;
       });
-      this.navCtrl.setRoot(HomePage, {userProfile: this.user});
+      this.navCtrl.setRoot('HomePage', {userProfile: this.user});
     } catch (error) {  }
     
   }

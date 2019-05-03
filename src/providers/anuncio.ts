@@ -33,6 +33,21 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
+
+  getAnunciosPromise(): Promise<MeetingI[]> {
+    return this.anunciosCollection.snapshotChanges()
+      .pipe(
+        take(1),
+        map(actions => {
+          return actions.map(a => {
+            const data = a.payload.doc.data();
+            const id = a.payload.doc.id;
+            return { id, ...data };
+          });
+        }),
+      ).toPromise() ;
+  }
+
   getAnunciosSin(): MeetingI[]{
     let ajam: MeetingI[];
     let count = 0;
@@ -60,7 +75,15 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
-
+  filterAdvertisementByPrimarySubject(advertisements,searchTermName,searchTermAcronimo){
+    return advertisements.filter(res => {
+      if (res.primarySubject.toLowerCase().indexOf(searchTermName.toLowerCase()) > -1 ||
+        res.primarySubject.toLowerCase().indexOf(searchTermAcronimo.toLowerCase()) > -1) {
+        return true;
+      }
+      return false;
+    });
+  }
   updateAnuncio(anuncio: MeetingI, id: string) {
     return this.anunciosCollection.doc(id).update(anuncio);
   }

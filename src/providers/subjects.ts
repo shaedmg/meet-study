@@ -26,4 +26,15 @@ export class SubjectsProvider {
       
     return this.subjects;
   }
+  getSubjectsPromise(): Promise<SubjectsI[]> {
+    return this.subjectsCollection.snapshotChanges().pipe(
+      take(1),
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      })).toPromise();
+  }
 }
