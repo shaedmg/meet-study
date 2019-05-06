@@ -18,8 +18,22 @@
 
 <ion-content padding>
   <ion-list>
-    <ion-input placeholder="Asignatura a estudiar"  [(ngModel)]="anuncio.primarySubject"></ion-input>
-    <ion-input placeholder="Asignatura que puede ayudar"  [(ngModel)]="anuncio.secondarySubject"></ion-input>
+
+    <ion-item>
+      <ion-label>Asignatura a estudiar</ion-label>
+      <ionic-selectable item-content [(ngModel)]="subject" [items]="subjects" itemValueField="nombre"
+                        itemTextField="nombre" (onChange)="subjectChanged($event)" >
+      </ionic-selectable>
+    </ion-item>
+    <ion-item>
+      <ion-label>Asignatura que puede ayudar</ion-label>
+      <ionic-selectable item-content [(ngModel)]="subject2" [items]="subjects" itemValueField="nombre"
+                        itemTextField="nombre" (onChange)="subject2Changed($event)">
+      </ionic-selectable>
+    </ion-item>
+
+    <!--<ion-input placeholder="Asignatura a estudiar"  [(ngModel)]="anuncio.primarySubject"></ion-input>
+    <ion-input placeholder="Asignatura que puede ayudar"  [(ngModel)]="anuncio.secondarySubject"></ion-input>-->
     <ion-input placeholder="Hora" [(ngModel)]="anuncio.time"></ion-input>
     <button ion-button (click)="addAnuncios()">Crear Anuncio</button>
   </ion-list>

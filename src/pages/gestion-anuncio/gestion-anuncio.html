@@ -14,15 +14,24 @@
 
 
 <ion-content padding>
-    <p>Anuncio</p>
-    <ion-label *ngIf="anuncio">Asignatura a estudiar: </ion-label>
-    <ion-input *ngIf="anuncio" value="anuncio.primarySubject" [(ngModel)]="anuncio.primarySubject"></ion-input>
-    <ion-label *ngIf="anuncio">Asignatura conocida: </ion-label>
-    <ion-input *ngIf="anuncio" value="anuncio.secondarySubject" [(ngModel)]="anuncio.secondarySubject"></ion-input>
-    <ion-label *ngIf="anuncio">Nombre: </ion-label>
-    <ion-input *ngIf="anuncio" value="anuncio.name" [(ngModel)]="anuncio.name"></ion-input>
-    <ion-label *ngIf="anuncio">Hora: </ion-label>
-    <ion-input *ngIf="anuncio" value="anuncio.time" [(ngModel)]="anuncio.time"></ion-input>
-    <button (click)="updateAnuncios()">Modificar anuncio</button>
-    <button (click)="removeAnuncios()">Borrar anuncio</button>
-  </ion-content>
+  <p>Anuncio</p>
+  <ion-item>
+  <ion-label *ngIf="anuncio">Asignatura a estudiar: </ion-label>
+  <ionic-selectable item-content [(ngModel)]="subject" [items]="subjects" placeholder="{{anuncio.primarySubject}}" itemValueField="nombre"
+                    itemTextField="nombre" (onChange)="subjectChanged($event)" >
+  </ionic-selectable>
+  <!-- Falta que seleccione por defecto en el seleccionable, por ahora aparece en el placeholder-->
+  </ion-item>
+    <ion-item>
+  <ion-label *ngIf="anuncio">Asignatura que puede ayudar: </ion-label>
+  <ionic-selectable item-content [(ngModel)]="subject2" [items]="subjects" placeholder="{{anuncio.secondarySubject}}" itemValueField="nombre"
+                    itemTextField="nombre" (onChange)="subject2Changed($event)" >
+  </ionic-selectable>
+    </ion-item>
+  <ion-label *ngIf="anuncio">Nombre: </ion-label>
+  <ion-input *ngIf="anuncio" value="anuncio.name" [(ngModel)]="anuncio.name"></ion-input>
+  <ion-label *ngIf="anuncio">Hora: </ion-label>
+  <ion-input *ngIf="anuncio" value="anuncio.time" [(ngModel)]="anuncio.time"></ion-input>
+  <button (click)="updateAnuncios()">Modificar anuncio</button>
+  <button (click)="removeAnuncios()">Borrar anuncio</button>
+</ion-content>

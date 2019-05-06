@@ -3,6 +3,9 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import {AnuncioProvider} from '../../providers/anuncio';
 import { Subscription  } from 'rxjs/Subscription';
+import {SubjectsI} from "../../app/models/subjects.interface";
+import {SubjectsProvider} from "../../providers/subjects";
+import {IonicSelectableComponent} from "ionic-selectable";
 
 @IonicPage()
 @Component({
@@ -10,7 +13,9 @@ import { Subscription  } from 'rxjs/Subscription';
   templateUrl: 'gestion-anuncio.html',
 })
 export class GestionAnuncioPage implements OnInit{
-  
+  subject: SubjectsI;
+  subject2: SubjectsI;
+  subjects: SubjectsI[] = [];
   anuncio: MeetingI = {
     name: "",
     primarySubject: "",
@@ -20,7 +25,7 @@ export class GestionAnuncioPage implements OnInit{
   };
   anuncioId = "";
   observer: Subscription ;
-  constructor(public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams) {
+  constructor(public navCtrl: NavController,private anuncioService: AnuncioProvider, public navParams: NavParams,private subjectService: SubjectsProvider) {
     this.anuncioId = this.navParams.get('id');
   }
   
@@ -28,6 +33,15 @@ export class GestionAnuncioPage implements OnInit{
     if(this.anuncioId){
       this.loadTodo();
     }
+    this.subjectService.getSubjectsPromise().then(res => {
+      this.subjects = res;
+    });
+  }
+  subjectChanged(event: { component: IonicSelectableComponent, value: any }) {
+    this.anuncio.primarySubject = event.value.nombre;
+  }
+  subject2Changed(event: { component: IonicSelectableComponent, value: any }) {
+    this.anuncio.secondarySubject = event.value.nombre;
   }
   async loadTodo(){
     this.anuncioService.getAnuncio(this.anuncioId).subscribe(res => {
