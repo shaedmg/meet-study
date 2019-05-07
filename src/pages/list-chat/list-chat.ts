@@ -1,5 +1,7 @@
+import { ChatConversations } from './../../app/models/chat.model';
+import { ListChatPage } from './list-chat';
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { IonicPage, NavController,  AlertController, NavParams, Content } from 'ionic-angular';
 import { Chat } from '../chat/chat';
 import { ChatService } from '../../providers/chat-service';
 import { UsuariosProvider } from '../../providers/usuarios';
@@ -19,6 +21,7 @@ export class ListChatPage {
   constructor(
     public navParams: NavParams,
     private ChatService: ChatService,
+    public alertController: AlertController,
     public navCtrl: NavController,
     private userProvider: UsuariosProvider) {
     //perfil loged user
@@ -26,6 +29,29 @@ export class ListChatPage {
       .then((user) => {
         this.user = user;
       });
+  }
+
+  async alerta(chat) {
+    const alert = await this.alertController.create({
+      title: 'ELIMINAR CHAT',
+      message: '¿Desea eliminar el chat?',
+      buttons: [
+        {
+          text:"Eliminar",
+          handler: ()=>{
+              console.log("Eliminado");
+                     
+          }
+
+        },
+        {
+          text:"Cancelar",
+          role:"cancel"
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   /**

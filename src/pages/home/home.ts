@@ -3,8 +3,7 @@ import { IonicPage, AlertController, ModalController } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import { AnuncioProvider } from '../../providers/anuncio'
 import { SubjectsProvider } from '../../providers/subjects'
-import { UsuariosProvider } from '../../providers/usuarios'
-import { Favorite} from '../../app/models/usuarios.interface'
+import { Subscription } from 'rxjs/Subscription';
 import { PeticionI } from '../../app/models/peticiones.interface';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { SubjectsI } from '../../app/models/subjects.interface';
@@ -23,11 +22,7 @@ export class HomePage implements OnInit {
 
   searchTermName = "";
   searchTermAcronimo = "";
-  constructor(private modalCtrl : ModalController,  
-    public alertController: AlertController, 
-    private anuncioService: AnuncioProvider, 
-    private userService: UsuariosProvider, 
-    private subjectService: SubjectsProvider) { }
+  constructor(private modalCtrl : ModalController,  public alertController: AlertController, private anuncioService: AnuncioProvider, private subjectService: SubjectsProvider) { }
 
   ionViewCanLeave() {
   }
@@ -42,6 +37,8 @@ export class HomePage implements OnInit {
     });
 
   }
+
+ 
   async presentAlert() {
     const alert = await this.alertController.create({
       title: 'Peticion',
@@ -59,13 +56,6 @@ export class HomePage implements OnInit {
     }
     this.anuncioService.addPeticion(anuncio, peticion, anuncio.id)
     this.presentAlert();
-  }
-
-  addFavorite(anuncio){
-    const favorite: Favorite = {
-      favoriteId:anuncio.id
-    }
-    this.userService.addNewFavorite(favorite)
   }
 
   initializeItems() {

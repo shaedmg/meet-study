@@ -13,9 +13,7 @@
 <ion-content padding>
     <ion-item>
         <ion-label>Seleccione asignatura</ion-label>
-        <ionic-selectable item-content [(ngModel)]="subject" [items]="subjects" itemValueField="nombre"
-            itemTextField="nombre" [canSearch]="true" (onSearch)="filterSearch($event)"
-            (onChange)="subjectChanged($event)" [canClear]="true" (onClear)="onClear()">
+        <ionic-selectable item-content [(ngModel)]="subject" [items]="subjects" itemValueField="nombre" itemTextField="nombre" [canSearch]="true" (onSearch)="filterSearch($event)" (onChange)="subjectChanged($event)" [canClear]="true" (onClear)="onClear()">
         </ionic-selectable>
     </ion-item>
     <ion-list>
