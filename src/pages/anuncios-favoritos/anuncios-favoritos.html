@@ -1,0 +1,42 @@
+<!--
+  Generated template for the AnunciosFavoritosPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button [menuToggle]="activeMenu">
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Anuncios Favoritos</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-list>
+    <ion-card *ngFor="let anuncio of anuncios">
+      <ion-card-content (click)="openAdvertisementDetails(anuncio)">
+        <ion-card-title>
+          Asignatura a estudiar: {{anuncio.primarySubject}}
+          <ion-icon class="red-circle" name="circle">{{anuncio.peticiones.length}}</ion-icon>
+        </ion-card-title>
+        <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
+        <p>Nombre: {{anuncio.name}}</p>
+        <p>Hora: {{anuncio.time}}</p>
+      </ion-card-content>
+      <button ion-button icon-only clear (click)="modificarAnuncio(anuncio.id)">
+        <ion-icon name="md-create" item-left></ion-icon>
+      </button>
+
+      <button ion-button icon-only clear (click)="removeAnuncios(anuncio.id)">
+        <ion-icon name="close" item-rigth></ion-icon>
+      </button>
+    </ion-card>
+
+
+  </ion-list>
+</ion-content>

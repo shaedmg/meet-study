@@ -2,8 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AngularFirestoreCollection, AngularFirestore } from 'angularfire2/firestore';
 import { Observable } from 'rxjs';
-import { UsuariosI } from '../app/models/usuarios.interface';
-import { map } from 'rxjs/operators';
+import { UsuariosI, Favorite } from '../app/models/usuarios.interface';
+import { map, take } from 'rxjs/operators';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { UserInfo } from '../app/models/chat.model';
 
@@ -12,7 +12,10 @@ export class UsuariosProvider {
 
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
-
+  private favorites: Observable<Favorite[]>;
+  userProvider: any;
+  anunciosCollection: any;
+  
   constructor(
     public http: HttpClient,
     db: AngularFirestore,
@@ -72,8 +75,31 @@ export class UsuariosProvider {
   addUsuario(usuario: UsuariosI) {
     return this.userProfileCollection.add(usuario);
   }
-  
+
   removeUsuario(id: string) {
     return this.userProfileCollection.doc(id).delete();
+  }
+  
+  addNewFavorite( favorite:Favorite) {
+
+      
+       this.getCurrentUser().pipe(take(1)).toPromise()
+      .then(usuario => {
+        if(usuario.favorites){
+          usuario.favorites.push(favorite)
+          this.userProfileCollection.doc<UsuariosI>(usuario.id).update(usuario)
+        }else{
+          console.log("hola");
+          const arr: Favorite[] =  [];
+          arr.push(favorite);
+          usuario.favorites = arr
+          console.log(usuario.id + "")
+          this.userProfileCollection.doc<UsuariosI>(usuario.id).update(usuario)
+        }
+        
+        //return this.favoritesCollection.add(favorite);
+      })
+ 
+    
   }
 }
