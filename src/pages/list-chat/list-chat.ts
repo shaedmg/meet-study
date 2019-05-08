@@ -1,5 +1,4 @@
 import { ChatConversations } from './../../app/models/chat.model';
-import { ListChatPage } from './list-chat';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController,  AlertController, NavParams, Content } from 'ionic-angular';
 import { Chat } from '../chat/chat';
@@ -38,9 +37,9 @@ export class ListChatPage {
       buttons: [
         {
           text:"Eliminar",
-          handler: ()=>{
+          handler: ()=>{             
+              this.ChatService.deleteChat(chat.chatId);
               console.log("Eliminado");
-                     
           }
 
         },

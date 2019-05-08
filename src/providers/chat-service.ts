@@ -62,6 +62,15 @@ export class ChatService {
     return this.afs.collection('ChatConversations').doc(chatId).collection('ChatMessage').valueChanges();
   }
 
+  deleteChat(chatId){
+      try{
+        this.afs.collection('ChatConversations').doc(chatId).delete();
+      }catch(error){
+        console.log(error);
+      }
+
+  }
+
   async setChatValoration(valoration, chatId) {
       return this.afs.collection('ChatConversations').doc(chatId).update({"valoration":valoration});
   }
