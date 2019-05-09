@@ -32,7 +32,8 @@ export class MyApp{
     name: "",
     lastName: "",
     email: "",
-    birthDate: null
+    birthDate: null,
+    generalValoration:0
   }
 
   cerrarSesion() {

@@ -20,7 +20,9 @@ export class Chat {
   editorMsg = '';
   showEmojiPicker = false;
   chatId;
-  valoration=0;
+  oldValoration: number = -1;
+  valoration: number = 0;
+  generalValoration: number = 0;
 
   constructor(navParams: NavParams,
     private chatService: ChatService,
@@ -38,7 +40,48 @@ export class Chat {
         this.user = user;
       });
     this.chatId = navParams.get("chatId");
-    this.valoration = navParams.get("valoration");
+  }
+
+  private getGeneralValoration() {
+    this.chatService.getGeneralValoration(this.toUser.id)
+      .subscribe(user => {
+        if (user.generalValoration != null)
+          this.generalValoration = user.generalValoration;
+      });
+  }
+
+  private getValoration() {
+    this.chatService.getValoration(this.toUser.id, this.chatId)
+      .subscribe(valorations => {
+        if(valorations!=null) this.pushNewValoration(valorations.valoration);
+      });
+  }
+
+
+  /**
+ * @name sendValoration
+ */
+  sendValoration() {
+    if (this.valoration.valueOf() == 0) return;
+    if (this.generalValoration - this.oldValoration >= 0) this.generalValoration = (this.generalValoration - this.oldValoration) + this.valoration;
+    let user;
+    if (this.user.id.valueOf() == this.toUser.id.valueOf()) {
+      user = this.user.id.valueOf();
+    } else {
+      user = this.toUser.id.valueOf();
+    }
+    this.chatService.setChatValoration(this.valoration, user, this.chatId, this.generalValoration);
+    //this.pushNewValoration(this.valoration);
+  }
+
+  /**
+  * @name pushNewValoration
+  * @param valoration
+  */
+  pushNewValoration(valoration: number) {
+    if(this.oldValoration < 0 ) this.oldValoration = valoration;
+    else this.oldValoration = this.valoration;
+    this.valoration = valoration;
   }
 
   ionViewWillLeave() {
@@ -47,9 +90,12 @@ export class Chat {
 
   ionViewDidEnter() {
     this.getMsg();
+    this.getValoration();
+    this.getGeneralValoration();
     this.events.subscribe('chat:received', msg => {
       this.pushNewMsg(msg);
     });
+
   }
 
   onFocus() {
@@ -150,25 +196,4 @@ export class Chat {
     const textarea = this.messageInput.nativeElement;
     textarea.scrollTop = textarea.scrollHeight;
   }
-
-    /**
-   * @name sendValoration
-   */
-  sendValoration() {
-    if (this.valoration.valueOf() == 0) return;
-    if (this.user.id == this.toUser.id) return;
-    console.log("aqui pasa y deja mierda");
-    this.chatService.setChatValoration(this.valoration,this.chatId);
-    this.pushNewValoration(this.valoration);
-  }
-
-   /**
-   * @name pushNewValoration
-   * @param valoration
-   */
-  pushNewValoration(valoration: number){
-    if (this.valoration.valueOf() == 0) return;
-    this.valoration = valoration;
-  }
-
 }

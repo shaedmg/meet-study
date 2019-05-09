@@ -22,6 +22,5 @@ export class ChatConversations{
     toUserName: string;
     toUserId: string;
     chatId:string;
-    valoration:number;
     ChatMessage:ChatMessage[];
 }

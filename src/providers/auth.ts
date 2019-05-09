@@ -39,7 +39,8 @@ export class AuthProvider {
         email: user.email,
         name: user.name,
         lastName: user.lastName,
-        birthDate: user.birthDate
+        birthDate: user.birthDate,
+        generalValoration:0
       });
     } catch (error) {
       return error;
