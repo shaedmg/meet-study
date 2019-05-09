@@ -1,9 +1,8 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, AlertController } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import { AnuncioProvider } from '../../providers/anuncio'
 import { SubjectsProvider } from '../../providers/subjects'
-import { Subscription } from 'rxjs/Subscription';
 import { PeticionI } from '../../app/models/peticiones.interface';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { SubjectsI } from '../../app/models/subjects.interface';
@@ -22,7 +21,7 @@ export class HomePage implements OnInit {
 
   searchTermName = "";
   searchTermAcronimo = "";
-  constructor(private modalCtrl : ModalController,  public alertController: AlertController, private anuncioService: AnuncioProvider, private subjectService: SubjectsProvider) { }
+  constructor( public alertController: AlertController, private anuncioService: AnuncioProvider, private subjectService: SubjectsProvider) { }
 
   ionViewCanLeave() {
   }

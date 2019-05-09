@@ -55,7 +55,7 @@ export class AnuncioProvider {
       map(actions => {
         return actions.map(a => {
           ajam[count++] = a.payload.doc.data();
-          const id = a.payload.doc.id;
+          a.payload.doc.id;
         });
       }));
     return ajam;
@@ -75,6 +75,7 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
+
   filterAdvertisementByPrimarySubject(advertisements,searchTermName,searchTermAcronimo){
     return advertisements.filter(res => {
       if (res.primarySubject.toLowerCase().indexOf(searchTermName.toLowerCase()) > -1 ||
@@ -84,6 +85,7 @@ export class AnuncioProvider {
       return false;
     });
   }
+
   updateAnuncio(anuncio: MeetingI, id: string) {
     return this.anunciosCollection.doc(id).update(anuncio);
   }
@@ -96,6 +98,7 @@ export class AnuncioProvider {
         return this.anunciosCollection.add(anuncio);
       })
   }
+
   addPeticion(anuncio: MeetingI, peticion: PeticionI, anuncioId: string){
     this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
@@ -106,6 +109,7 @@ export class AnuncioProvider {
         return this.anunciosCollection.doc<MeetingI>(anuncioId).update(anuncio);
       })
   }
+  
   removePetition(peticion: PeticionI, anuncio: MeetingI){
     anuncio.peticiones = anuncio.peticiones.filter(a => a !== peticion);
     this.anunciosCollection.doc<MeetingI>(anuncio.id).update(anuncio)

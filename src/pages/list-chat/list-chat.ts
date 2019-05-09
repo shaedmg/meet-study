@@ -1,4 +1,3 @@
-import { ChatConversations } from './../../app/models/chat.model';
 import { Component, ViewChild } from '@angular/core';
 import { IonicPage, NavController,  AlertController, NavParams, Content } from 'ionic-angular';
 import { Chat } from '../chat/chat';
