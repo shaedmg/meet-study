@@ -37,9 +37,9 @@ export class ListChatPage {
       buttons: [
         {
           text:"Eliminar",
-          handler: ()=>{
+          handler: ()=>{             
+              this.ChatService.deleteChat(chat.chatId);
               console.log("Eliminado");
-                     
           }
 
         },

@@ -74,6 +74,14 @@ export class ChatService {
   getValoration(userId, chatId): Observable<any> {
     return this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).valueChanges();
   }
+  deleteChat(chatId){
+      try{
+        this.afs.collection('ChatConversations').doc(chatId).delete();
+      }catch(error){
+        console.log(error);
+      }
+
+  }
 
   async sendMsg(msg: ChatMessage) {
     try {
