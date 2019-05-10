@@ -5,6 +5,7 @@ import { ChatService } from "../../providers/chat-service";
 import { RelativeTime } from "../../pipes/relative-time";
 import { EmojiPickerComponentModule } from "../../components/emoji-picker/emoji-picker.module";
 import { EmojiProvider } from "../../providers/emoji";
+import { IonicRatingModule } from 'ionic-rating';
 
 @NgModule({
   declarations: [
@@ -13,6 +14,7 @@ import { EmojiProvider } from "../../providers/emoji";
   ],
   imports: [
     EmojiPickerComponentModule,
+    IonicRatingModule,
     IonicPageModule.forChild(Chat),
   ],
   exports: [

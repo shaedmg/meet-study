@@ -71,7 +71,7 @@ export class Chat {
       user = this.toUser.id.valueOf();
     }
     this.chatService.setChatValoration(this.valoration, user, this.chatId, this.generalValoration);
-    //this.pushNewValoration(this.valoration);
+    this.pushNewValoration(this.valoration);
   }
 
   /**
