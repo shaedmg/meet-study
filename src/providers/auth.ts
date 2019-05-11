@@ -15,36 +15,28 @@ export class AuthProvider {
     public afs: AngularFirestore,
     public formBuilder: FormBuilder
     ) {
-
   }
 
   
   async registerUser(user): Promise<any> {
     try {
-
-
-
       const credentials: firebase.auth.UserCredential = await this.afireauth.auth
         .createUserWithEmailAndPassword(
           user.email,
           user.password
         );
-
-        
-
       const userProfileDocument: AngularFirestoreDocument<UsuariosI> = this.afs.doc(`userProfile/${credentials.user.uid}`);
-
       await userProfileDocument.set({
         id: credentials.user.uid,
         email: user.email,
         name: user.name,
         lastName: user.lastName,
         birthDate: user.birthDate,
-        generalValoration:0
+        generalValoration:0,
+        votes:0
       });
     } catch (error) {
       return error;
-
     }
   }
 

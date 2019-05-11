@@ -9,6 +9,7 @@ export interface UsuariosI{
     email: any;
     generalValoration:number;
     favorites?:Favorite[];
+    votes:number;
 }
 
 export interface CredencialesI{

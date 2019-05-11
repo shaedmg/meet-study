@@ -26,7 +26,8 @@ export class EditProfilePage {
     lastName: "",
     email: "",
     birthDate: null,
-    generalValoration:0
+    generalValoration:0,
+    votes:0
   }
   signUpForm = this.formBuilder.group({
     name: ['', Validators.required],

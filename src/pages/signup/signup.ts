@@ -93,7 +93,6 @@ export class SignUpPage {
   async signup() {
     try {
       var responseCode;
-      console.log(this.userDetails);
       await this.authService.registerUser(this.userDetails).then(function (value) {
         if(value!=null){
           responseCode = value.code;
@@ -108,11 +107,6 @@ export class SignUpPage {
       }else{
         this.navCtrl.setRoot("HomePage");
       }
-
-
-
-
-
     } catch (error) {
     }
   }

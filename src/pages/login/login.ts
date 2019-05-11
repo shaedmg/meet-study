@@ -23,7 +23,8 @@ export class LoginPage {
     lastName: "",
     email: "",
     birthDate: null,
-    generalValoration:0
+    generalValoration:0,
+    votes:0
   };
   
   loginForm =  this.formBuilder.group({

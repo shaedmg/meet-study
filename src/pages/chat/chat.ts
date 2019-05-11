@@ -23,6 +23,8 @@ export class Chat {
   oldValoration: number = -1;
   valoration: number = 0;
   generalValoration: number = 0;
+  votes: number = 0;
+  addVote: boolean = false;
 
   constructor(navParams: NavParams,
     private chatService: ChatService,
@@ -47,13 +49,16 @@ export class Chat {
       .subscribe(user => {
         if (user.generalValoration != null)
           this.generalValoration = user.generalValoration;
+        this.toUser.name = user.name;
+        this.votes = user.votes;
       });
   }
 
   private getValoration() {
-    this.chatService.getValoration(this.toUser.id, this.chatId)
+    this.chatService.getValoration(this.user.id, this.chatId)
       .subscribe(valorations => {
-        if(valorations!=null) this.pushNewValoration(valorations.valoration);
+        if (valorations != null) this.pushNewValoration(valorations.valoration);
+        else this.addVote = true;
       });
   }
 
@@ -62,16 +67,14 @@ export class Chat {
  * @name sendValoration
  */
   sendValoration() {
+    if (this.addVote && this.oldValoration < 0) {
+      this.votes = this.votes + 1;
+      this.addVote = false;
+    }
     if (this.valoration.valueOf() == 0) return;
     if (this.generalValoration - this.oldValoration >= 0) this.generalValoration = (this.generalValoration - this.oldValoration) + this.valoration;
-    let user;
-    if (this.user.id.valueOf() == this.toUser.id.valueOf()) {
-      user = this.user.id.valueOf();
-    } else {
-      user = this.toUser.id.valueOf();
-    }
-    this.chatService.setChatValoration(this.valoration, user, this.chatId, this.generalValoration);
-    this.pushNewValoration(this.valoration);
+    this.chatService.setChatValoration(this.valoration, this.user.id, this.toUser.id, this.chatId, this.generalValoration, this.votes);
+
   }
 
   /**
@@ -79,7 +82,7 @@ export class Chat {
   * @param valoration
   */
   pushNewValoration(valoration: number) {
-    if(this.oldValoration < 0 ) this.oldValoration = valoration;
+    if (this.oldValoration < 0) this.oldValoration = valoration;
     else this.oldValoration = this.valoration;
     this.valoration = valoration;
   }
@@ -169,9 +172,7 @@ export class Chat {
   pushNewMsg(msg: ChatMessage) {
     const userId = this.user.id,
       toUserId = this.toUser.id;
-    if (msg.userId === userId && msg.toUserId === toUserId) {
-      this.msgList.push(msg);
-    } else if (msg.toUserId === userId && msg.userId === toUserId) {
+    if (msg.userId === userId && msg.toUserId === toUserId || msg.toUserId === userId && msg.userId === toUserId) {
       this.msgList.push(msg);
     }
     this.scrollToBottom();

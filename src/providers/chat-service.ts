@@ -66,14 +66,16 @@ export class ChatService {
     return this.afs.collection('userProfile').doc(id).valueChanges();
   }
 
-  async setChatValoration(valoration: number, userId, chatId, generalValoration) {
-    return (this.afs.collection('userProfile').doc(userId).update({ "generalValoration": generalValoration }) &&
-    this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).set({ "valoration": valoration }));
+  async setChatValoration(valoration: number, userId,toUserId, chatId, generalValoration,votes) {
+    return (
+      this.afs.collection('userProfile').doc(toUserId).update({ "generalValoration": generalValoration, "votes":votes }) &&
+      this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).set({ "valoration": valoration }));
   }
 
   getValoration(userId, chatId): Observable<any> {
     return this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).valueChanges();
   }
+  
   deleteChat(chatId){
       try{
         this.afs.collection('ChatConversations').doc(chatId).delete();
