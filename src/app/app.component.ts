@@ -15,6 +15,7 @@ import { take } from 'rxjs/operators';
 export class MyApp{
   @ViewChild(Nav) nav: Nav;
   rootPage: any = 'LoginPage';
+  stars:number=0;
   constructor(
     platform: Platform,
     private auth: AuthProvider,
@@ -41,11 +42,13 @@ export class MyApp{
     this.auth.logout();
     this.nav.setRoot(LoginPage)
   }
+
   readUser(){
     this.userProvider.getCurrentUser().pipe(take(1)).toPromise()
-      .then(usuario => {
-        this.userProfile = usuario;
-      });
+    .then(usuario => {
+      this.userProfile = usuario;
+      this.stars = usuario.generalValoration/usuario.votes;
+    });
   }
 
   launchPage(page: string) {
