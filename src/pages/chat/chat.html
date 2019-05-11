@@ -33,7 +33,9 @@
   <rating 
     size="3" 
     [(ngModel)]="valoration"
-    (ngModelChange)="sendValoration($event)">
+    (ngModelChange)="sendValoration($event)"
+    ion-long-press [interval]="400" 
+    (onPressing)="delValoration()">
   </rating>
   <div class="input-wrap">
     <button ion-button clear icon-only item-right (click)="switchEmojiPicker()">

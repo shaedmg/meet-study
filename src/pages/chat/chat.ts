@@ -44,6 +44,11 @@ export class Chat {
     this.chatId = navParams.get("chatId");
   }
 
+  private delValoration(){
+    this.chatService.delValoration(this.toUser.id, this.chatId);
+    this.pushNewValoration(0);
+  }
+
   private getGeneralValoration() {
     this.chatService.getGeneralValoration(this.toUser.id)
       .subscribe(user => {
@@ -73,7 +78,7 @@ export class Chat {
     }
     if (this.valoration.valueOf() == 0) return;
     if (this.generalValoration - this.oldValoration >= 0) this.generalValoration = (this.generalValoration - this.oldValoration) + this.valoration;
-    this.chatService.setChatValoration(this.valoration, this.user.id, this.toUser.id, this.chatId, this.generalValoration, this.votes);
+    this.chatService.setChatValoration(this.valoration, this.toUser.id, this.chatId, this.generalValoration, this.votes);
 
   }
 

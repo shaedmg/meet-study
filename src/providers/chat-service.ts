@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
 @Injectable()
 export class ChatService {
 
+
   user: UserInfo;
   ChatConversationsId: string;
   chatConversations: AngularFirestoreCollection<ChatConversations>;
@@ -66,16 +67,16 @@ export class ChatService {
     return this.afs.collection('userProfile').doc(id).valueChanges();
   }
 
-  async setChatValoration(valoration: number, userId,toUserId, chatId, generalValoration,votes) {
+  async setChatValoration(valoration: number, toUserId, chatId, generalValoration,votes) {
     return (
       this.afs.collection('userProfile').doc(toUserId).update({ "generalValoration": generalValoration, "votes":votes }) &&
-      this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).set({ "valoration": valoration }));
+      this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(toUserId).set({ "valoration": valoration }));
   }
 
   getValoration(userId, chatId): Observable<any> {
     return this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).valueChanges();
   }
-  
+
   deleteChat(chatId){
       try{
         this.afs.collection('ChatConversations').doc(chatId).delete();
@@ -83,6 +84,10 @@ export class ChatService {
         console.log(error);
       }
 
+  }
+
+  delValoration(id: string, chatId) {
+    this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(id).delete();
   }
 
   async sendMsg(msg: ChatMessage) {
