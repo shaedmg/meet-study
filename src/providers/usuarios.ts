@@ -13,7 +13,6 @@ export class UsuariosProvider {
 
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
-  private favorites: Observable<Favorite[]>;
   userProvider: any;
   anunciosCollection: any;
   afs: any;

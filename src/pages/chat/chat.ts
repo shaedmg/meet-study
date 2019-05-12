@@ -44,7 +44,7 @@ export class Chat {
     this.chatId = navParams.get("chatId");
   }
 
-  private delValoration() {
+   delValoration() {
     if (!this.addVote) {
       this.votes=this.votes - 1;
       this.chatService.delValoration(
@@ -89,12 +89,6 @@ export class Chat {
     if (this.valoration.valueOf() == 0) return;
     let newValoration = (this.generalValoration - this.oldValoration) + this.valoration;
     this.chatService.setChatValoration(this.valoration, this.toUser.id, this.chatId, newValoration, this.votes);
-    console.log(
-      "votos: " + this.votes +
-      "General valoratio: " + this.generalValoration +
-      "oldValoration: " + this.oldValoration +
-      "valoration: " + this.valoration
-    )
   }
 
   /**

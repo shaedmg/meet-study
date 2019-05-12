@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, AlertController, ModalController, DateTime } from 'ionic-angular';
+import { IonicPage, AlertController } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import { AnuncioProvider } from '../../providers/anuncio'
 import { SubjectsProvider } from '../../providers/subjects'
 import { UsuariosProvider } from '../../providers/usuarios'
-import { Favorite, UsuariosI } from '../../app/models/usuarios.interface'
+import { Favorite } from '../../app/models/usuarios.interface'
 import { PeticionI } from '../../app/models/peticiones.interface';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { SubjectsI } from '../../app/models/subjects.interface';
@@ -24,13 +24,12 @@ export class HomePage implements OnInit {
   anunciosLoaded: MeetingI[] = [];
   searchTermName = "";
   searchTermAcronimo = "";
-  constructor(private modalCtrl: ModalController,
-    public alertController: AlertController,
+  constructor(public alertController: AlertController,
     private anuncioService: AnuncioProvider,
     private userService: UsuariosProvider,
     private subjectService: SubjectsProvider) { }
 
-  async ngOnInit() {
+   ngOnInit() {
     this.loadAdvertisements();
     this.loadSubjects();
   }
@@ -41,7 +40,17 @@ export class HomePage implements OnInit {
           anun.valoration = value;
         });
         return anun;
-      });;
+      });
+    })
+  }
+  loadAdvertisements2() {
+    return this.anuncioService.getAnunciosPromise().then(res => {
+      return  res.map(anun => {
+        this.getAdvertisementValoration(anun).then(value => {
+          anun.valoration = value;
+        });
+        return anun;
+      });
     })
   }
   loadSubjects() {
@@ -50,7 +59,6 @@ export class HomePage implements OnInit {
     })
   }
 
- 
   async presentAlert() {
     const alert = await this.alertController.create({
       title: 'Peticion',
@@ -60,25 +68,29 @@ export class HomePage implements OnInit {
 
     await alert.present();
   }
-   filterAdvertisements(){
+   async filterAdvertisements(){
    this.loadSubjects();
-   if(!this.subject && !this.valoracion)this.loadAdvertisements();
+   let allAdvertisements;
+   await this.loadAdvertisements2().then(res => {allAdvertisements = res})
+   
+
+   if(!this.subject && !this.valoracion)await this.loadAdvertisements();
     if(this.subject){
-      this.anuncioService.filterAdvertisementByPrimarySubject(this.subject.nombre, this.subject.acronimo).then(res => {
-        this.anuncios = res.map(anun => {
+       await this.anuncioService.filterAdvertisementByPrimarySubject(this.subject.nombre, this.subject.acronimo).then(res => {
+        allAdvertisements = res.map(anun => {
           this.getAdvertisementValoration(anun).then(value => {
             anun.valoration = value;
           });
           return anun;
         });
       })
-      
     }
-    if(this.valoracion){
-      this.userService.getUsersWithValoration(this.valoracion).then(res => {
-        this.anuncios = this.anuncioService.getAdvertisementsOfUsers(this.anuncios, res);
+    if(this.valoracion){  
+       await this.userService.getUsersWithValoration(this.valoracion).then(res => {
+        allAdvertisements = this.anuncioService.getAdvertisementsOfUsers(allAdvertisements, res);
       });
     }
+    this.anuncios = allAdvertisements;
   }
   sendPetition(anuncio) {
     const peticion: PeticionI = {
