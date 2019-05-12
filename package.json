@@ -38,6 +38,7 @@
     "ionic-angular": "3.9.2",
     "ionic-long-press": "^1.5.0",
     "ionic-plugin-keyboard": "~2.2.1",
+    "ionic-rating": "^1.0.6",
     "ionic-selectable": "^3.4.0",
     "ionicons": "3.0.0",
     "rxjs": "6.0.0",

@@ -32,15 +32,15 @@
                 <p>Nombre: {{anuncio.name}}</p>
                 <p>Hora: {{anuncio.time}}</p>
             </ion-card-content>
-                <button ion-button icon-only clear (click)="modificarAnuncio(anuncio.id)">
+            <button ion-button icon-only clear (click)="modificarAnuncio(anuncio.id)">
                     <ion-icon name="md-create" item-left></ion-icon>
                 </button>
-        
-                <button ion-button icon-only clear (click)="removeAnuncios(anuncio.id)">
+
+            <button ion-button icon-only clear (click)="confirmarEliminacion(anuncio.id)">
                   <ion-icon name="close" item-rigth></ion-icon>
                 </button>
         </ion-card>
-        
-        
+
+
     </ion-list>
 </ion-content>
