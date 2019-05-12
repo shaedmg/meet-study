@@ -53,9 +53,5 @@ export class GestionAnuncioPage implements OnInit{
     this.navCtrl.pop();
     this.anuncioService.updateAnuncio(this.anuncio,this.anuncioId);   
   }
-  removeAnuncios(){
-    this.navCtrl.pop();
-    this.anuncioService.removeAnuncio(this.anuncioId);
-    
-  }
+
 }
