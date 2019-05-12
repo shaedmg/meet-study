@@ -44,9 +44,18 @@ export class Chat {
     this.chatId = navParams.get("chatId");
   }
 
-  private delValoration(){
-    this.chatService.delValoration(this.toUser.id, this.chatId);
-    this.pushNewValoration(0);
+  private delValoration() {
+    if (!this.addVote) {
+      this.votes=this.votes - 1;
+      this.chatService.delValoration(
+        this.toUser.id,
+        this.chatId,
+        this.generalValoration - this.oldValoration,
+        this.votes);
+      this.addVote = true;
+      this.oldValoration=0;
+      this.valoration=0;
+    }
   }
 
   private getGeneralValoration() {
@@ -60,7 +69,7 @@ export class Chat {
   }
 
   private getValoration() {
-    this.chatService.getValoration(this.user.id, this.chatId)
+    this.chatService.getValoration(this.toUser.id, this.chatId)
       .subscribe(valorations => {
         if (valorations != null) this.pushNewValoration(valorations.valoration);
         else this.addVote = true;
@@ -72,14 +81,20 @@ export class Chat {
  * @name sendValoration
  */
   sendValoration() {
-    if (this.addVote && this.oldValoration < 0) {
+    if (this.addVote && this.oldValoration <= 0) {
       this.votes = this.votes + 1;
       this.addVote = false;
     }
+    if (this.oldValoration==-1)this.oldValoration =0;
     if (this.valoration.valueOf() == 0) return;
-    if (this.generalValoration - this.oldValoration >= 0) this.generalValoration = (this.generalValoration - this.oldValoration) + this.valoration;
-    this.chatService.setChatValoration(this.valoration, this.toUser.id, this.chatId, this.generalValoration, this.votes);
-
+    let newValoration = (this.generalValoration - this.oldValoration) + this.valoration;
+    this.chatService.setChatValoration(this.valoration, this.toUser.id, this.chatId, newValoration, this.votes);
+    console.log(
+      "votos: " + this.votes +
+      "General valoratio: " + this.generalValoration +
+      "oldValoration: " + this.oldValoration +
+      "valoration: " + this.valoration
+    )
   }
 
   /**

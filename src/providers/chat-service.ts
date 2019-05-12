@@ -77,6 +77,11 @@ export class ChatService {
     return this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).valueChanges();
   }
 
+  delValoration(id: string, chatId, oldValoration, votes) {
+    this.afs.collection('userProfile').doc(id).update({ "generalValoration": oldValoration, "votes":votes })
+    this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(id).delete();
+  }
+
   deleteChat(chatId){
       try{
         this.afs.collection('ChatConversations').doc(chatId).delete();
@@ -84,10 +89,6 @@ export class ChatService {
         console.log(error);
       }
 
-  }
-
-  delValoration(id: string, chatId) {
-    this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(id).delete();
   }
 
   async sendMsg(msg: ChatMessage) {
