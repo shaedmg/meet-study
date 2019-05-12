@@ -55,7 +55,12 @@ export class UsuariosProvider {
 
     return new Promise(resolve => resolve(useri));
   }
-
+  filterAll(){
+    
+  }
+  getUserById(id): Promise<UsuariosI>{
+    return this.userProfileCollection.doc<UsuariosI>(id).valueChanges().pipe(take(1)).toPromise();
+  }
   getAllUsersToChat(): Promise<any> {
     this.allUsers = this.userProfileCollection.snapshotChanges().pipe(
       map(actions => {
@@ -66,6 +71,25 @@ export class UsuariosProvider {
         });
       }));
     return new Promise(resolve => resolve(this.allUsers));
+  }
+  getAllUsers(): Promise<any> {
+    return this.userProfileCollection.snapshotChanges().pipe(
+      map(actions => {
+        return actions.map(a => {
+          const data = a.payload.doc.data();
+          const id = a.payload.doc.id;
+          return { id, ...data };
+        });
+      }),take(1)).toPromise();
+  }
+  getUsersWithValoration(valoracion): Promise<any> {
+    return this.getAllUsers().then(res => {
+      return res.filter(user => {
+        if(user.generalValoration >= valoracion){
+          return true;
+        }else return false;
+      })
+    })
   }
 
   updateUsuario(usuario: UsuariosI) {

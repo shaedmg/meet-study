@@ -9,6 +9,7 @@ export interface UsuariosI{
     birthDate: DateTime;   
     email: any;
     favorites?:Favorite[];
+    generalValoration?: string
 }
 
 export interface CredencialesI{

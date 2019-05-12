@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { IonicPage, AlertController, ModalController } from 'ionic-angular';
+import { IonicPage, AlertController, ModalController, DateTime } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import { AnuncioProvider } from '../../providers/anuncio'
 import { SubjectsProvider } from '../../providers/subjects'
 import { UsuariosProvider } from '../../providers/usuarios'
-import { Favorite} from '../../app/models/usuarios.interface'
+import { Favorite, UsuariosI } from '../../app/models/usuarios.interface'
 import { PeticionI } from '../../app/models/peticiones.interface';
 import { IonicSelectableComponent } from 'ionic-selectable';
 import { SubjectsI } from '../../app/models/subjects.interface';
@@ -16,31 +16,38 @@ import { SubjectsI } from '../../app/models/subjects.interface';
 })
 export class HomePage implements OnInit {
   @ViewChild('selectComponent') selectComponent: IonicSelectableComponent;
-  subject: SubjectsI;
+  subject;
   subjects: SubjectsI[] = [];
+  valoracion;
+
   anuncios: MeetingI[] = [];
   anunciosLoaded: MeetingI[] = [];
-
   searchTermName = "";
   searchTermAcronimo = "";
-  constructor(private modalCtrl : ModalController,  
-    public alertController: AlertController, 
-    private anuncioService: AnuncioProvider, 
-    private userService: UsuariosProvider, 
+  constructor(private modalCtrl: ModalController,
+    public alertController: AlertController,
+    private anuncioService: AnuncioProvider,
+    private userService: UsuariosProvider,
     private subjectService: SubjectsProvider) { }
 
-  ionViewCanLeave() {
+  async ngOnInit() {
+    this.loadAdvertisements();
+    this.loadSubjects();
   }
-
-  ngOnInit() {
+  loadAdvertisements() {
     this.anuncioService.getAnunciosPromise().then(res => {
-      this.anuncios = res;
-      this.anunciosLoaded = this.anuncios;
-    });
+      this.anuncios = res.map(anun => {
+        this.getAdvertisementValoration(anun).then(value => {
+          anun.valoration = value;
+        });
+        return anun;
+      });;
+    })
+  }
+  loadSubjects() {
     this.subjectService.getSubjectsPromise().then(res => {
       this.subjects = res;
-    });
-
+    })
   }
   async presentAlert() {
     const alert = await this.alertController.create({
@@ -50,6 +57,26 @@ export class HomePage implements OnInit {
     });
 
     await alert.present();
+  }
+   filterAdvertisements(){
+   this.loadSubjects();
+   if(!this.subject && !this.valoracion)this.loadAdvertisements();
+    if(this.subject){
+      this.anuncioService.filterAdvertisementByPrimarySubject(this.subject.nombre, this.subject.acronimo).then(res => {
+        this.anuncios = res.map(anun => {
+          this.getAdvertisementValoration(anun).then(value => {
+            anun.valoration = value;
+          });
+          return anun;
+        });
+      })
+      
+    }
+    if(this.valoracion){
+      this.userService.getUsersWithValoration(this.valoracion).then(res => {
+        this.anuncios = this.anuncioService.getAdvertisementsOfUsers(this.anuncios, res);
+      });
+    }
   }
   sendPetition(anuncio) {
     const peticion: PeticionI = {
@@ -61,32 +88,21 @@ export class HomePage implements OnInit {
     this.presentAlert();
   }
 
-  addFavorite(anuncio){
+  addFavorite(anuncio) {
     const favorite: Favorite = {
-      favoriteId:anuncio.id
+      favoriteId: anuncio.id
     }
     this.userService.addNewFavorite(favorite)
   }
-
-  initializeItems() {
-    this.anuncios = this.anunciosLoaded;
-  }
-  subjectChanged(event: { component: IonicSelectableComponent, value: any }) {
-    if (event.value) {
-      this.searchTermName = event.value.nombre;
-      this.searchTermAcronimo = event.value.acronimo;
-      this.initializeItems();
-      if (!event.value.nombre) {
-        return;
-      }
-      this.anuncios = this.anuncioService.filterAdvertisementByPrimarySubject(this.anuncios, this.searchTermName, this.searchTermAcronimo);
-    }
-  }
-
   onClear() {
-    this.initializeItems();
+   this.loadAdvertisements();
   }
-
+  getAdvertisementValoration(anuncio) {
+    return this.userService.getUserById(anuncio.userId).then(res => {
+      if (res.generalValoration) return res.generalValoration.toString()
+      else return "Sin valoracion"
+    });
+  }
   filterSearch(event: {
     component: IonicSelectableComponent,
     text: string

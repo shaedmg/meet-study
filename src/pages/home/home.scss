@@ -1,3 +1,28 @@
 page-home {
 
 }
+ion-select {
+    width: 100px;
+}
+#valorationInput, #valorationLabel, #valorationButton{
+    float: left;
+}
+#valorationLabel{
+    margin-top: 25px;
+}
+#valorationButton{
+    margin-top: 14px;
+    margin-left: 6px;
+}
+#valorationInput{
+    margin-top: 10px;
+    margin-bottom: 20px;
+    width: auto;
+    border: 1px gray outset;
+}
+#valorationFields{
+    margin-top: 0px;
+    padding-left: 22px;
+    padding-right: 22px;
+    margin-bottom: 0px; 
+}

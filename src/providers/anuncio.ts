@@ -6,6 +6,7 @@ import { map, take } from 'rxjs/operators';
 import { MeetingI } from '../app/models/meeting.interface';
 import { UsuariosProvider } from './usuarios';
 import { PeticionI } from '../app/models/peticiones.interface';
+import { UsuariosI } from '../app/models/usuarios.interface';
 
 @Injectable()
 export class AnuncioProvider {
@@ -75,13 +76,22 @@ export class AnuncioProvider {
       }));
     return this.todos;
   }
-  filterAdvertisementByPrimarySubject(advertisements,searchTermName,searchTermAcronimo){
-    return advertisements.filter(res => {
+  filterAdvertisementByPrimarySubject(searchTermName,searchTermAcronimo){
+    return this.getAnunciosPromise().then(advertisements => {return advertisements.filter(res => {
       if (res.primarySubject.toLowerCase().indexOf(searchTermName.toLowerCase()) > -1 ||
         res.primarySubject.toLowerCase().indexOf(searchTermAcronimo.toLowerCase()) > -1) {
         return true;
       }
       return false;
+    }) 
+  })
+  }
+  getAdvertisementsOfUsers(anuncios: MeetingI[], usuarios: UsuariosI[]): MeetingI[] {
+    return anuncios.filter(function(res){
+      if(usuarios.find(element => {
+        return element.id == res.userId;
+      }))return true;
+      else return false;
     });
   }
   updateAnuncio(anuncio: MeetingI, id: string) {
