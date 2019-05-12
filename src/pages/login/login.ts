@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController } from 'ionic-angular';
 import { CredencialesI, UsuariosI } from '../../app/models/usuarios.interface';
-import { HomePage } from '../home/home';
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthProvider } from '../../providers/auth';
 import { UsuariosProvider } from '../../providers/usuarios';
@@ -24,6 +23,8 @@ export class LoginPage {
     lastName: "",
     email: "",
     birthDate: null,
+    generalValoration:0,
+    votes:0
   };
   
   loginForm =  this.formBuilder.group({

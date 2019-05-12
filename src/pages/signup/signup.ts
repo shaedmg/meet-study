@@ -1,8 +1,7 @@
 import {AuthProvider} from '../../providers/auth';
 import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
-import {FormBuilder, Validators, FormControl, FormGroup} from '@angular/forms';
-import {PasswordValidator} from "../../providers/password.validator";
+import {FormBuilder, Validators, FormControl } from '@angular/forms';
 
 @IonicPage()
 @Component({
@@ -94,7 +93,6 @@ export class SignUpPage {
   async signup() {
     try {
       var responseCode;
-      console.log(this.userDetails);
       await this.authService.registerUser(this.userDetails).then(function (value) {
         if(value!=null){
           responseCode = value.code;
@@ -109,11 +107,6 @@ export class SignUpPage {
       }else{
         this.navCtrl.setRoot("HomePage");
       }
-
-
-
-
-
     } catch (error) {
     }
   }

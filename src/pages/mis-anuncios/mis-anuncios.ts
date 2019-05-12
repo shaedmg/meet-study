@@ -1,6 +1,6 @@
 import { AddAnuncioPage } from './../add-anuncio/add-anuncio';
 import { Component, OnInit } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
 import { MeetingI } from '../../app/models/meeting.interface';
 import { AnuncioProvider } from '../../providers/anuncio'
 import { GestionAnuncioPage } from '../gestion-anuncio/gestion-anuncio';
@@ -17,8 +17,10 @@ export class MisAnunciosPage implements OnInit {
   anuncios: MeetingI[];
   observer: Subscription;
   anuncioId = "";
+  
   constructor(
-    private anuncioService: AnuncioProvider, 
+    private anuncioService: AnuncioProvider,
+    public alertController: AlertController, 
     public navCtrl: NavController, 
     public navParams: NavParams) {
       
@@ -34,6 +36,28 @@ export class MisAnunciosPage implements OnInit {
         });
       }
     });
+  }
+
+  async confirmarEliminacion(id){
+    const alert = await this.alertController.create({
+      title: 'ELIMINAR ANUNCIO',
+      message: '¿Está seguro de que desea eliminar el anuncio? Esta acción no puede revertirse.',
+      buttons: [
+        {
+          text: "Eliminar",
+          handler: () => {
+            this.removeAnuncios(id);
+          }
+
+        },
+        {
+          text: "Cancelar",
+          role: "cancel"
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   openAdvertisementDetails(anuncio){

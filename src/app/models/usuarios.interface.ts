@@ -1,6 +1,5 @@
 
 import { DateTime } from "ionic-angular";
-import { AnuncioDetailsPage } from "../../pages/anuncio-details/anuncio-details";
 
 export interface UsuariosI{
     id?:string;
@@ -8,8 +7,9 @@ export interface UsuariosI{
     lastName: string;
     birthDate: DateTime;   
     email: any;
+    generalValoration:number;
     favorites?:Favorite[];
-    generalValoration?: string
+    votes:number;
 }
 
 export interface CredencialesI{

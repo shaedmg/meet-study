@@ -49,6 +49,8 @@ export class HomePage implements OnInit {
       this.subjects = res;
     })
   }
+
+ 
   async presentAlert() {
     const alert = await this.alertController.create({
       title: 'Peticion',
@@ -98,8 +100,8 @@ export class HomePage implements OnInit {
    this.loadAdvertisements();
   }
   getAdvertisementValoration(anuncio) {
-    return this.userService.getUserById(anuncio.userId).then(res => {
-      if (res.generalValoration) return res.generalValoration.toString()
+    return this.userService.getUserById2(anuncio.userId).then(res => {
+      if (res.generalValoration) return res.votes + " votos, valoración " + res.generalValoration.toString()
       else return "Sin valoracion"
     });
   }

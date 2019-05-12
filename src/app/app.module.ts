@@ -15,12 +15,13 @@ import { AngularFireModule } from 'angularfire2';
 import { AngularFirestoreModule } from 'angularfire2/firestore';
 import { AnuncioProvider } from '../providers/anuncio';
 import { UsuariosProvider } from '../providers/usuarios';
-import {AngularFireDatabaseModule } from 'angularfire2/database';
+import { AngularFireDatabaseModule } from 'angularfire2/database';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { AuthProvider } from '../providers/auth';
 import { ChatService } from '../providers/chat-service';
 import { SubjectsProvider } from '../providers/subjects';
 import { IonicSelectableModule } from 'ionic-selectable';
+import { IonicRatingModule } from 'ionic-rating';
 
 @NgModule({
   declarations: [
@@ -32,14 +33,15 @@ import { IonicSelectableModule } from 'ionic-selectable';
     HttpModule,
     AngularFireModule.initializeApp(environment.firebaseConfig),
     AngularFirestoreModule,
-    IonicModule.forRoot(MyApp,{
-      tabsHideOnSubPages:true,
-      tabsLayout:'icon-left',
+    IonicModule.forRoot(MyApp, {
+      tabsHideOnSubPages: true,
+      tabsLayout: 'icon-left',
       preloadModules: true
     }),
     IonicSelectableModule,
     AngularFireDatabaseModule,
-    AngularFireAuthModule
+    AngularFireAuthModule,
+    IonicRatingModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -48,7 +50,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
   providers: [
     StatusBar,
     SplashScreen,
-    {provide: ErrorHandler, useClass: IonicErrorHandler},
+    { provide: ErrorHandler, useClass: IonicErrorHandler },
     EmojiProvider,
     SubjectsProvider,
     AnuncioProvider,

@@ -9,6 +9,8 @@ import { map } from 'rxjs/operators';
 
 @Injectable()
 export class ChatService {
+
+
   user: UserInfo;
   ChatConversationsId: string;
   chatConversations: AngularFirestoreCollection<ChatConversations>;
@@ -25,16 +27,16 @@ export class ChatService {
       });
   }
 
-  getChatConversationsListForCurrentUser(): Observable<ChatConversations[]>{
+  getChatConversationsListForCurrentUser(): Observable<ChatConversations[]> {
     return this.chatConversations
       .snapshotChanges().pipe(
         map(actions => {
           return actions.map(a => {
             return a.payload.doc.data();
           }).filter(data =>
-              (data.userId == this.user.id ||
+            (data.userId == this.user.id ||
               data.toUserId == this.user.id)
-            );
+          );
         })
       );
   }
@@ -50,8 +52,7 @@ export class ChatService {
           "userName": this.user.name,
           "toUserId": petition.userId,
           "toUserName": petition.name,
-          "chatId": chatId,
-          "valoration": 0
+          "chatId": chatId
         });
       return chatId;
     } catch (error) { }
@@ -62,8 +63,31 @@ export class ChatService {
     return this.afs.collection('ChatConversations').doc(chatId).collection('ChatMessage').valueChanges();
   }
 
-  async setChatValoration(valoration, chatId) {
-      return this.afs.collection('ChatConversations').doc(chatId).update({"valoration":valoration});
+  getGeneralValoration(id:string):Observable <any>{
+    return this.afs.collection('userProfile').doc(id).valueChanges();
+  }
+
+  async setChatValoration(valoration: number, toUserId, chatId, generalValoration,votes) {
+    return (
+      this.afs.collection('userProfile').doc(toUserId).update({ "generalValoration": generalValoration, "votes":votes }) &&
+      this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(toUserId).set({ "valoration": valoration }));
+  }
+
+  getValoration(userId, chatId): Observable<any> {
+    return this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(userId).valueChanges();
+  }
+
+  deleteChat(chatId){
+      try{
+        this.afs.collection('ChatConversations').doc(chatId).delete();
+      }catch(error){
+        console.log(error);
+      }
+
+  }
+
+  delValoration(id: string, chatId) {
+    this.afs.collection('ChatConversations').doc(chatId).collection('valorations').doc(id).delete();
   }
 
   async sendMsg(msg: ChatMessage) {

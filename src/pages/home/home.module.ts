@@ -1,6 +1,7 @@
 import { NgModule} from '@angular/core';
 import { HomePage } from './home';
 import { IonicPageModule } from 'ionic-angular';
+
 import { IonicSelectableModule } from 'ionic-selectable';
 
 @NgModule({
@@ -8,6 +9,7 @@ import { IonicSelectableModule } from 'ionic-selectable';
         HomePage
     ],
     imports: [
+        
         IonicPageModule.forChild(HomePage),
         IonicSelectableModule
     ],

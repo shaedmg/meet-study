@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonicPage, NavController, NavParams, Content } from 'ionic-angular';
+import { IonicPage, NavController, AlertController, NavParams, Content } from 'ionic-angular';
 import { Chat } from '../chat/chat';
 import { ChatService } from '../../providers/chat-service';
 import { UsuariosProvider } from '../../providers/usuarios';
@@ -19,6 +19,7 @@ export class ListChatPage {
   constructor(
     public navParams: NavParams,
     private ChatService: ChatService,
+    public alertController: AlertController,
     public navCtrl: NavController,
     private userProvider: UsuariosProvider) {
     //perfil loged user
@@ -26,6 +27,29 @@ export class ListChatPage {
       .then((user) => {
         this.user = user;
       });
+  }
+
+  async alerta(chat) {
+    const alert = await this.alertController.create({
+      title: 'ELIMINAR CHAT',
+      message: '¿Desea eliminar el chat?',
+      buttons: [
+        {
+          text: "Eliminar",
+          handler: () => {
+            this.ChatService.deleteChat(chat.chatId);
+            console.log("Eliminado");
+          }
+
+        },
+        {
+          text: "Cancelar",
+          role: "cancel"
+        }
+      ]
+    });
+
+    await alert.present();
   }
 
   /**
@@ -42,15 +66,15 @@ export class ListChatPage {
   }
 
   openChat(chat) {
-    if (this.user.id != chat.userId) {
-      chat.toUserName = chat.userName;
-      chat.toUserId = chat.userId;
-    }
-    this.navCtrl.push(Chat, { 
-      "chatId": chat.chatId, 
-      "toUserId": chat.userId, 
+    chat.toUserName = chat.userName;
+    if (this.user.id == chat.userId) chat.toUserId = chat.toUserId;
+    else chat.toUserId = chat.userId;
+    this.navCtrl.push(Chat, {
+      "chatId": chat.chatId,
+      "toUserId": chat.toUserId,
       "toUserName": chat.toUserName,
-      "valoration": chat.valoration });
+      "valoration": chat.valoration
+    });
   }
 
   ionViewDidEnter() {

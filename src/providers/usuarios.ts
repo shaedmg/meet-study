@@ -10,12 +10,14 @@ import { UserInfo } from '../app/models/chat.model';
 @Injectable()
 export class UsuariosProvider {
 
+
   private userProfileCollection: AngularFirestoreCollection<UsuariosI>;
   private allUsers: Observable<UsuariosI[]>;
   private favorites: Observable<Favorite[]>;
   userProvider: any;
   anunciosCollection: any;
-  
+  afs: any;
+
   constructor(
     public http: HttpClient,
     db: AngularFirestore,
@@ -33,6 +35,19 @@ export class UsuariosProvider {
 
   getCurrentUser() {
     return this.userProfileCollection.doc<UsuariosI>(this.getCurrentUserUID()).valueChanges();
+  }
+
+  getUserById(id: string) {
+    return this.userProfileCollection.doc<UsuariosI>(id).valueChanges();
+  }
+
+  getGeneralValorationPromise(id: string): Promise<number> {
+    let val;
+    let promise = this.getUserById(id);
+    promise.subscribe((user) => {
+      val = user.generalValoration;
+    });
+    return new Promise(resolve => resolve(val));
   }
 
   getCurrentUserPromise(): Promise<UsuariosI> {
@@ -55,10 +70,7 @@ export class UsuariosProvider {
 
     return new Promise(resolve => resolve(useri));
   }
-  filterAll(){
-    
-  }
-  getUserById(id): Promise<UsuariosI>{
+  getUserById2(id): Promise<UsuariosI>{
     return this.userProfileCollection.doc<UsuariosI>(id).valueChanges().pipe(take(1)).toPromise();
   }
   getAllUsersToChat(): Promise<any> {
@@ -103,27 +115,25 @@ export class UsuariosProvider {
   removeUsuario(id: string) {
     return this.userProfileCollection.doc(id).delete();
   }
-  
-  addNewFavorite( favorite:Favorite) {
 
-      
-       this.getCurrentUser().pipe(take(1)).toPromise()
+  addNewFavorite(favorite: Favorite) {
+    this.getCurrentUser().pipe(take(1)).toPromise()
       .then(usuario => {
-        if(usuario.favorites){
+        if (usuario.favorites) {
           usuario.favorites.push(favorite)
           this.userProfileCollection.doc<UsuariosI>(usuario.id).update(usuario)
-        }else{
+        } else {
           console.log("hola");
-          const arr: Favorite[] =  [];
+          const arr: Favorite[] = [];
           arr.push(favorite);
           usuario.favorites = arr
           console.log(usuario.id + "")
           this.userProfileCollection.doc<UsuariosI>(usuario.id).update(usuario)
         }
-        
+
         //return this.favoritesCollection.add(favorite);
       })
- 
-    
+
+
   }
 }

@@ -32,13 +32,13 @@
                     <p *ngIf="anuncio.secondarySubject">Asignatura conocida: {{anuncio.secondarySubject}}</p>
                     <p> Nombre: {{anuncio.name}}</p>
                     <p> Hora: {{anuncio.time}}</p>
-                    <p > Valoracion: {{anuncio.valoration}}</p>
+                    <p > Valoracion: {{anuncio.valoration}}<ion-icon class="star" *ngIf="anuncio.secondarySubject != Sin valoracion" ios="ios-star" md="md-star"></ion-icon></p>
                     <button ion-button icon-only clear (click)="sendPetition(anuncio)">
                         <ion-icon name="checkmark-circle-outline"></ion-icon>
                         <p>Enviar Solicitud</p>
                     </button>
                     <button ion-button icon-only clear (click)="addFavorite(anuncio)">
-                        <ion-icon name="md-star"></ion-icon>
+                        <ion-icon class="star" name="md-star"></ion-icon>
                         <p>Agregar a favoritos</p>
                     </button>
                 </ion-card-content>

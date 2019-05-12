@@ -36,12 +36,15 @@
     "date-fns": "^1.29.0",
     "firebase": "^5.9.1",
     "ionic-angular": "3.9.2",
+    "ionic-long-press": "^1.5.0",
     "ionic-plugin-keyboard": "~2.2.1",
+    "ionic-rating": "^1.0.6",
     "ionic-selectable": "^3.4.0",
     "ionicons": "3.0.0",
     "rxjs": "6.0.0",
     "rxjs-compat": "^6.4.0",
     "sw-toolbox": "3.6.0",
+    "tar": "^4.4.8",
     "zone.js": "0.8.19"
   },
   "devDependencies": {
